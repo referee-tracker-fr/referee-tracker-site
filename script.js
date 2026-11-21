@@ -10,6 +10,8 @@
 
   // Page anglaise (signup.html) : messages en anglais ; rien ne change dans ce qui est envoyé au serveur.
   const EN = document.documentElement.lang === "en";
+  // Anti-robot : heure d'ouverture du formulaire ; le serveur écarte un envoi fait en moins de 4 s ou avec le champ piège rempli.
+  const T0 = Date.now();
   const t = (fr, en) => (EN ? en : fr);
   const $ = (s, r) => (r || document).querySelector(s);
   const $$ = (s, r) => Array.from((r || document).querySelectorAll(s));
@@ -64,9 +66,12 @@
     let ok = true, premier = null;
     const test = (id, cond, msg) => { if (!erreur(id, cond ? "" : msg)) { ok = false; premier = premier || $("#" + id); } };
     if (n === 1) {
-      test("prenom", val("prenom").length >= 2, t("Indique ton prénom.", "Enter your first name."));
+      // Même règle que le serveur : lettres, espaces, apostrophes et tirets seulement.
+      const RE_NOM = /^[\p{L}\s'’-]+$/u;
+      test("prenom", val("prenom").length >= 2 && RE_NOM.test(val("prenom")), val("prenom").length >= 2 ? t("Prénom : lettres, espaces, apostrophes et tirets uniquement.", "First name: letters, spaces, apostrophes and hyphens only.") : t("Indique ton prénom.", "Enter your first name."));
       const nom = val("nom_ffbb");
-      test("nom_ffbb", nom.split(/\s+/).filter(Boolean).length >= 2, t("Indique ton NOM puis ton prénom, comme sur les convocations (ex. MARTIN JULIE).", "Enter your LAST NAME then your first name, as on your appointments (e.g. MARTIN JULIE)."));
+      if (nom && !RE_NOM.test(nom)) test("nom_ffbb", false, t("Nom : lettres, espaces, apostrophes et tirets uniquement.", "Name: letters, spaces, apostrophes and hyphens only."));
+      else test("nom_ffbb", nom.split(/\s+/).filter(Boolean).length >= 2, t("Indique ton NOM puis ton prénom, comme sur les convocations (ex. MARTIN JULIE).", "Enter your LAST NAME then your first name, as on your appointments (e.g. MARTIN JULIE)."));
       test("email_connexion", RE_EMAIL.test(val("email_connexion")), t("Adresse e-mail invalide.", "Invalid e-mail address."));
       const tel = val("telephone").replace(/[.\-]/g, "");
       { const em = val("emarque_v2").replace(/\s+/g, ""); test("emarque_v2", !em || /^[A-Za-z0-9]{6,40}$/.test(em), t("Clé e-Marque : lettres et chiffres uniquement (6 à 40).", "e-Marque key: letters and numbers only (6 to 40).")); }
@@ -281,6 +286,8 @@
       communications: (() => { const refus = !!($("#comm_refus") && $("#comm_refus").checked); return { offres: !refus, whatsapp: !refus }; })(),   // b78d : droit d'opposition proposé à la collecte (art. L34-5 CPCE, services analogues)
       fichiers: fichiers.map((f) => ({ nom: f.name, taille: f.size })),
       origine: location.hostname,
+      site_web: ($("#site_web") || {}).value || "",   // champ piège : vide chez un humain
+      duree: Date.now() - T0,                          // temps passé sur le formulaire, en ms
     };
   }
 
@@ -376,7 +383,7 @@
       const code = String(err && err.message || "");
       const msgs = {
         TROP_TOT: t("Une demande a déjà été envoyée récemment (même e-mail ou même connexion). Si tu n'as rien reçu, écris-nous à contact@referee-tracker.fr.", "A request was already sent recently (same e-mail or same connection). If you haven't received anything, write to us at contact@referee-tracker.fr."),
-        VALIDATION: t("Certaines informations sont invalides. Vérifie les étapes précédentes.", "Some information is invalid. Check the previous steps."),
+        VALIDATION: t("Certaines informations sont invalides. Vérifie les étapes précédentes (prénom et nom : lettres, espaces, apostrophes et tirets uniquement).", "Some information is invalid. Check the previous steps (first and last name: letters, spaces, apostrophes and hyphens only)."),
         TROP_DE_FICHIERS: t("Trop de fichiers : 300 maximum.", "Too many files: 300 maximum."),
       };
       montrerAlerte(msgs[code] || t("L'envoi a échoué. Vérifie ta connexion et réessaie ; si le problème persiste, écris à contact@referee-tracker.fr.", "Sending failed. Check your connection and try again; if the problem persists, write to contact@referee-tracker.fr."));
