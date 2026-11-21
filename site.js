@@ -125,6 +125,7 @@
       $("#rAr").textContent = ar + (EN ? " km round trip" : " km aller-retour");
     }
     form.addEventListener("input", calc); calc();
+    form.addEventListener("submit", function (e) { e.preventDefault(); });   // remplace onsubmit, bloqué par la CSP
   }
 
   /* Année du pied de page */

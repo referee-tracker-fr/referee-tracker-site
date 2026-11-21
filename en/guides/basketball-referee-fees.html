@@ -7,6 +7,7 @@
   <meta name="referrer" content="no-referrer">
   <meta name="theme-color" content="#060D1F">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data:; script-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'self'">
+  <script src="/garde.js?v=b125"></script>
   <link rel="icon" href="../../img/favicon-32.png" sizes="32x32" type="image/png">
   <link rel="apple-touch-icon" href="../../img/logo-icon.png">
   <meta property="og:locale" content="en_GB">
@@ -62,7 +63,7 @@
 
 <h2>Try it with your numbers</h2>
 <div class="calc">
-      <form id="calc" onsubmit="return false" aria-label="Match fee calculator">
+      <form id="calc" method="post" action="#" aria-label="Match fee calculator">
         <div class="champ"><label for="fixe">Fixed fee for the game <output id="oFixe"></output></label><input type="range" id="fixe" name="fixe" min="15" max="120" step="1" value="32"></div>
         <div class="champ"><label for="km">One-way distance <output id="oKm"></output></label><input type="range" id="km" name="km" min="2" max="250" step="1" value="22"></div>
         <div class="champ"><label for="taux">Mileage allowance <output id="oTaux"></output></label><input type="range" id="taux" name="taux" min="20" max="60" step="1" value="40"></div>
@@ -118,6 +119,6 @@
    <div class="pied-bas"><a class="pied-lang" href="../../guides/indemnites-arbitre-basket.html" hreflang="fr" lang="fr">🌐 Version française</a><span>© <span id="annee">2026</span> Referee Tracker</span><span class="legal">Independent project by a referee, not affiliated with any basketball body. Competition and organisation names belong to their owners. Screenshots: made-up data.</span></div>
   </div>
 </footer>
-<script src="../../site.js?v=b124" defer></script>
+<script src="../../site.js?v=b125" defer></script>
 </body>
 </html>
