@@ -10,6 +10,8 @@
 
   // Page anglaise (signup.html) : messages en anglais ; rien ne change dans ce qui est envoyé au serveur.
   const EN = document.documentElement.lang === "en";
+  // Anti-robot : heure d'ouverture du formulaire ; le serveur écarte un envoi fait en moins de 4 s ou avec le champ piège rempli.
+  const T0 = Date.now();
   const t = (fr, en) => (EN ? en : fr);
   const $ = (s, r) => (r || document).querySelector(s);
   const $$ = (s, r) => Array.from((r || document).querySelectorAll(s));
@@ -281,6 +283,8 @@
       communications: (() => { const refus = !!($("#comm_refus") && $("#comm_refus").checked); return { offres: !refus, whatsapp: !refus }; })(),   // b78d : droit d'opposition proposé à la collecte (art. L34-5 CPCE, services analogues)
       fichiers: fichiers.map((f) => ({ nom: f.name, taille: f.size })),
       origine: location.hostname,
+      site_web: ($("#site_web") || {}).value || "",   // champ piège : vide chez un humain
+      duree: Date.now() - T0,                          // temps passé sur le formulaire, en ms
     };
   }
 
