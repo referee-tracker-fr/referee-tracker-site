@@ -11,3 +11,7 @@ remplacements.txt
 
 # --- Graphify (carte du code, locale) ---
 graphify-out/
+
+# --- Cloudflare (fichiers locaux de test) ---
+.wrangler/
+node_modules/

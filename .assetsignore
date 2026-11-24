@@ -1,0 +1,11 @@
+# Fichiers du dépôt à ne pas publier sur le site
+.*
+README.md
+LICENSE
+CNAME
+_config.yml
+wrangler.jsonc
+worker.js
+worker.test.mjs
+graphify-out
+node_modules
