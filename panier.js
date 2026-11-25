@@ -29,15 +29,15 @@
   // Contenu de chaque formule (mêmes listes que la page tarifs)
   var INC = fr ? {
     ess: ["Convocations 5x5 et 3x3 lues automatiquement", "Indemnités au centime, kilomètres compris", "Qui te doit quoi : paiements et retards", "Agenda synchronisé", "Notifications : nouveau match, annulation, retard"],
-    pro: ["Tout Essentiel", "Règlement et QCM adaptés à tes erreurs", "Rapports de match pré-remplis", "Progression : observations et axes de travail", "Statistiques de ta saison"],
-    elite: ["Tout Pro", "REF CLIPS inclus, sur Mac et Windows", "Découpe tes matchs en clips", "Dessine sur l'image et code tes actions", "Rapport vidéo prêt à partager"],
+    pro: ["Tout Essentiel", "Export PDF de l'année pour ta déclaration de revenus", "Statistiques de ta saison", "Carte des salles où tu as arbitré", "Hôtel et télépéage", "Contacts de tes collègues", "QCM d'entraînement"],
+    elite: ["Toute l'app", "Règlement : pose tes questions à l'IA", "QCM adaptés à tes erreurs", "Progression : observations et axes de travail", "Rapports de match pré-remplis", "REF CLIPS sur Mac et Windows : clips, dessin, codage, rapport vidéo"],
     clips: ["REF CLIPS, sur Mac et Windows", "Découpe tes matchs en clips", "Dessine sur l'image et code tes actions", "Rapport vidéo prêt à partager"],
-    opt: "REF CLIPS : clips, dessin sur l'image, rapport vidéo" } : {
+    opt: "REF CLIPS : clips, dessin, codage, rapport vidéo" } : {
     ess: ["5x5 and 3x3 appointments read automatically", "Fees to the cent, mileage included", "Who owes you what: payments and delays", "Synced calendar", "Alerts: new game, cancellation, late payment"],
-    pro: ["Everything in Essentiel", "Rules and quizzes based on your mistakes", "Pre-filled game reports", "Progress: feedback and focus areas", "Season statistics"],
-    elite: ["Everything in Pro", "REF CLIPS included, on Mac and Windows", "Cut your games into clips", "Draw on the image and tag your calls", "Video report ready to share"],
+    pro: ["Everything in Essentiel", "Yearly PDF export for your tax return", "Season statistics", "Map of the venues you've refereed", "Hotel and toll tags", "Your colleagues' contacts", "Practice quizzes"],
+    elite: ["The whole app", "Rules: ask the AI your questions", "Quizzes based on your mistakes", "Progress: feedback and focus areas", "Pre-filled game reports", "REF CLIPS on Mac and Windows: clips, drawing, tagging, video report"],
     clips: ["REF CLIPS, on Mac and Windows", "Cut your games into clips", "Draw on the image and tag your calls", "Video report ready to share"],
-    opt: "REF CLIPS: clips, drawing on the image, video report" };
+    opt: "REF CLIPS: clips, drawing, tagging, video report" };
   function euros(c) {
     var n = (c / 100).toFixed(2);
     return fr ? n.replace(".", ",") + " €" : "€" + n;
