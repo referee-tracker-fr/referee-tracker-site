@@ -26,6 +26,18 @@
     : { ess: "Essentiel", pro: "Pro", elite: "Élite", clips: "REF CLIPS only", opt: "REF CLIPS add-on", mois: "a month", saison: "a season",
         lMois: "Monthly, 10 payments", lSaison: "Per season, one payment",
         dMois: "10 payments of {p}, September to June.", dSaison: "Monthly would be {p}.", sMois: "Monthly would be {p}: you keep {e}." };
+  // Contenu de chaque formule (mêmes listes que la page tarifs)
+  var INC = fr ? {
+    ess: ["Convocations 5x5 et 3x3 lues automatiquement", "Indemnités au centime, kilomètres compris", "Qui te doit quoi : paiements et retards", "Agenda synchronisé", "Notifications : nouveau match, annulation, retard"],
+    pro: ["Tout Essentiel", "Règlement et QCM adaptés à tes erreurs", "Rapports de match pré-remplis", "Progression : observations et axes de travail", "Statistiques de ta saison"],
+    elite: ["Tout Pro", "REF CLIPS inclus, sur Mac et Windows", "Découpe tes matchs en clips", "Dessine sur l'image et code tes actions", "Rapport vidéo prêt à partager"],
+    clips: ["REF CLIPS, sur Mac et Windows", "Découpe tes matchs en clips", "Dessine sur l'image et code tes actions", "Rapport vidéo prêt à partager"],
+    opt: "REF CLIPS : clips, dessin sur l'image, rapport vidéo" } : {
+    ess: ["5x5 and 3x3 appointments read automatically", "Fees to the cent, mileage included", "Who owes you what: payments and delays", "Synced calendar", "Alerts: new game, cancellation, late payment"],
+    pro: ["Everything in Essentiel", "Rules and quizzes based on your mistakes", "Pre-filled game reports", "Progress: feedback and focus areas", "Season statistics"],
+    elite: ["Everything in Pro", "REF CLIPS included, on Mac and Windows", "Cut your games into clips", "Draw on the image and tag your calls", "Video report ready to share"],
+    clips: ["REF CLIPS, on Mac and Windows", "Cut your games into clips", "Draw on the image and tag your calls", "Video report ready to share"],
+    opt: "REF CLIPS: clips, drawing on the image, video report" };
   var IMG = { ess: "app/paiements.webp", pro: "app/qcm.webp", elite: "app/accueil.webp", clips: "refclips/codes.webp" };
   var racine = fr ? "" : "../";
   function euros(c) {
@@ -78,7 +90,9 @@
     var suffixe = " " + (e.i ? T.saison : T.mois);
     $("#pn-sous").textContent = euros(e.total) + suffixe;
     var tot = $("#pn-total"); tot.textContent = euros(e.total) + suffixe; rejouer(tot);
-    $("#pn-payer-m").textContent = euros(e.total);
+    $("#pn-payer-m").textContent = euros(e.total) + suffixe;
+    var inc = $("#pn-inc"); inc.textContent = "";
+    INC[e.fo].concat(e.opt ? [INC.opt] : []).forEach(function (t) { var li = document.createElement("li"); li.textContent = t; inc.append(li); });
     $("#pn-detail").textContent = e.i ? T.dSaison.replace("{p}", euros(e.totalMois * 10)) : T.dMois.replace("{p}", euros(e.total));
     // l'essai gratuit emporte le choix vers l'inscription
     var a = $("#pn-essai"), u = new URL(a.getAttribute("href"), location.href);

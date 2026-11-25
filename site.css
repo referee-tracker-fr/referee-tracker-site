@@ -382,7 +382,10 @@ footer a:hover{color:#fff}
 
 /* ---- page tarifs ---- */
 .tarifs{max-width:1120px!important}
-.tarifs-tete{text-align:center;max-width:680px;margin:0 auto 34px}
+.tarifs-tete{text-align:center;max-width:760px;margin:0 auto 34px}
+.guide .tarifs .tarifs-tete h1{font-size:clamp(2.2rem,5vw,3.6rem);text-wrap:balance}
+.guide .tarifs .tarifs-tete .lead{text-wrap:balance}
+.guide .tarifs .fil{text-align:center;margin-bottom:22px}
 .tarifs-tete .lead{margin:0 auto}
 .tg-in{position:absolute;opacity:0;pointer-events:none}
 /* sélecteur : une pastille dorée glisse sous le choix actif */
@@ -476,7 +479,7 @@ footer a:hover{color:#fff}
 .pn-etapes li.fait span{background:var(--green);border-color:var(--green);color:#062014}
 .pn-etapes li.fait+li::before,.pn-etapes li.actif::before{background:var(--gold)}
 .pn-etape{animation:flou-in .55s cubic-bezier(0,0,.2,1);margin-bottom:40px}
-.guide .tarifs .pn-etape h1{font-size:clamp(1.8rem,3.6vw,2.6rem);text-align:center;margin:0 0 28px;outline:0}
+.guide .tarifs .pn-etape h1{font-size:clamp(1.7rem,3.2vw,2.3rem);text-wrap:balance;text-align:center;margin:0 0 28px;outline:0}
 .pn-nav{display:flex;justify-content:center;gap:12px;margin-top:28px;flex-wrap:wrap}
 .pn-nav .btn{min-width:200px;justify-content:center}
 /* étape 1 : formules */
@@ -502,7 +505,9 @@ footer a:hover{color:#fff}
 .pn-periodes{display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:760px;margin:0 auto}
 .pn-p{position:relative;display:flex;flex-direction:column;gap:6px;cursor:pointer;padding:24px 22px;border-radius:22px;border:2px solid var(--line);background:var(--card);transition:transform .3s,border-color .3s,box-shadow .3s}
 .pn-p:hover{transform:translateY(-4px)}
-.pn-p:has(input:checked){border-color:var(--gold);box-shadow:0 18px 50px rgba(245,180,0,.18);background:linear-gradient(180deg,rgba(245,180,0,.1),var(--card))}
+.pn-p:has(input:checked){border-color:var(--gold);box-shadow:0 0 0 4px rgba(245,180,0,.12),0 18px 50px rgba(0,0,0,.35);background:var(--card2)}
+.pn-p::after{content:"";position:absolute;top:22px;right:22px;width:22px;height:22px;border-radius:50%;border:2px solid rgba(255,255,255,.3);transition:all .25s}
+.pn-p:has(input:checked)::after{border:7px solid var(--gold);background:#111}
 .pn-p-t{font-weight:800;font-size:1.05rem}
 .pn-p-t em{font-style:normal}
 .pn-p-prix{font:900 1.7rem/1.1 var(--font)}
@@ -528,7 +533,12 @@ footer a:hover{color:#fff}
 .pn-art strong{font:800 1.1rem/1 var(--font);white-space:nowrap}
 .guide .tarifs .pn-modifier{font-size:.9rem;color:var(--muted);margin:4px 0 22px}
 .pn-lien{background:none;border:0;padding:0;font:inherit;color:var(--gold2);cursor:pointer;text-decoration:underline;text-underline-offset:3px}
-.pn-rassure{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.pn-contenu{padding:20px 22px;border-radius:20px;background:var(--card);border:1px solid var(--line);margin:0 0 18px}
+.guide .tarifs .pn-contenu h2{font-size:1rem;margin:0 0 12px;color:#fff}
+.pn-contenu ul{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:8px 18px}
+.guide .tarifs .pn-contenu li{position:relative;padding-left:24px;font-size:.9rem;color:#C9D3E6;margin:0}
+.pn-contenu li::before{content:"✓";position:absolute;left:0;color:var(--gold2);font-weight:800}
+.pn-rassure{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:10px 22px}
 .guide .tarifs .pn-rassure li{position:relative;padding-left:30px;color:#C9D3E6;font-size:.95rem}
 .pn-rassure li::before{content:"✓";position:absolute;left:0;top:0;width:20px;height:20px;border-radius:50%;background:rgba(34,197,94,.18);color:var(--green);display:grid;place-items:center;font-size:12px;font-weight:800}
 .pn-recap{position:sticky;top:100px;padding:26px 24px;border-radius:24px;background:var(--bg2);border:1px solid rgba(245,180,0,.4);box-shadow:0 30px 70px rgba(0,0,0,.35)}
@@ -544,10 +554,15 @@ footer a:hover{color:#fff}
 .guide .tarifs .pn-bientot{text-align:center;font-size:.84rem;color:var(--muted);margin:8px 0 0}
 .guide .tarifs .pn-recap .mentions{font-size:.76rem;color:var(--muted);margin:16px 0 0}
 @media (max-width:960px){.pn-formules{grid-template-columns:1fr 1fr}.pn-cart{grid-template-columns:1fr}.pn-recap{position:static}}
-@media (max-width:560px){.pn-formules{grid-template-columns:1fr 1fr;gap:10px}.pn-f-haut{height:200px;padding:16px 8px 0}.pn-f-nom{font-size:.92rem;letter-spacing:.1em}.pn-f-prix{font-size:.98rem}.pn-f-haut img{width:92px;bottom:-105px}.pn-f-d{font-size:.8rem;padding:12px}.pn-periodes{grid-template-columns:1fr}.pn-o{grid-template-columns:1fr auto 26px}.pn-o img{display:none}.guide .pn-etapes li{font-size:0;gap:0}.pn-etapes li+li::before{width:34px;margin:0 8px}.pn-nav .btn{min-width:0;flex:1}}
-.prix-plus{list-style:none;padding:0;margin:34px 0 0;display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
-.prix-plus li{padding-left:28px;position:relative;font-size:.98rem!important}
-.prix-plus li::before{content:"✓";position:absolute;left:0;top:0;color:var(--green);font-weight:800}
+@media (max-width:560px){.pn-contenu ul{grid-template-columns:1fr}.pn-formules{grid-template-columns:1fr 1fr;gap:10px}.pn-f-haut{height:200px;padding:16px 8px 0}.pn-f-nom{font-size:.92rem;letter-spacing:.1em}.pn-f-prix{font-size:.98rem}.pn-f-haut img{width:92px;bottom:-105px}.pn-f-d{font-size:.8rem;padding:12px}.pn-periodes{grid-template-columns:1fr}.pn-o{grid-template-columns:1fr auto 26px}.pn-o img{display:none}.guide .pn-etapes li{font-size:0;gap:0}.pn-etapes li+li::before{width:34px;margin:0 8px}.pn-nav .btn{min-width:0;flex:1}}
+/* avantages en cartes */
+.avantages{list-style:none;padding:0;margin:44px 0 0;display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.guide .tarifs .avantages li{display:flex;flex-direction:column;gap:6px;padding:24px 22px;border-radius:22px;background:var(--card);border:1px solid var(--line);color:var(--muted);font-size:.95rem}
+.avantages b{color:#fff;font-size:1.1rem}
+.av-ico{display:grid;place-items:center;width:46px;height:46px;border-radius:14px;background:rgba(34,197,94,.14);color:var(--green);margin-bottom:8px}
+.av-ico svg{width:24px;height:24px}
+.avantages li:nth-child(2) .av-ico{background:rgba(245,180,0,.14);color:var(--gold2)}
+.avantages li:nth-child(3) .av-ico{background:rgba(59,130,246,.16);color:#7FB0FF}
 .fondateur{margin:56px 0 0;text-align:center;padding:44px 28px;border-radius:28px;border:1px solid rgba(245,180,0,.45);background:radial-gradient(600px circle at 50% 0%,rgba(245,180,0,.16),transparent 70%),var(--bg2)}
 .fondateur h2{margin-top:0!important}
 .guide .tarifs .fondateur-prix{display:flex;justify-content:center;align-items:baseline;gap:10px;max-width:none;font:900 3rem/1 var(--font);color:var(--gold2);margin:6px 0 16px}
@@ -555,7 +570,11 @@ footer a:hover{color:#fff}
 .fondateur p{margin:0 auto 8px;max-width:520px}
 .fondateur .btn{margin-top:14px;cursor:default;opacity:.75}
 .fondateur .btn:hover{transform:none}
-.tarifs-pied{text-align:center;margin-top:48px}
-.tarifs-pied .mentions{font-size:.86rem!important;color:var(--muted)!important;margin-top:22px}
-@media (max-width:960px){.pc-grille{grid-template-columns:1fr;max-width:460px;margin:0 auto}.prix-plus{grid-template-columns:1fr}.prix-clips{grid-template-columns:1fr}.prix-clips ul{justify-content:flex-start;flex-direction:column}.prix-clips li{justify-content:space-between}}
+/* appel final */
+.final{margin:56px 0 0;text-align:center;padding:48px 28px;border-radius:28px;background:radial-gradient(700px circle at 50% 120%,rgba(245,180,0,.22),transparent 60%),linear-gradient(180deg,var(--card2),var(--card));border:1px solid var(--line)}
+.guide .tarifs .final h2{margin:0 0 10px;font-size:clamp(1.7rem,3.4vw,2.4rem)}
+.guide .tarifs .final p{margin:0 auto 24px;max-width:520px;color:#C9D3E6}
+.guide .tarifs .final .final-note{margin:14px auto 0;font-size:.86rem;color:var(--muted)}
+.guide .tarifs .tarifs-mentions{text-align:center;font-size:.8rem;color:var(--muted);margin:22px auto 0;max-width:640px}
+@media (max-width:960px){.pc-grille{grid-template-columns:1fr;max-width:460px;margin:0 auto}.avantages{grid-template-columns:1fr}.prix-clips{grid-template-columns:1fr}.prix-clips ul{justify-content:flex-start;flex-direction:column}.prix-clips li{justify-content:space-between}}
 @media (max-width:420px){.tg label{font-size:13px;padding:12px 6px}.pc-haut{height:450px}}
