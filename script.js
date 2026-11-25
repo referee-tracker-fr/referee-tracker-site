@@ -15,12 +15,13 @@
   // Formule choisie dans le panier (?formule=pro&periode=saison&clips=1) : affichée en haut et jointe à la demande.
   const FORMULE = (() => {
     const q = new URLSearchParams(location.search);
-    const NOMS = { ess: "Essentiel", pro: "Pro", elite: "Élite", clips: EN ? "REF CLIPS only" : "REF CLIPS seul" };
+    const NOMS = { ess: "Essentiel", pro: "Pro", elite: "Élite", clips: EN ? "REF CLIPS only" : "REF CLIPS seul", fondateur: EN ? "Founder offer" : "Offre Fondateur" };
     if (!NOMS[q.get("formule")]) return null;
+    const fondateur = q.get("formule") === "fondateur";
     const periode = q.get("periode") === "saison" ? "saison" : "mois";
     const clips = q.get("clips") === "1" && (q.get("formule") === "ess" || q.get("formule") === "pro");
-    return { formule: q.get("formule"), periode, clips,
-      libelle: NOMS[q.get("formule")] + (clips ? " + REF CLIPS" : "") + (periode === "saison" ? (EN ? ", per season" : ", à la saison") : (EN ? ", monthly" : ", au mois")) };
+    return { formule: q.get("formule"), periode, clips, payer: q.get("payer") === "1",
+      libelle: NOMS[q.get("formule")] + (fondateur ? "" : (clips ? " + REF CLIPS" : "") + (periode === "saison" ? (EN ? ", per season" : ", à la saison") : (EN ? ", monthly" : ", au mois"))) };
   })();
   const t = (fr, en) => (EN ? en : fr);
   const $ = (s, r) => (r || document).querySelector(s);
@@ -370,6 +371,23 @@
 
   let echecsCourants = [];
 
+  // Paiement juste après l'inscription (bouton « Payer » du panier). La fonction refuse si la vente est fermée :
+  // dans ce cas, ou en cas d'erreur, l'inscription reste valable et l'essai gratuit commence normalement.
+  async function ouvrirPaiement() {
+    try {
+      const r = await fetch(SUPABASE_URL + "/functions/v1/paiement", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", apikey: SUPABASE_KEY },
+        body: JSON.stringify({ action: "creer", formule: FORMULE.formule, periode: FORMULE.periode, clips: FORMULE.clips,
+          inscription_id: dernierEnvoi.inscription_id, jeton: dernierEnvoi.jeton, retour: "site" }),
+      });
+      const d = await r.json().catch(() => null);
+      if (r.ok && d && d.ok && typeof d.url === "string" && d.url.startsWith("https://checkout.stripe.com/")) { location.href = d.url; return; }
+    } catch (_) { /* on garde l'écran de confirmation */ }
+    $("#done-mail").textContent += " " + t("Le paiement n'a pas pu démarrer : ton essai gratuit commence, tu pourras payer plus tard depuis l'app.",
+      "Payment could not start: your free trial begins, you can pay later from the app.");
+  }
+
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
     if (!valider(4)) return;
@@ -395,6 +413,7 @@
       } else { echecsCourants = []; }
       afficher(5);
       afficherEchecs(echecsCourants);
+      if (FORMULE && FORMULE.payer) await ouvrirPaiement();
     } catch (err) {
       const code = String(err && err.message || "");
       const msgs = {

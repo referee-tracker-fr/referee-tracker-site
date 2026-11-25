@@ -6,6 +6,43 @@
   var PRIX = { ess: [249, 1999], pro: [499, 3999], elite: [699, 5599], clips: [399, 3199] };
   var OPTION = [249, 1999];
 
+  // Vente en ligne : c'est la base qui décide (interrupteur). Fermée, ou en cas d'erreur, la page reste telle quelle.
+  var SUPA = "https://jlstedchnmdteazuqbly.supabase.co";
+  var CLE = "sb_publishable_B1w244FrkzbIn-SZ-T_z8w_4HVg9stb"; // clé publique (publishable) : pas un secret
+  var EN = document.documentElement.lang === "en";
+  var vente = fetch(SUPA + "/rest/v1/rpc/rt_paiement_public", {
+    method: "POST", headers: { apikey: CLE, "Content-Type": "application/json" }, body: "{}"
+  }).then(function (r) { return r.ok ? r.json() : null; })
+    .then(function (d) { return d && d.actif === true ? d : null; })
+    .catch(function () { return null; });
+
+  // Page tarifs : compteur de places et bouton de l'offre Fondateur (seulement si la vente est ouverte).
+  var fondateur = document.querySelector(".fondateur");
+  if (fondateur) vente.then(function (d) {
+    if (!d) return;
+    var n = Math.max(0, Number(d.fondateur_restantes) || 0);
+    var c = document.createElement("p"); c.className = "fondateur-compteur";
+    c.textContent = EN ? n + (n > 1 ? " places left" : " place left") + " out of 50" : n + (n > 1 ? " places restantes" : " place restante") + " sur 50";
+    var bouton = fondateur.querySelector(".btn");
+    fondateur.insertBefore(c, bouton);
+    if (d.fondateur_ouvert && n > 0) {
+      var a = document.createElement("a"); a.className = "btn btn-gold";
+      a.href = (EN ? "../signup.html" : "inscription.html") + "?formule=fondateur&payer=1";
+      a.textContent = EN ? "Become a Founder" : "Devenir Fondateur";
+      bouton.replaceWith(a);
+    }
+  });
+
+  // Retour de Stripe après un paiement abandonné : un petit message, rien de plus.
+  if (new URLSearchParams(location.search).get("paiement") === "annule") {
+    var tete = document.querySelector(".tarifs-tete");
+    if (tete) {
+      var m = document.createElement("p"); m.className = "paiement-annule"; m.setAttribute("role", "status");
+      m.textContent = EN ? "Payment cancelled: nothing has been charged." : "Paiement annulé : rien n'a été prélevé.";
+      tete.append(m);
+    }
+  }
+
   // Page tarifs : le bouton emporte le choix « au mois / à la saison » vers le panier.
   document.querySelectorAll("a[data-panier]").forEach(function (a) {
     a.addEventListener("click", function () {
@@ -127,6 +164,21 @@
   f.addEventListener("click", function (ev) {
     var b = ev.target.closest("[data-aller]");
     if (b) aller(+b.dataset.aller);
+  });
+  vente.then(function (d) {
+    if (!d) return;
+    var payer = $(".pn-payer");
+    var note = $(".pn-bientot");
+    payer.disabled = false; payer.className = "btn btn-gold pn-btn";
+    var montant = $("#pn-payer-m");
+    payer.textContent = EN ? "Pay " : "Payer "; payer.append(montant);
+    if (note) note.hidden = true;
+    var essai = $("#pn-essai"); essai.classList.remove("btn-gold"); essai.classList.add("btn-ghost");
+    essai.before(payer); payer.style.marginBottom = "10px"; // « Payer » devient le bouton principal
+    payer.addEventListener("click", function () {
+      // on passe par l'inscription (création du compte), puis le paiement Stripe s'ouvre tout seul
+      var u = new URL($("#pn-essai").href); u.searchParams.set("payer", "1"); location.href = u.toString();
+    });
   });
   f.addEventListener("change", maj);
   f.addEventListener("submit", function (e) { e.preventDefault(); });
