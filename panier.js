@@ -75,12 +75,12 @@
     ul.textContent = "";
     var lignes = [[T[e.fo], e.i ? T.lSaison : T.lMois, PRIX[e.fo][e.i], "", e.fo]];
     if (e.opt) lignes.push([T.opt, e.i ? T.lSaison : T.lMois, OPTION[e.i], "", "clips"]);
-    var CAMERA = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="6" width="14" height="12" rx="2"/><path d="m16 10 6-3v10l-6-3z"/></svg>';
     lignes.forEach(function (l) {
       var li = document.createElement("li"); li.className = "pn-art pc-" + l[4];
       var tu = document.createElement("span"); tu.className = "pn-tuile"; tu.setAttribute("aria-hidden", "true");
-      if (l[4] === "clips") tu.innerHTML = CAMERA; // icône fixe écrite ici, jamais de texte venant de l'adresse
-      else { var lo = document.createElement("img"); lo.src = (fr ? "" : "../") + "img/logo-icon-sm.png"; lo.alt = ""; tu.append(lo); }
+      var lo = document.createElement("img"); lo.alt = "";
+      lo.src = (fr ? "" : "../") + (l[4] === "clips" ? "img/refclips/logo.svg" : "img/logo-icon-sm.png");
+      tu.append(lo);
       var tx = document.createElement("span"); tx.className = "pn-art-t";
       var b = document.createElement("b"); b.textContent = l[0];
       var sp = document.createElement("span"); sp.textContent = l[1];
