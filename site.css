@@ -672,3 +672,61 @@ footer a:hover{color:#fff}
 .g2-cartes .g2-seul{color:#D5DDEC!important;font-size:.92rem!important}
 .guide article.g2 figure.fig{margin:0 auto 40px}
 @media (max-width:700px){.g2-sommaire{flex-wrap:nowrap;overflow-x:auto;justify-content:flex-start;margin:0 -16px 32px;padding:0 16px 6px;scrollbar-width:none}.g2-sommaire::-webkit-scrollbar{display:none}.g2-sommaire>span{display:none}.guide article.g2 .g2-sommaire a{white-space:nowrap;flex:none}}
+
+/* ---- schémas « En un coup d'œil » ---- */
+.sc{margin:0 0 40px;padding:26px 24px;border-radius:26px;background:radial-gradient(700px circle at 50% 0%,rgba(245,180,0,.12),transparent 70%),linear-gradient(180deg,var(--card2),var(--card));border:1px solid rgba(245,180,0,.3)}
+.guide article .sc .sc-t{font:700 .78rem/1 var(--font);text-transform:uppercase;letter-spacing:.16em;color:var(--gold);text-align:center;margin:0 0 20px}
+/* étapes reliées par des flèches */
+.sc-flux{list-style:none;margin:0;padding:0;display:flex;gap:0;counter-reset:e}
+.guide article .sc-flux li{flex:1;position:relative;display:flex;flex-direction:column;align-items:center;text-align:center;gap:4px;margin:0;padding:0 10px}
+.sc-flux li .g2-ico{width:52px;height:52px;border-radius:16px;margin:0 0 8px;position:relative;z-index:1;background:var(--bg2)}
+.sc-flux li:not(:last-child)::after{content:"";position:absolute;top:26px;left:calc(50% + 34px);right:calc(-50% + 34px);height:2px;background:linear-gradient(90deg,var(--gold),rgba(245,180,0,.25))}
+.sc-flux li:not(:last-child)::before{content:"";position:absolute;top:21px;right:calc(-50% + 30px);border:6px solid transparent;border-left:8px solid rgba(245,180,0,.6)}
+.sc-flux b{color:#fff;font-size:.92rem;line-height:1.25}
+.sc-flux small{color:var(--muted);font-size:.8rem;line-height:1.35}
+.guide article .sc-boucle{display:flex;align-items:center;justify-content:center;gap:10px;margin:18px 0 0;color:#D5DDEC;font-size:.9rem;text-align:center}
+.sc-boucle .g2-ico{width:34px;height:34px;margin:0;border-radius:50%}
+/* formule */
+.sc-formule{display:flex;align-items:stretch;justify-content:center;gap:10px;flex-wrap:wrap}
+.sc-f{flex:1;min-width:150px;display:flex;flex-direction:column;justify-content:center;gap:4px;padding:16px 14px;border-radius:18px;background:var(--bg2);border:1px solid var(--line);text-align:center}
+.sc-f b{color:#fff;font-size:1rem}
+.sc-f small{color:var(--muted);font-size:.8rem}
+.sc-res{border-color:var(--gold);background:linear-gradient(180deg,rgba(245,180,0,.16),var(--bg2))}
+.sc-res b{color:var(--gold2)}
+.sc-op{display:grid;place-items:center;font:900 1.6rem/1 var(--font);color:var(--gold)}
+.sc-bandes{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:14px}
+.sc-bandes span{display:flex;flex-direction:column;gap:3px;padding:10px 12px;border-radius:12px;background:rgba(255,255,255,.04);border-top:3px solid var(--gold);font-size:.8rem;color:var(--muted);text-align:center}
+.sc-bandes span:nth-child(2){border-top-color:#7FB0FF}.sc-bandes span:nth-child(3){border-top-color:var(--green)}
+.sc-bandes b{color:#fff;font-size:.86rem}
+/* frise des mois */
+.sc-frise{display:grid;gap:8px}
+.sc-rang{display:grid;grid-template-columns:150px 1fr;gap:12px;align-items:center}
+.sc-lib{font-size:.84rem;font-weight:700;color:#D5DDEC;text-align:right}
+.sc-piste{position:relative;display:grid;grid-template-columns:repeat(var(--n),1fr);height:26px;border-radius:8px;background:rgba(255,255,255,.04)}
+.sc-mois .sc-piste{background:none;height:auto}
+.sc-mois .sc-piste span{text-align:center;font-size:.72rem;color:var(--muted);font-weight:700}
+.sc-piste i{position:absolute;top:3px;bottom:3px;left:calc(var(--d) / var(--n) * 100%);width:calc((var(--f) - var(--d)) / var(--n) * 100%);border-radius:6px;background:var(--gold);transform-origin:left;animation:sc-pousse 1s cubic-bezier(.2,.8,.2,1) both}
+.sc-piste i.sc-saison{background:linear-gradient(90deg,#3B82F6,#7FB0FF)}
+.sc-piste i.sc-annee{background:linear-gradient(90deg,var(--gold),var(--gold2))}
+.sc-piste i.sc-a{background:#A3B0CB}.sc-piste i.sc-b{background:#7FB0FF}.sc-piste i.sc-c{background:var(--green)}.sc-piste i.sc-d{background:var(--gold)}
+@keyframes sc-pousse{from{transform:scaleX(0)}}
+/* choix sous / au-dessus du seuil */
+.sc-choix{margin-top:18px;text-align:center}
+.sc-q{display:inline-block;padding:10px 16px;border-radius:12px;background:var(--bg2);border:1px solid var(--line);font-weight:700;font-size:.9rem;position:relative}
+.sc-br{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:22px;position:relative}
+.sc-br::before{content:"";position:absolute;top:-16px;left:25%;right:25%;height:12px;border:2px solid rgba(245,180,0,.5);border-bottom:0;border-radius:10px 10px 0 0}
+.sc-ok,.sc-ko{padding:14px;border-radius:14px;display:flex;flex-direction:column;gap:3px;font-size:.84rem;color:var(--muted)}
+.sc-ok{background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.4)}.sc-ok b{color:#7CF0A6}
+.sc-ko{background:rgba(245,180,0,.08);border:1px solid rgba(245,180,0,.4)}.sc-ko b{color:var(--gold2)}
+@media (max-width:700px){
+  .sc-flux{flex-direction:column;gap:18px}
+  .guide article .sc-flux li{display:grid;grid-template-columns:52px 1fr;column-gap:14px;row-gap:0;text-align:left;align-items:center;padding:0}
+  .sc-flux li .g2-ico{margin:0;grid-row:span 2}
+  .sc-flux li:not(:last-child)::after{top:52px;left:25px;right:auto;width:2px;height:18px}
+  .sc-flux li:not(:last-child)::before{display:none}
+  .sc-op{width:100%;font-size:1.3rem}
+  .sc-bandes{grid-template-columns:1fr}
+  .sc-rang{grid-template-columns:92px 1fr;gap:8px}
+  .sc-lib{font-size:.76rem}
+  .sc-mois .sc-piste span{font-size:.62rem}
+}
