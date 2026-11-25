@@ -379,3 +379,48 @@ footer a:hover{color:#fff}
 .menu-mob-p .menu-lang{margin-top:6px;border-top:1px solid rgba(255,255,255,.1);border-radius:0 0 12px 12px;color:var(--muted)}
 .pied-lang{color:var(--muted);text-decoration:none;font-weight:600;white-space:nowrap}.pied-lang:hover{color:var(--gold2)}
 @media (max-width:560px){.tab{font-size:14px}.tab th,.tab td{padding:10px 6px}.tab th{font-size:11px;letter-spacing:.03em}}
+
+/* ---- page tarifs ---- */
+.tarifs{max-width:1040px!important}
+.tarifs-tete{text-align:center;max-width:680px;margin:0 auto 34px}
+.tarifs-tete .lead{margin:0 auto}
+.tg-in{position:absolute;opacity:0;pointer-events:none}
+.tg{display:flex;width:max-content;max-width:100%;margin:0 auto 38px;padding:5px;border-radius:999px;background:var(--card);border:1px solid var(--line)}
+.tg label{font:700 14.5px/1 var(--font);padding:13px 22px;border-radius:999px;cursor:pointer;color:var(--muted);display:inline-flex;align-items:center;gap:8px;transition:background .2s,color .2s}
+.tg-badge{font-size:12px;padding:4px 8px;border-radius:999px;background:rgba(34,197,94,.15);color:var(--green)}
+#p-mois:checked~.tg label[for=p-mois],#p-saison:checked~.tg label[for=p-saison]{background:linear-gradient(180deg,var(--gold2),var(--gold));color:#111}
+#p-saison:checked~.tg label[for=p-saison] .tg-badge{background:rgba(0,0,0,.12);color:#111}
+#p-mois:focus-visible~.tg label[for=p-mois],#p-saison:focus-visible~.tg label[for=p-saison]{outline:2px solid var(--gold2);outline-offset:3px}
+.tarifs .s{display:none}
+#p-saison:checked~* .m{display:none}
+#p-saison:checked~* .s{display:inline}
+.prix-grille{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;align-items:stretch}
+.prix-carte{position:relative;background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:30px 24px 26px;display:flex;flex-direction:column}
+.prix-carte h3{font-size:1.35rem;margin:0 0 6px}
+.guide .tarifs .prix-sous{color:var(--muted);font-size:.95rem;margin:0 0 22px;min-height:2.6em}
+.guide .tarifs .prix-val{font:900 2.5rem/1 var(--font);margin:0 0 10px;letter-spacing:-.02em}
+.prix-val small{font-size:.95rem;font-weight:600;color:var(--muted);letter-spacing:0}
+.guide .tarifs .prix-note{font-size:.88rem;color:var(--muted);margin:0}
+.prix-carte.vedette{background:linear-gradient(180deg,rgba(245,180,0,.12),var(--card) 55%);border-color:rgba(245,180,0,.55);box-shadow:0 20px 50px rgba(245,180,0,.12)}
+.guide .tarifs .vedette .prix-val{color:var(--gold2)}
+.prix-badge{position:absolute;top:-12px;left:24px;font:700 11.5px/1 var(--font);text-transform:uppercase;letter-spacing:.08em;padding:7px 12px;border-radius:999px;background:linear-gradient(180deg,var(--gold2),var(--gold));color:#111}
+.prix-clips{margin:18px 0 0;background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:22px 24px;display:grid;grid-template-columns:auto 1fr;gap:10px 28px;align-items:center}
+.prix-clips h3{margin:0;font-size:1.1rem}
+.prix-clips ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:10px 34px;justify-content:flex-end}
+.prix-clips li{display:flex;gap:12px;align-items:baseline;color:#C9D3E6}
+.prix-clips b{font-size:1.15rem;white-space:nowrap}
+.prix-clips small{font-size:.8rem;font-weight:600;color:var(--muted)}
+.prix-plus{list-style:none;padding:0;margin:34px 0 0;display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.prix-plus li{padding-left:28px;position:relative;font-size:.98rem!important}
+.prix-plus li::before{content:"✓";position:absolute;left:0;top:0;color:var(--green);font-weight:800}
+.fondateur{margin:56px 0 0;text-align:center;padding:40px 28px;border-radius:var(--r);border:1px solid rgba(245,180,0,.45);background:radial-gradient(600px circle at 50% 0%,rgba(245,180,0,.16),transparent 70%),var(--bg2)}
+.fondateur h2{margin-top:0!important}
+.guide .tarifs .fondateur-prix{display:flex;justify-content:center;align-items:baseline;gap:10px;max-width:none;font:900 3rem/1 var(--font);color:var(--gold2);margin:6px 0 16px}
+.fondateur-prix small{font-size:1rem;font-weight:600;color:var(--muted)}
+.fondateur p{margin:0 auto 8px;max-width:520px}
+.fondateur .btn{margin-top:14px;cursor:default;opacity:.75}
+.fondateur .btn:hover{transform:none}
+.tarifs-pied{text-align:center;margin-top:48px}
+.tarifs-pied .mentions{font-size:.86rem!important;color:var(--muted)!important;margin-top:22px}
+@media (max-width:860px){.prix-grille,.prix-plus{grid-template-columns:1fr}.guide .tarifs .prix-sous{min-height:0}.prix-clips{grid-template-columns:1fr}.prix-clips ul{justify-content:flex-start;flex-direction:column}.prix-clips li{justify-content:space-between}}
+@media (max-width:420px){.tg label{padding:12px 13px;font-size:13px}.guide .tarifs .prix-val{font-size:2.2rem}}
