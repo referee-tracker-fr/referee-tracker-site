@@ -1,4 +1,5 @@
-// Panier (page tarifs + page panier). Le paiement n'est pas encore ouvert : rien n'est envoyé, on calcule seulement le total.
+// Panier en 3 étapes (page tarifs + page panier).
+// Le paiement n'est pas encore ouvert : rien n'est envoyé d'ici, on calcule le total et on transmet le choix à l'inscription.
 (function () {
   "use strict";
   // Prix en centimes : [au mois, la saison]
@@ -20,13 +21,18 @@
   var fr = f.dataset.lang === "fr";
   var T = fr
     ? { ess: "Essentiel", pro: "Pro", elite: "Élite", clips: "REF CLIPS seul", opt: "Option REF CLIPS", mois: "par mois", saison: "la saison",
-        dMois: "10 prélèvements de {p}, de septembre à juin.", dSaison: "En une fois pour la saison, de septembre à juin. Au mois, ça ferait {p}." }
+        lMois: "Au mois, 10 prélèvements", lSaison: "À la saison, en une fois",
+        dMois: "10 prélèvements de {p}, de septembre à juin.", dSaison: "Au mois, ça ferait {p}.", sMois: "Au mois, ça ferait {p} : tu gardes {e}." }
     : { ess: "Essentiel", pro: "Pro", elite: "Élite", clips: "REF CLIPS only", opt: "REF CLIPS add-on", mois: "a month", saison: "a season",
-        dMois: "10 payments of {p}, September to June.", dSaison: "One payment for the season, September to June. Monthly would be {p}." };
+        lMois: "Monthly, 10 payments", lSaison: "Per season, one payment",
+        dMois: "10 payments of {p}, September to June.", dSaison: "Monthly would be {p}.", sMois: "Monthly would be {p}: you keep {e}." };
+  var IMG = { ess: "app/paiements.webp", pro: "app/qcm.webp", elite: "app/accueil.webp", clips: "refclips/codes.webp" };
+  var racine = fr ? "" : "../";
   function euros(c) {
     var n = (c / 100).toFixed(2);
     return fr ? n.replace(".", ",") + " €" : "€" + n;
   }
+  function $(s) { return f.querySelector(s); }
 
   // Choix reçus dans l'adresse (?formule=pro&periode=saison&clips=1), seulement s'ils sont connus.
   var q = new URLSearchParams(location.search);
@@ -34,32 +40,83 @@
   if (q.get("periode") === "saison" || q.get("periode") === "mois") f.periode.value = q.get("periode");
   if (q.get("clips") === "1") f.clips.checked = true;
 
-  function maj() {
+  function etat() {
     var fo = f.formule.value, i = f.periode.value === "saison" ? 1 : 0;
-    var optPossible = fo === "ess" || fo === "pro";
-    f.clips.disabled = !optPossible;
-    document.getElementById("pn-opt").classList.toggle("off", !optPossible);
-    document.getElementById("pn-inclus").hidden = fo !== "elite";
-    document.getElementById("pn-opt-p").textContent = "+" + euros(OPTION[i]) + " " + (i ? T.saison : T.mois);
-    var lignes = [[T[fo], PRIX[fo][i]]];
-    if (optPossible && f.clips.checked) lignes.push([T.opt, OPTION[i]]);
-    var total = 0, totalMois = 0;
-    var ul = document.getElementById("pn-lignes");
-    ul.textContent = "";
-    lignes.forEach(function (l) {
-      total += l[1];
-      var li = document.createElement("li");
-      var a = document.createElement("span"); a.textContent = l[0];
-      var b = document.createElement("b"); b.textContent = euros(l[1]);
-      li.append(a, b); ul.append(li);
-    });
-    totalMois = PRIX[fo][0] + (optPossible && f.clips.checked ? OPTION[0] : 0);
-    var tot = document.getElementById("pn-total");
-    tot.textContent = euros(total) + " " + (i ? T.saison : T.mois);
-    tot.style.animation = "none"; void tot.offsetWidth; tot.style.animation = ""; // rejoue le fondu à chaque changement
-    document.getElementById("pn-detail").textContent = i ? T.dSaison.replace("{p}", euros(totalMois * 10)) : T.dMois.replace("{p}", euros(total));
+    var opt = (fo === "ess" || fo === "pro") && f.clips.checked;
+    return { fo: fo, i: i, optPossible: fo === "ess" || fo === "pro", opt: opt,
+             total: PRIX[fo][i] + (opt ? OPTION[i] : 0), totalMois: PRIX[fo][0] + (opt ? OPTION[0] : 0) };
   }
+
+  function rejouer(el) { el.style.animation = "none"; void el.offsetWidth; el.style.animation = ""; }
+
+  function maj() {
+    var e = etat();
+    // étape 2 : prix des deux façons de payer et option
+    var saison = PRIX[e.fo][1] + (e.opt ? OPTION[1] : 0);
+    $('[data-prix="mois"]').textContent = euros(e.totalMois) + " " + T.mois;
+    $('[data-prix="saison"]').textContent = euros(saison) + " " + T.saison;
+    $("[data-saison-d]").textContent = T.sMois.replace("{p}", euros(e.totalMois * 10)).replace("{e}", euros(e.totalMois * 10 - saison));
+    $("#pn-opt").hidden = !e.optPossible;
+    f.clips.disabled = !e.optPossible;
+    $("#pn-inclus").hidden = e.fo !== "elite";
+    $("#pn-opt-p").textContent = "+" + euros(OPTION[e.i]) + " " + (e.i ? T.saison : T.mois);
+    // étape 3 : articles du panier
+    var ul = $("#pn-lignes");
+    ul.textContent = "";
+    var lignes = [[T[e.fo], e.i ? T.lSaison : T.lMois, PRIX[e.fo][e.i], IMG[e.fo], e.fo]];
+    if (e.opt) lignes.push([T.opt, e.i ? T.lSaison : T.lMois, OPTION[e.i], "refclips/dessin.webp", "clips"]);
+    lignes.forEach(function (l) {
+      var li = document.createElement("li"); li.className = "pn-art pc-" + l[4];
+      var im = document.createElement("img"); im.src = racine + "img/" + l[3]; im.alt = ""; im.loading = "lazy";
+      var tx = document.createElement("span"); tx.className = "pn-art-t";
+      var b = document.createElement("b"); b.textContent = l[0];
+      var sp = document.createElement("span"); sp.textContent = l[1];
+      tx.append(b, sp);
+      var px = document.createElement("strong"); px.textContent = euros(l[2]);
+      li.append(im, tx, px); ul.append(li);
+    });
+    var suffixe = " " + (e.i ? T.saison : T.mois);
+    $("#pn-sous").textContent = euros(e.total) + suffixe;
+    var tot = $("#pn-total"); tot.textContent = euros(e.total) + suffixe; rejouer(tot);
+    $("#pn-payer-m").textContent = euros(e.total);
+    $("#pn-detail").textContent = e.i ? T.dSaison.replace("{p}", euros(e.totalMois * 10)) : T.dMois.replace("{p}", euros(e.total));
+    // l'essai gratuit emporte le choix vers l'inscription
+    var a = $("#pn-essai"), u = new URL(a.getAttribute("href"), location.href);
+    u.search = "";
+    u.searchParams.set("formule", e.fo); u.searchParams.set("periode", e.i ? "saison" : "mois");
+    if (e.opt) u.searchParams.set("clips", "1");
+    a.href = u.toString();
+    // adresse de la page à jour (retour arrière, partage)
+    history.replaceState(null, "", "?" + u.searchParams.toString() + "#etape" + courante);
+  }
+
+  // Étapes : une seule visible à la fois (sans JavaScript, tout reste affiché).
+  var courante = 1;
+  function aller(n) {
+    courante = n;
+    f.classList.add("js");
+    f.querySelectorAll(".pn-etape").forEach(function (s) {
+      var vis = +s.dataset.etape === n;
+      s.hidden = !vis;
+      if (vis) rejouer(s);
+    });
+    f.querySelectorAll(".pn-etapes li").forEach(function (li) {
+      var k = +li.dataset.e;
+      li.classList.toggle("fait", k < n); li.classList.toggle("actif", k === n);
+      if (k === n) li.setAttribute("aria-current", "step"); else li.removeAttribute("aria-current");
+    });
+    maj();
+    var h = f.querySelector('.pn-etape[data-etape="' + n + '"] h1');
+    if (h) { h.setAttribute("tabindex", "-1"); h.focus({ preventScroll: true }); }
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+  f.addEventListener("click", function (ev) {
+    var b = ev.target.closest("[data-aller]");
+    if (b) aller(+b.dataset.aller);
+  });
   f.addEventListener("change", maj);
   f.addEventListener("submit", function (e) { e.preventDefault(); });
-  maj();
+
+  // Arrivée depuis la page tarifs : formule déjà choisie → on passe directement à l'étape suivante.
+  aller(PRIX[q.get("formule")] ? (q.get("formule") === "ess" || q.get("formule") === "pro" ? 2 : 3) : 1);
 })();

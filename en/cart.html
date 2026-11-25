@@ -47,29 +47,49 @@
 <main id="contenu" class="guide">
 <div class="wrap">
 <article class="tarifs panier-page">
-<p class="fil"><a href="./">Home</a> › <a href="pricing.html">Pricing</a> › Your cart</p>
-<h1>Your cart</h1>
+<p class="fil"><a href="./">Home</a> › <a href="pricing.html">Pricing</a> › Cart</p>
 <form id="panier" class="panier" action="#" method="post" data-lang="en" novalidate>
-<div class="pn-gauche">
-<fieldset><legend>1. Your plan</legend><div class="pn-grille"><label class="pn-choix"><input type="radio" name="formule" value="ess" checked><span class="pn-c-nom">Essentiel</span><span class="pn-c-d">Track your season</span></label><label class="pn-choix"><input type="radio" name="formule" value="pro"><span class="pn-c-nom">Pro</span><span class="pn-c-d">Essentiel, plus rules, reports and progress</span></label><label class="pn-choix"><input type="radio" name="formule" value="elite"><span class="pn-c-nom">Élite</span><span class="pn-c-d">Everything in Pro, REF CLIPS included</span></label><label class="pn-choix"><input type="radio" name="formule" value="clips"><span class="pn-c-nom">REF CLIPS only</span><span class="pn-c-d">Video analysis, on Mac and Windows</span></label></div></fieldset>
-<fieldset><legend>2. How you pay</legend>
-<div class="pn-periode"><label><input type="radio" name="periode" value="mois" checked><span>Monthly</span></label><label><input type="radio" name="periode" value="saison"><span>Per season <em class="tg-badge">-20%</em></span></label></div>
-</fieldset>
-<fieldset id="pn-opt"><legend>3. Add-on</legend>
-<label class="pn-opt"><input type="checkbox" name="clips" value="1"><span><b>REF CLIPS</b> <span class="pn-opt-d">video analysis of your games</span></span><span class="pn-opt-p" id="pn-opt-p"></span></label>
+<ol class="pn-etapes" aria-label="Steps"><li data-e="1"><span>1</span>Plan</li><li data-e="2"><span>2</span>Payment</li><li data-e="3"><span>3</span>Cart</li></ol>
+
+<section class="pn-etape" data-etape="1">
+<h1>Choose your plan</h1>
+<div class="pn-formules"><label class="pn-f pc-ess"><input type="radio" name="formule" value="ess" checked><span class="pn-f-haut"><span class="pn-f-nom">Essentiel</span><span class="pn-f-prix">€2.49 /month</span><span class="pn-f-sous">or €19.99 a season</span><img src="../img/app/paiements.webp" alt="" loading="lazy"></span><span class="pn-f-d">Appointments, fees, payments, calendar</span></label><label class="pn-f pc-pro"><input type="radio" name="formule" value="pro"><span class="pn-f-haut"><span class="pn-f-nom">Pro</span><span class="pn-f-prix">€4.99 /month</span><span class="pn-f-sous">or €39.99 a season</span><img src="../img/app/qcm.webp" alt="" loading="lazy"></span><span class="pn-f-d">Everything in Essentiel, plus rules, reports and progress</span></label><label class="pn-f pc-elite"><input type="radio" name="formule" value="elite"><span class="pn-f-haut"><span class="pn-f-nom">Élite</span><span class="pn-f-prix">€6.99 /month</span><span class="pn-f-sous">or €55.99 a season</span><img src="../img/app/accueil.webp" alt="" loading="lazy"></span><span class="pn-f-d">Everything in Pro, REF CLIPS included</span></label><label class="pn-f pc-clips"><input type="radio" name="formule" value="clips"><span class="pn-f-haut"><span class="pn-f-nom">REF CLIPS only</span><span class="pn-f-prix">€3.99 /month</span><span class="pn-f-sous">or €31.99 a season</span><img src="../img/refclips/codes.webp" alt="" loading="lazy"></span><span class="pn-f-d">Video analysis of your games, on Mac and Windows</span></label></div>
+<div class="pn-nav"><button type="button" class="btn btn-gold" data-aller="2">Continue →</button></div>
+</section>
+
+<section class="pn-etape" data-etape="2">
+<h1>How do you want to pay?</h1>
+<div class="pn-periodes">
+<label class="pn-p"><input type="radio" name="periode" value="mois" checked><span class="pn-p-t">Monthly</span><span class="pn-p-prix" data-prix="mois"></span><span class="pn-p-d">10 payments, September to June. No commitment.</span></label>
+<label class="pn-p"><input type="radio" name="periode" value="saison"><span class="pn-p-t">Per season <em class="tg-badge">-20%</em></span><span class="pn-p-prix" data-prix="saison"></span><span class="pn-p-d" data-saison-d></span></label>
+</div>
+<div class="pn-option" id="pn-opt">
+<label class="pn-o"><input type="checkbox" name="clips" value="1"><img src="../img/refclips/dessin.webp" alt="" loading="lazy"><span class="pn-o-txt"><b>Add REF CLIPS</b><span>Cut your games into clips, draw on the image, prepare your report.</span></span><span class="pn-o-prix" id="pn-opt-p"></span><span class="pn-o-case" aria-hidden="true"></span></label>
+</div>
 <p class="pn-inclus" id="pn-inclus" hidden>REF CLIPS is already included in your plan.</p>
-</fieldset>
+<div class="pn-nav"><button type="button" class="btn btn-ghost" data-aller="1">← Back</button><button type="button" class="btn btn-gold" data-aller="3">See my cart →</button></div>
+</section>
+
+<section class="pn-etape" data-etape="3">
+<h1>Your cart</h1>
+<div class="pn-cart">
+<div class="pn-articles">
+<ul id="pn-lignes"></ul>
+<p class="pn-modifier"><button type="button" class="pn-lien" data-aller="1">Change plan</button> · <button type="button" class="pn-lien" data-aller="2">Change payment</button></p>
+<ul class="pn-rassure"><li>1 month free, no card needed</li><li>Nothing is charged when the trial ends</li><li>No commitment, cancel online</li></ul>
 </div>
 <aside class="pn-recap" aria-live="polite">
-<h2>Summary</h2>
-<ul id="pn-lignes"></ul>
+<p class="pn-ligne-t"><span>Subtotal</span><b id="pn-sous"></b></p>
 <p class="pn-total"><span>Total</span><b id="pn-total"></b></p>
 <p class="pn-detail" id="pn-detail"></p>
-<p class="pn-essai">1 month free: you start with a 30-day trial, no card needed. Nothing is charged at the end.</p>
-<a class="btn btn-gold pn-btn" href="../signup.html">Start the free trial</a>
-<span class="btn btn-ghost pn-btn" aria-disabled="true">Payment: coming soon</span>
-<p class="mentions">Prices in euros, all charges included. VAT not applicable, art. 293 B of the French tax code (CGI). No commitment. Terms of sale and online cancellation will be available when payment opens.</p>
+<a class="btn btn-gold pn-btn" id="pn-essai" href="../signup.html">Start my free month</a>
+<p class="pn-essai">You start with a 30-day trial, no card needed. Then you choose whether to pay.</p>
+<button type="button" class="btn btn-ghost pn-btn pn-payer" disabled>Pay <span id="pn-payer-m"></span></button>
+<p class="pn-bientot">Online payment opens soon.</p>
+<p class="mentions">Prices in euros, all charges included. VAT not applicable, art. 293 B of the French tax code (CGI). Terms of sale and online cancellation will be available when payment opens.</p>
 </aside>
+</div>
+</section>
 </form>
 </article>
 </div>
@@ -86,6 +106,6 @@
   </div>
 </footer>
 <script src="../site.js?v=b125" defer></script>
-<script src="../panier.js?v=b128" defer></script>
+<script src="../panier.js?v=b129" defer></script>
 </body>
 </html>

@@ -12,11 +12,26 @@
   const EN = document.documentElement.lang === "en";
   // Anti-robot : heure d'ouverture du formulaire ; le serveur écarte un envoi fait en moins de 4 s ou avec le champ piège rempli.
   const T0 = Date.now();
+  // Formule choisie dans le panier (?formule=pro&periode=saison&clips=1) : affichée en haut et jointe à la demande.
+  const FORMULE = (() => {
+    const q = new URLSearchParams(location.search);
+    const NOMS = { ess: "Essentiel", pro: "Pro", elite: "Élite", clips: EN ? "REF CLIPS only" : "REF CLIPS seul" };
+    if (!NOMS[q.get("formule")]) return null;
+    const periode = q.get("periode") === "saison" ? "saison" : "mois";
+    const clips = q.get("clips") === "1" && (q.get("formule") === "ess" || q.get("formule") === "pro");
+    return { formule: q.get("formule"), periode, clips,
+      libelle: NOMS[q.get("formule")] + (clips ? " + REF CLIPS" : "") + (periode === "saison" ? (EN ? ", per season" : ", à la saison") : (EN ? ", monthly" : ", au mois")) };
+  })();
   const t = (fr, en) => (EN ? en : fr);
   const $ = (s, r) => (r || document).querySelector(s);
   const $$ = (s, r) => Array.from((r || document).querySelectorAll(s));
   const form = $("#form");
   if (!form) return;
+  if (FORMULE && $("#formule-choisie")) {
+    $("#formule-nom").textContent = FORMULE.libelle;
+    const l = $("#formule-choisie a"); l.href += "?formule=" + FORMULE.formule + "&periode=" + FORMULE.periode + (FORMULE.clips ? "&clips=1" : "");
+    $("#formule-choisie").hidden = false;
+  }
 
   const panels = $$(".step-panel");
   const progressItems = $$("#progress li");
@@ -288,6 +303,7 @@
       origine: location.hostname,
       site_web: ($("#site_web") || {}).value || "",   // champ piège : vide chez un humain
       duree: Date.now() - T0,                          // temps passé sur le formulaire, en ms
+      formule_souhaitee: FORMULE ? { formule: FORMULE.formule, periode: FORMULE.periode, clips: FORMULE.clips } : null, // pas encore enregistrée côté serveur
     };
   }
 
