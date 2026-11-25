@@ -583,3 +583,6 @@ footer a:hover{color:#fff}
 .guide .tarifs .tarifs-mentions{text-align:center;font-size:.8rem;color:var(--muted);margin:22px auto 0;max-width:640px}
 @media (max-width:960px){.pc-grille{grid-template-columns:1fr;max-width:460px;margin:0 auto}.avantages{grid-template-columns:1fr}.prix-clips{grid-template-columns:1fr}.prix-clips ul{justify-content:flex-start;flex-direction:column}.prix-clips li{justify-content:space-between}}
 @media (max-width:420px){.tg label{font-size:13px;padding:12px 6px}.pc-haut{height:450px}}
+
+/* lien discret vers l essai en fin de guide */
+.guide article .essai-discret{margin-top:48px;padding-top:20px;border-top:1px solid var(--line);color:var(--muted);font-size:.95rem}
