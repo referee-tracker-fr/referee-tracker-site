@@ -381,30 +381,70 @@ footer a:hover{color:#fff}
 @media (max-width:560px){.tab{font-size:14px}.tab th,.tab td{padding:10px 6px}.tab th{font-size:11px;letter-spacing:.03em}}
 
 /* ---- page tarifs ---- */
-.tarifs{max-width:1040px!important}
+.tarifs{max-width:1120px!important}
 .tarifs-tete{text-align:center;max-width:680px;margin:0 auto 34px}
 .tarifs-tete .lead{margin:0 auto}
 .tg-in{position:absolute;opacity:0;pointer-events:none}
-.tg{display:flex;width:max-content;max-width:100%;margin:0 auto 38px;padding:5px;border-radius:999px;background:var(--card);border:1px solid var(--line)}
-.tg label{font:700 14.5px/1 var(--font);padding:13px 22px;border-radius:999px;cursor:pointer;color:var(--muted);display:inline-flex;align-items:center;gap:8px;transition:background .2s,color .2s}
-.tg-badge{font-size:12px;padding:4px 8px;border-radius:999px;background:rgba(34,197,94,.15);color:var(--green)}
-#p-mois:checked~.tg label[for=p-mois],#p-saison:checked~.tg label[for=p-saison]{background:linear-gradient(180deg,var(--gold2),var(--gold));color:#111}
-#p-saison:checked~.tg label[for=p-saison] .tg-badge{background:rgba(0,0,0,.12);color:#111}
+/* sélecteur : une pastille dorée glisse sous le choix actif */
+.tg{position:relative;display:grid;grid-template-columns:1fr 1fr;width:min(520px,100%);margin:0 auto 46px;padding:5px;border-radius:999px;background:var(--card);border:1px solid var(--line)}
+.tg::before{content:"";position:absolute;top:5px;bottom:5px;left:5px;width:calc(50% - 5px);border-radius:999px;background:linear-gradient(180deg,var(--gold2),var(--gold));box-shadow:0 8px 24px rgba(245,180,0,.35);transition:transform .45s cubic-bezier(.2,.8,.2,1)}
+#p-saison:checked~.tg::before{transform:translateX(100%)}
+.tg label{position:relative;z-index:1;font:700 14.5px/1 var(--font);padding:13px 10px;border-radius:999px;cursor:pointer;color:var(--muted);display:flex;justify-content:center;align-items:center;gap:8px;transition:color .3s;white-space:nowrap}
+.tg-badge{font-size:12px;padding:4px 8px;border-radius:999px;background:rgba(34,197,94,.15);color:var(--green);transition:background .3s,color .3s}
+#p-mois:checked~.tg label[for=p-mois],#p-saison:checked~.tg label[for=p-saison]{color:#111}
+#p-saison:checked~.tg .tg-badge{background:rgba(0,0,0,.12);color:#111}
 #p-mois:focus-visible~.tg label[for=p-mois],#p-saison:focus-visible~.tg label[for=p-saison]{outline:2px solid var(--gold2);outline-offset:3px}
+/* prix au mois / à la saison : apparition floutée (inspirée de Revolut) */
 .tarifs .s{display:none}
 #p-saison:checked~* .m{display:none}
-#p-saison:checked~* .s{display:inline}
-.prix-grille{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;align-items:stretch}
-.prix-carte{position:relative;background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:30px 24px 26px;display:flex;flex-direction:column}
-.prix-carte h3{font-size:1.35rem;margin:0 0 6px}
-.guide .tarifs .prix-sous{color:var(--muted);font-size:.95rem;margin:0 0 22px;min-height:2.6em}
-.guide .tarifs .prix-val{font:900 2.5rem/1 var(--font);margin:0 0 10px;letter-spacing:-.02em}
-.prix-val small{font-size:.95rem;font-weight:600;color:var(--muted);letter-spacing:0}
-.guide .tarifs .prix-note{font-size:.88rem;color:var(--muted);margin:0}
-.prix-carte.vedette{background:linear-gradient(180deg,rgba(245,180,0,.12),var(--card) 55%);border-color:rgba(245,180,0,.55);box-shadow:0 20px 50px rgba(245,180,0,.12)}
-.guide .tarifs .vedette .prix-val{color:var(--gold2)}
-.prix-badge{position:absolute;top:-12px;left:24px;font:700 11.5px/1 var(--font);text-transform:uppercase;letter-spacing:.08em;padding:7px 12px;border-radius:999px;background:linear-gradient(180deg,var(--gold2),var(--gold));color:#111}
-.prix-clips{margin:18px 0 0;background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:22px 24px;display:grid;grid-template-columns:auto 1fr;gap:10px 28px;align-items:center}
+#p-saison:checked~* .s{display:inline-block}
+.tarifs .m,#p-saison:checked~* .s{animation:flou-in .5s cubic-bezier(0,0,.2,1)}
+@keyframes flou-in{from{opacity:0;filter:blur(8px);transform:translateY(6px)}}
+/* cartes */
+.pc-grille{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;align-items:stretch}
+.pc{display:flex;flex-direction:column;border-radius:28px;overflow:hidden;background:var(--card);border:1px solid var(--line);transition:transform .5s cubic-bezier(.2,.8,.2,1),box-shadow .5s,border-color .5s}
+.pc:hover{transform:translateY(-8px);box-shadow:0 30px 70px rgba(0,0,0,.45)}
+.pc.rv{filter:blur(8px);transition:opacity .9s cubic-bezier(0,0,.2,1),transform .9s cubic-bezier(0,0,.2,1),filter .9s,box-shadow .5s,border-color .5s}
+.pc.rv.vu{filter:none}
+.pc:nth-child(2){transition-delay:.1s}.pc:nth-child(3){transition-delay:.2s}
+.pc.vu:hover{transition-delay:0s}
+.pc-haut{position:relative;text-align:center;padding:34px 22px 0;height:420px;overflow:hidden}
+.pc-ess .pc-haut{background:radial-gradient(500px circle at 50% 0%,rgba(163,176,203,.28),transparent 65%),linear-gradient(180deg,#1B2747,#0F1E3F)}
+.pc-pro .pc-haut{background:radial-gradient(500px circle at 50% 0%,rgba(59,130,246,.38),transparent 65%),linear-gradient(180deg,#14306A,#0F1E3F)}
+.pc-elite{border-color:rgba(245,180,0,.55);box-shadow:0 24px 60px rgba(245,180,0,.14)}
+.pc-elite .pc-haut{background:radial-gradient(500px circle at 50% 0%,rgba(245,180,0,.38),transparent 65%),linear-gradient(180deg,#3A2F12,#0F1E3F)}
+.pc-badge{display:inline-block;font:800 11.5px/1 var(--font);text-transform:uppercase;letter-spacing:.12em;padding:8px 14px;border-radius:999px;background:rgba(255,255,255,.12);color:#fff;margin-bottom:18px;backdrop-filter:blur(6px)}
+.pc-elite .pc-badge{background:linear-gradient(180deg,var(--gold2),var(--gold));color:#111}
+.pc-tags{height:30px;margin-bottom:18px;display:flex;justify-content:center;gap:8px}
+.pc-tags .pc-badge{margin:0}
+.pc-badge.s{background:rgba(34,197,94,.18);color:#7CF0A6}
+.guide .tarifs .pc-nom{font:900 clamp(1.9rem,3vw,2.5rem)/1 var(--font);text-transform:uppercase;letter-spacing:.22em;margin:0 0 12px;padding-left:.22em}
+.guide .tarifs .pc-prix{font:800 1.25rem/1.2 var(--font);color:#fff;margin:0 0 4px}
+.guide .tarifs .pc-elite .pc-prix{color:var(--gold2)}
+.guide .tarifs .pc-prix small{font-size:.9rem;font-weight:600;color:var(--muted)}
+.guide .tarifs .pc-sous{font-size:.85rem;color:var(--muted);margin:0}
+.pc-scene{position:absolute;left:0;right:0;bottom:-90px;height:320px;display:flex;justify-content:center}
+.pc-tel{width:168px;aspect-ratio:390/844;border-radius:30px;padding:7px;background:linear-gradient(145deg,#2A3550,#0B1328 60%,#1C2740);box-shadow:0 30px 60px rgba(0,0,0,.55),inset 0 0 0 2px rgba(255,255,255,.08);transition:transform .7s cubic-bezier(.2,.8,.2,1)}
+.pc-tel img{width:100%;height:100%;object-fit:cover;object-position:top;border-radius:24px;display:block}
+.pc:hover .pc-tel{transform:translateY(-14px) rotate(-2deg)}
+.pc-clip{position:absolute;width:64%;height:auto;right:3%;top:40px;border-radius:12px;border:1px solid rgba(255,255,255,.15);box-shadow:0 24px 50px rgba(0,0,0,.55);transform:rotate(4deg);transition:transform .7s cubic-bezier(.2,.8,.2,1)}
+.pc:hover .pc-clip{transform:rotate(1deg) translate(6px,-18px) scale(1.04)}
+.pc-elite .pc-tel{transform:translateX(-22%)}
+.pc-elite:hover .pc-tel{transform:translate(-22%,-14px) rotate(-2deg)}
+.pc-bas{flex:1;display:flex;flex-direction:column;padding:26px 24px 24px;border-top:1px solid var(--line);background:var(--card)}
+.guide .tarifs .pc-intro{font-weight:700;color:#fff;margin:0 0 10px;font-size:.98rem}
+.pc-liste{list-style:none;margin:0 0 22px;padding:0;flex:1}
+.guide .tarifs .pc-liste li{position:relative;padding:0 0 0 30px;margin:0 0 11px;font-size:.96rem;color:#D5DDEC}
+.pc-liste li::before{content:"";position:absolute;left:0;top:2px;width:19px;height:19px;border-radius:50%;background:var(--green) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23062014' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m5 12 5 5 9-10'/%3E%3C/svg%3E") center/12px no-repeat}
+.pc-elite .pc-liste li::before{background-color:var(--gold)}
+.pc-cta{justify-content:center;width:100%}
+.guide .tarifs .pc-essai{text-align:center;font-size:.84rem;color:var(--muted);margin:10px 0 0}
+/* défilement : le téléphone monte quand la carte entre à l'écran (navigateurs récents) */
+@supports (animation-timeline:view()){
+  .pc-scene{animation:monte linear both;animation-timeline:view();animation-range:entry 10% cover 45%}
+  @keyframes monte{from{transform:translateY(70px)}}
+}
+.prix-clips{margin:20px 0 0;background:var(--card);border:1px solid var(--line);border-radius:22px;padding:22px 26px;display:grid;grid-template-columns:auto 1fr;gap:10px 28px;align-items:center}
 .prix-clips h3{margin:0;font-size:1.1rem}
 .prix-clips ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:10px 34px;justify-content:flex-end}
 .prix-clips li{display:flex;gap:12px;align-items:baseline;color:#C9D3E6}
@@ -413,7 +453,7 @@ footer a:hover{color:#fff}
 .prix-plus{list-style:none;padding:0;margin:34px 0 0;display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
 .prix-plus li{padding-left:28px;position:relative;font-size:.98rem!important}
 .prix-plus li::before{content:"✓";position:absolute;left:0;top:0;color:var(--green);font-weight:800}
-.fondateur{margin:56px 0 0;text-align:center;padding:40px 28px;border-radius:var(--r);border:1px solid rgba(245,180,0,.45);background:radial-gradient(600px circle at 50% 0%,rgba(245,180,0,.16),transparent 70%),var(--bg2)}
+.fondateur{margin:56px 0 0;text-align:center;padding:44px 28px;border-radius:28px;border:1px solid rgba(245,180,0,.45);background:radial-gradient(600px circle at 50% 0%,rgba(245,180,0,.16),transparent 70%),var(--bg2)}
 .fondateur h2{margin-top:0!important}
 .guide .tarifs .fondateur-prix{display:flex;justify-content:center;align-items:baseline;gap:10px;max-width:none;font:900 3rem/1 var(--font);color:var(--gold2);margin:6px 0 16px}
 .fondateur-prix small{font-size:1rem;font-weight:600;color:var(--muted)}
@@ -422,5 +462,5 @@ footer a:hover{color:#fff}
 .fondateur .btn:hover{transform:none}
 .tarifs-pied{text-align:center;margin-top:48px}
 .tarifs-pied .mentions{font-size:.86rem!important;color:var(--muted)!important;margin-top:22px}
-@media (max-width:860px){.prix-grille,.prix-plus{grid-template-columns:1fr}.guide .tarifs .prix-sous{min-height:0}.prix-clips{grid-template-columns:1fr}.prix-clips ul{justify-content:flex-start;flex-direction:column}.prix-clips li{justify-content:space-between}}
-@media (max-width:420px){.tg label{padding:12px 13px;font-size:13px}.guide .tarifs .prix-val{font-size:2.2rem}}
+@media (max-width:960px){.pc-grille{grid-template-columns:1fr;max-width:460px;margin:0 auto}.prix-plus{grid-template-columns:1fr}.prix-clips{grid-template-columns:1fr}.prix-clips ul{justify-content:flex-start;flex-direction:column}.prix-clips li{justify-content:space-between}}
+@media (max-width:420px){.tg label{font-size:13px;padding:12px 6px}.pc-haut{height:450px}}
