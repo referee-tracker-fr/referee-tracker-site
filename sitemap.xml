@@ -18,6 +18,16 @@
     <image:image><image:loc>https://www.referee-tracker.fr/img/app/stats.webp</image:loc></image:image>
     <image:image><image:loc>https://www.referee-tracker.fr/img/app/pc-accueil.webp</image:loc></image:image>
   </url>
+  <url><loc>https://www.referee-tracker.fr/tarifs.html</loc><lastmod>2026-11-25</lastmod><priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://www.referee-tracker.fr/tarifs.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.referee-tracker.fr/en/pricing.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.referee-tracker.fr/tarifs.html"/>
+  </url>
+  <url><loc>https://www.referee-tracker.fr/en/pricing.html</loc><lastmod>2026-11-25</lastmod><priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://www.referee-tracker.fr/tarifs.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.referee-tracker.fr/en/pricing.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.referee-tracker.fr/tarifs.html"/>
+  </url>
   <url><loc>https://www.referee-tracker.fr/guides/</loc><lastmod>2026-11-18</lastmod><priority>0.7</priority>
     <xhtml:link rel="alternate" hreflang="fr" href="https://www.referee-tracker.fr/guides/"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://www.referee-tracker.fr/en/guides/"/>

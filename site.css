@@ -378,3 +378,208 @@ footer a:hover{color:#fff}
 }
 .menu-mob-p .menu-lang{margin-top:6px;border-top:1px solid rgba(255,255,255,.1);border-radius:0 0 12px 12px;color:var(--muted)}
 .pied-lang{color:var(--muted);text-decoration:none;font-weight:600;white-space:nowrap}.pied-lang:hover{color:var(--gold2)}
+@media (max-width:560px){.tab{font-size:14px}.tab th,.tab td{padding:10px 6px}.tab th{font-size:11px;letter-spacing:.03em}}
+
+/* ---- page tarifs ---- */
+.tarifs{max-width:1120px!important}
+.tarifs-tete{text-align:center;max-width:760px;margin:0 auto 34px}
+.guide .tarifs .tarifs-tete h1{font-size:clamp(2.2rem,5vw,3.6rem);text-wrap:balance}
+.guide .tarifs .tarifs-tete .lead{text-wrap:balance}
+
+.tarifs-tete .lead{margin:0 auto}
+.tg-in{position:absolute;opacity:0;pointer-events:none}
+/* sélecteur : une pastille dorée glisse sous le choix actif */
+.tg{position:relative;display:grid;grid-template-columns:1fr 1fr;width:min(520px,100%);margin:0 auto 46px;padding:5px;border-radius:999px;background:var(--card);border:1px solid var(--line)}
+.tg::before{content:"";position:absolute;top:5px;bottom:5px;left:5px;width:calc(50% - 5px);border-radius:999px;background:linear-gradient(180deg,var(--gold2),var(--gold));box-shadow:0 8px 24px rgba(245,180,0,.35);transition:transform .45s cubic-bezier(.2,.8,.2,1)}
+#p-saison:checked~.tg::before{transform:translateX(100%)}
+.tg label{position:relative;z-index:1;font:700 14.5px/1 var(--font);padding:13px 10px;border-radius:999px;cursor:pointer;color:var(--muted);display:flex;justify-content:center;align-items:center;gap:8px;transition:color .3s;white-space:nowrap}
+.tg-badge{font-size:12px;padding:4px 8px;border-radius:999px;background:rgba(34,197,94,.15);color:var(--green);transition:background .3s,color .3s}
+#p-mois:checked~.tg label[for=p-mois],#p-saison:checked~.tg label[for=p-saison]{color:#111}
+#p-saison:checked~.tg .tg-badge{background:rgba(0,0,0,.12);color:#111}
+#p-mois:focus-visible~.tg label[for=p-mois],#p-saison:focus-visible~.tg label[for=p-saison]{outline:2px solid var(--gold2);outline-offset:3px}
+/* prix au mois / à la saison : apparition floutée (inspirée de Revolut) */
+.tarifs .s{display:none}
+#p-saison:checked~* .m{display:none}
+#p-saison:checked~* .s{display:inline-block}
+.tarifs .m,#p-saison:checked~* .s{animation:flou-in .5s cubic-bezier(0,0,.2,1)}
+@keyframes flou-in{from{opacity:0;filter:blur(8px);transform:translateY(6px)}}
+/* cartes */
+.pc-grille{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;align-items:stretch}
+.pc{display:flex;flex-direction:column;border-radius:28px;overflow:hidden;background:var(--card);border:1px solid var(--line);transition:transform .5s cubic-bezier(.2,.8,.2,1),box-shadow .5s,border-color .5s}
+.pc:hover{transform:translateY(-8px);box-shadow:0 30px 70px rgba(0,0,0,.45)}
+.pc.rv{filter:blur(8px);transition:opacity .9s cubic-bezier(0,0,.2,1),transform .9s cubic-bezier(0,0,.2,1),filter .9s,box-shadow .5s,border-color .5s}
+.pc.rv.vu{filter:none}
+.pc:nth-child(2){transition-delay:.1s}.pc:nth-child(3){transition-delay:.2s}
+.pc.vu:hover{transition-delay:0s}
+.pc-haut{position:relative;text-align:center;padding:34px 22px 0;height:420px;overflow:hidden}
+.pc-ess .pc-haut{background:radial-gradient(500px circle at 50% 0%,rgba(163,176,203,.28),transparent 65%),linear-gradient(180deg,#1B2747,#0F1E3F)}
+.pc-pro .pc-haut{background:radial-gradient(500px circle at 50% 0%,rgba(59,130,246,.38),transparent 65%),linear-gradient(180deg,#14306A,#0F1E3F)}
+.pc-elite{border-color:rgba(245,180,0,.55);box-shadow:0 24px 60px rgba(245,180,0,.14)}
+.pc-elite .pc-haut{background:radial-gradient(500px circle at 50% 0%,rgba(245,180,0,.38),transparent 65%),linear-gradient(180deg,#3A2F12,#0F1E3F)}
+.pc-badge{display:inline-block;font:800 11.5px/1 var(--font);text-transform:uppercase;letter-spacing:.12em;padding:8px 14px;border-radius:999px;background:rgba(255,255,255,.12);color:#fff;margin-bottom:18px;backdrop-filter:blur(6px)}
+.pc-elite .pc-badge{background:linear-gradient(180deg,var(--gold2),var(--gold));color:#111}
+.pc-tags{height:30px;margin-bottom:18px;display:flex;justify-content:center;gap:8px}
+.pc-tags .pc-badge{margin:0}
+.pc-badge.s{background:rgba(34,197,94,.18);color:#7CF0A6}
+.guide .tarifs .pc-nom{font:900 clamp(1.9rem,3vw,2.5rem)/1 var(--font);text-transform:uppercase;letter-spacing:.22em;margin:0 0 12px;padding-left:.22em}
+.guide .tarifs .pc-prix{font:800 1.25rem/1.2 var(--font);color:#fff;margin:0 0 4px}
+.guide .tarifs .pc-elite .pc-prix{color:var(--gold2)}
+.guide .tarifs .pc-prix small{font-size:.9rem;font-weight:600;color:var(--muted)}
+.guide .tarifs .pc-sous{font-size:.85rem;color:var(--muted);margin:0}
+.pc-scene{position:absolute;left:0;right:0;bottom:-90px;height:320px;display:flex;justify-content:center}
+.pc-tel{width:168px;aspect-ratio:390/844;border-radius:30px;padding:7px;background:linear-gradient(145deg,#2A3550,#0B1328 60%,#1C2740);box-shadow:0 30px 60px rgba(0,0,0,.55),inset 0 0 0 2px rgba(255,255,255,.08);transition:transform .7s cubic-bezier(.2,.8,.2,1)}
+.pc-tel img{width:100%;height:100%;object-fit:cover;object-position:top;border-radius:24px;display:block}
+.pc:hover .pc-tel{transform:translateY(-14px) rotate(-2deg)}
+.pc-clip{position:absolute;width:64%;height:auto;right:3%;top:40px;border-radius:12px;border:1px solid rgba(255,255,255,.15);box-shadow:0 24px 50px rgba(0,0,0,.55);transform:rotate(4deg);transition:transform .7s cubic-bezier(.2,.8,.2,1)}
+.pc:hover .pc-clip{transform:rotate(1deg) translate(6px,-18px) scale(1.04)}
+.pc-elite .pc-tel{transform:translateX(-22%)}
+.pc-elite:hover .pc-tel{transform:translate(-22%,-14px) rotate(-2deg)}
+.pc-bas{flex:1;display:flex;flex-direction:column;padding:26px 24px 24px;border-top:1px solid var(--line);background:var(--card)}
+.guide .tarifs .pc-intro{font-weight:700;color:#fff;margin:0 0 10px;font-size:.98rem}
+.pc-liste{list-style:none;margin:0 0 22px;padding:0;flex:1}
+.guide .tarifs .pc-liste li{position:relative;padding:0 0 0 30px;margin:0 0 11px;font-size:.96rem;color:#D5DDEC}
+.pc-liste li::before{content:"";position:absolute;left:0;top:2px;width:19px;height:19px;border-radius:50%;background:var(--green) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23062014' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m5 12 5 5 9-10'/%3E%3C/svg%3E") center/12px no-repeat}
+.pc-elite .pc-liste li::before{background-color:var(--gold)}
+.pc-cta{justify-content:center;width:100%}
+.guide .tarifs .pc-essai{text-align:center;font-size:.84rem;color:var(--muted);margin:10px 0 0}
+/* défilement : le téléphone monte quand la carte entre à l'écran (navigateurs récents) */
+@supports (animation-timeline:view()){
+  .pc-scene{animation:monte linear both;animation-timeline:view();animation-range:entry 10% cover 45%}
+  @keyframes monte{from{transform:translateY(70px)}}
+}
+/* bloc REF CLIPS */
+.rc{margin:22px 0 0;display:grid;grid-template-columns:1.05fr 1fr;gap:0;border-radius:28px;overflow:hidden;border:1px solid rgba(59,130,246,.35);background:radial-gradient(700px circle at 0% 50%,rgba(59,130,246,.22),transparent 60%),var(--card)}
+.rc.rv{filter:blur(8px);transition:opacity .9s cubic-bezier(0,0,.2,1),transform .9s cubic-bezier(0,0,.2,1),filter .9s}
+.rc.rv.vu{filter:none}
+.rc-visu{position:relative;padding:34px 0 34px 34px;display:flex;align-items:center}
+.rc-visu img{width:100%;height:auto;border-radius:14px 0 0 14px;border:1px solid rgba(255,255,255,.12);border-right:0;box-shadow:0 30px 60px rgba(0,0,0,.5);transition:transform .8s cubic-bezier(.2,.8,.2,1)}
+.rc:hover .rc-visu img{transform:scale(1.03) translateX(-6px)}
+.rc-txt{padding:38px 34px}
+.guide .tarifs .rc-txt h2{margin:0 0 10px;font-size:clamp(1.5rem,2.6vw,2rem)}
+.guide .tarifs .rc-txt p{margin:0 0 22px;color:#C9D3E6}
+.rc-offres{display:grid;gap:12px}
+.rc-offre{display:grid;grid-template-columns:1fr auto;grid-template-areas:"t p" "a p";gap:4px 16px;align-items:center;padding:16px 18px;border-radius:18px;background:rgba(255,255,255,.04);border:1px solid var(--line);text-decoration:none;color:var(--text);transition:transform .3s,border-color .3s,background .3s}
+.guide .tarifs a.rc-offre{color:var(--text)}
+.rc-offre:hover{transform:translateX(4px);border-color:rgba(245,180,0,.5);background:rgba(245,180,0,.06)}
+.rc-o-t{grid-area:t;font-weight:700}
+.rc-o-p{grid-area:p;font:800 1.2rem/1 var(--font);white-space:nowrap;text-align:right}
+.rc-o-p small{font-size:.8rem;font-weight:600;color:var(--muted)}
+.rc-o-a{grid-area:a;font-size:.85rem;font-weight:700;color:var(--gold2)}
+@media (max-width:860px){.rc{grid-template-columns:1fr}.rc-visu{padding:24px 0 0 24px}.rc-txt{padding:26px 22px}}
+@media (max-width:420px){.rc-offre{grid-template-columns:1fr;grid-template-areas:"t" "p" "a"}.rc-o-p{text-align:left}}
+/* panier en 3 étapes */
+.panier-page{max-width:1060px!important}
+.panier input{position:absolute;opacity:0;pointer-events:none}
+.pn-etapes{list-style:none;display:flex;justify-content:center;gap:10px;margin:0 0 34px;padding:0;counter-reset:e}
+.pn-etapes li{display:flex;align-items:center;gap:10px;font-weight:700;font-size:.92rem;color:var(--muted)}
+.pn-etapes li+li::before{content:"";width:42px;height:2px;border-radius:2px;background:var(--line);margin-right:2px;transition:background .4s}
+.pn-etapes li span{display:grid;place-items:center;width:30px;height:30px;border-radius:50%;border:2px solid var(--line);font-size:.85rem;transition:all .4s}
+.pn-etapes li.actif{color:#fff}
+.pn-etapes li.actif span{background:linear-gradient(180deg,var(--gold2),var(--gold));border-color:var(--gold);color:#111;box-shadow:0 6px 18px rgba(245,180,0,.35)}
+.pn-etapes li.fait span{background:var(--green);border-color:var(--green);color:#062014}
+.pn-etapes li.fait+li::before,.pn-etapes li.actif::before{background:var(--gold)}
+.pn-etape{animation:flou-in .55s cubic-bezier(0,0,.2,1);margin-bottom:40px}
+.guide .tarifs .pn-etape h1{font-size:clamp(1.7rem,3.2vw,2.3rem);text-wrap:balance;text-align:center;margin:0 0 28px;outline:0}
+.pn-nav{display:flex;justify-content:center;gap:12px;margin-top:28px;flex-wrap:wrap}
+.pn-nav .btn{min-width:200px;justify-content:center}
+/* étape 1 : formules */
+.pn-formules{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.pn-f{display:flex;flex-direction:column;cursor:pointer;border-radius:24px;overflow:hidden;border:2px solid var(--line);background:var(--card);transition:transform .35s cubic-bezier(.2,.8,.2,1),border-color .3s,box-shadow .3s}
+.pn-f:hover{transform:translateY(-6px)}
+.pn-f-haut{position:relative;display:block;text-align:center;padding:22px 14px 0;height:270px;overflow:hidden}
+.pn-f.pc-ess .pn-f-haut{background:radial-gradient(300px circle at 50% 0%,rgba(163,176,203,.28),transparent 65%),linear-gradient(180deg,#1B2747,#0F1E3F)}
+.pn-f.pc-pro .pn-f-haut{background:radial-gradient(300px circle at 50% 0%,rgba(59,130,246,.38),transparent 65%),linear-gradient(180deg,#14306A,#0F1E3F)}
+.pn-f.pc-elite .pn-f-haut{background:radial-gradient(300px circle at 50% 0%,rgba(245,180,0,.38),transparent 65%),linear-gradient(180deg,#3A2F12,#0F1E3F)}
+.pn-f.pc-clips .pn-f-haut{background:radial-gradient(300px circle at 50% 0%,rgba(34,197,94,.28),transparent 65%),linear-gradient(180deg,#123A2C,#0F1E3F)}
+.pn-f-nom{display:block;font:900 1.15rem/1 var(--font);text-transform:uppercase;letter-spacing:.16em;margin-bottom:10px}
+.pn-f-prix{display:block;font:800 1.15rem/1.2 var(--font)}
+.pn-f-sous{display:block;font-size:.8rem;color:var(--muted);margin-top:2px}
+.pn-f-haut img{position:absolute;left:50%;bottom:-110px;width:118px;transform:translateX(-50%);border-radius:18px;border:5px solid #1a2440;box-shadow:0 20px 40px rgba(0,0,0,.5);transition:transform .5s cubic-bezier(.2,.8,.2,1)}
+.pn-f.pc-clips .pn-f-haut img{width:88%;bottom:-20px;border-width:2px;border-radius:10px}
+.pn-f:hover .pn-f-haut img{transform:translateX(-50%) translateY(-10px)}
+.pn-f-d{display:block;padding:14px 16px 18px;font-size:.88rem;color:#C9D3E6;flex:1}
+.pn-f:has(input:checked){border-color:var(--gold);box-shadow:0 18px 50px rgba(245,180,0,.22);transform:translateY(-6px)}
+.pn-f:has(input:checked) .pn-f-d::before{content:"✓ ";color:var(--gold2);font-weight:800}
+.pn-f:has(input:focus-visible),.pn-p:has(input:focus-visible),.pn-o:has(input:focus-visible){outline:2px solid var(--gold2);outline-offset:3px}
+/* étape 2 : paiement + option */
+.pn-periodes{display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:760px;margin:0 auto}
+.pn-p{position:relative;display:flex;flex-direction:column;gap:6px;cursor:pointer;padding:24px 22px;border-radius:22px;border:2px solid var(--line);background:var(--card);transition:transform .3s,border-color .3s,box-shadow .3s}
+.pn-p:hover{transform:translateY(-4px)}
+.pn-p:has(input:checked){border-color:var(--gold);box-shadow:0 0 0 4px rgba(245,180,0,.12),0 18px 50px rgba(0,0,0,.35);background:var(--card2)}
+.pn-p::after{content:"";position:absolute;top:22px;right:22px;width:22px;height:22px;border-radius:50%;border:2px solid rgba(255,255,255,.3);transition:all .25s}
+.pn-p:has(input:checked)::after{border:7px solid var(--gold);background:#111}
+.pn-p-t{font-weight:800;font-size:1.05rem}
+.pn-p-t em{font-style:normal}
+.pn-p-prix{font:900 1.7rem/1.1 var(--font)}
+.pn-p:has(input:checked) .pn-p-prix{color:var(--gold2)}
+.pn-p-d{font-size:.86rem;color:var(--muted)}
+.pn-option{max-width:760px;margin:16px auto 0}
+.pn-o{display:grid;grid-template-columns:112px 1fr auto 26px;gap:16px;align-items:center;cursor:pointer;padding:14px 18px 14px 14px;border-radius:20px;border:2px dashed rgba(59,130,246,.45);background:rgba(59,130,246,.06);transition:border-color .3s,background .3s}
+.pn-o img{width:112px;height:64px;object-fit:cover;border-radius:10px}
+.pn-o-txt b{display:block}
+.pn-o-txt span{display:block;font-size:.86rem;color:var(--muted)}
+.pn-o-prix{font-weight:800;white-space:nowrap}
+.pn-o-case{width:26px;height:26px;border-radius:8px;border:2px solid rgba(255,255,255,.3);transition:all .25s}
+.pn-o:has(input:checked){border-style:solid;border-color:var(--gold);background:rgba(245,180,0,.08)}
+.pn-o:has(input:checked) .pn-o-case{background:var(--gold) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23111' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m5 12 5 5 9-10'/%3E%3C/svg%3E") center/15px no-repeat;border-color:var(--gold)}
+.guide .tarifs .pn-inclus{text-align:center;color:var(--green);margin:16px 0 0}
+/* étape 3 : panier (commande + total, sobre) */
+.pn-cart{display:grid;grid-template-columns:1.3fr 1fr;gap:22px;align-items:start;max-width:920px;margin:0 auto}
+.pn-commande{padding:22px;border-radius:24px;background:var(--card);border:1px solid var(--line)}
+.pn-cmd-tete{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.guide .tarifs .pn-cmd-tete h2{font-size:1.05rem;margin:0}
+.pn-modif{background:none;border:1px solid var(--line);border-radius:999px;padding:7px 14px;font:700 .82rem/1 var(--font);color:var(--gold2);cursor:pointer;transition:border-color .2s,background .2s}
+.pn-modif:hover{border-color:var(--gold);background:rgba(245,180,0,.08)}
+.pn-commande #pn-lignes{list-style:none;margin:0;padding:0}
+.pn-art{display:grid;grid-template-columns:44px 1fr auto;gap:14px;align-items:center;padding:14px 0;border-bottom:1px solid var(--line);animation:flou-in .45s cubic-bezier(0,0,.2,1)}
+/* pastilles aux couleurs de la marque : fond bleu nuit, liseré et icône dorés */
+.pn-tuile{display:grid;place-items:center;width:44px;height:44px;border-radius:12px;background:var(--bg2);border:1px solid rgba(245,180,0,.45);color:var(--gold2)}
+.pn-tuile img{width:28px;height:auto}
+.pn-art.pc-clips .pn-tuile img{width:30px}
+.pn-art-t b{display:block;font-size:.98rem}
+.pn-art-t span{display:block;font-size:.82rem;color:var(--muted)}
+.pn-art strong{font:800 1rem/1 var(--font);white-space:nowrap}
+.pn-contenu{margin-top:14px}
+.pn-contenu summary{cursor:pointer;font-weight:700;font-size:.88rem;color:var(--gold2);list-style:none}
+.pn-contenu summary::-webkit-details-marker{display:none}
+.pn-contenu summary::after{content:" ▾"}
+.pn-contenu[open] summary::after{content:" ▴"}
+.pn-contenu ul{list-style:none;margin:12px 0 0;padding:0;display:grid;gap:6px}
+.guide .tarifs .pn-contenu li{position:relative;padding-left:22px;font-size:.86rem;color:#C9D3E6;margin:0}
+.pn-contenu li::before{content:"✓";position:absolute;left:0;color:var(--green);font-weight:800}
+.pn-recap{position:sticky;top:100px;padding:24px 22px;border-radius:24px;background:var(--bg2);border:1px solid rgba(245,180,0,.35);box-shadow:0 30px 70px rgba(0,0,0,.35)}
+.guide .tarifs .pn-total{display:flex;justify-content:space-between;align-items:baseline;margin:0 0 4px;font-weight:700}
+.pn-total b{font:900 1.5rem/1 var(--font);color:var(--gold2);animation:flou-in .45s cubic-bezier(0,0,.2,1)}
+.guide .tarifs .pn-detail{font-size:.82rem;color:var(--muted);margin:0 0 18px}
+.pn-btn{width:100%;justify-content:center;text-align:center}
+.guide .tarifs .pn-essai{font-size:.8rem;color:var(--muted);margin:8px 0 14px;text-align:center}
+.pn-payer{width:100%;background:none;border:1px dashed var(--line);border-radius:999px;padding:11px 14px;font:600 .82rem/1.2 var(--font);color:var(--muted);cursor:not-allowed}
+.pn-rassure{list-style:none;margin:18px 0 0;padding:16px 0 0;border-top:1px solid var(--line);display:grid;gap:8px}
+.guide .tarifs .pn-rassure li{position:relative;padding-left:24px;color:#C9D3E6;font-size:.84rem;margin:0}
+.pn-rassure li::before{content:"✓";position:absolute;left:0;top:0;color:var(--green);font-weight:800}
+.guide .tarifs .pn-recap .mentions{font-size:.72rem;color:var(--muted);margin:14px 0 0;line-height:1.5}
+@media (max-width:960px){.pn-formules{grid-template-columns:1fr 1fr}.pn-cart{grid-template-columns:1fr}.pn-recap{position:static}}
+@media (max-width:560px){.pn-contenu ul{grid-template-columns:1fr}.pn-formules{grid-template-columns:1fr 1fr;gap:10px}.pn-f-haut{height:200px;padding:16px 8px 0}.pn-f-nom{font-size:.92rem;letter-spacing:.1em}.pn-f-prix{font-size:.98rem}.pn-f-haut img{width:92px;bottom:-105px}.pn-f-d{font-size:.8rem;padding:12px}.pn-periodes{grid-template-columns:1fr}.pn-o{grid-template-columns:1fr auto 26px}.pn-o img{display:none}.guide .pn-etapes li{font-size:0;gap:0}.pn-etapes li+li::before{width:34px;margin:0 8px}.pn-nav .btn{min-width:0;flex:1}}
+/* avantages en cartes */
+.avantages{list-style:none;padding:0;margin:44px 0 0;display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.guide .tarifs .avantages li{display:flex;flex-direction:column;gap:6px;padding:24px 22px;border-radius:22px;background:var(--card);border:1px solid var(--line);color:var(--muted);font-size:.95rem}
+.avantages b{color:#fff;font-size:1.1rem}
+.av-ico{display:grid;place-items:center;width:46px;height:46px;border-radius:14px;background:rgba(34,197,94,.14);color:var(--green);margin-bottom:8px}
+.av-ico svg{width:24px;height:24px}
+.avantages li:nth-child(2) .av-ico{background:rgba(245,180,0,.14);color:var(--gold2)}
+.avantages li:nth-child(3) .av-ico{background:rgba(59,130,246,.16);color:#7FB0FF}
+.fondateur{margin:56px 0 0;text-align:center;padding:44px 28px;border-radius:28px;border:1px solid rgba(245,180,0,.45);background:radial-gradient(600px circle at 50% 0%,rgba(245,180,0,.16),transparent 70%),var(--bg2)}
+.fondateur h2{margin-top:0!important}
+.guide .tarifs .fondateur-prix{display:flex;justify-content:center;align-items:baseline;gap:10px;max-width:none;font:900 3rem/1 var(--font);color:var(--gold2);margin:6px 0 16px}
+.fondateur-prix small{font-size:1rem;font-weight:600;color:var(--muted)}
+.fondateur p{margin:0 auto 8px;max-width:520px}
+.fondateur .btn{margin-top:14px;cursor:default;opacity:.75}
+.fondateur .btn:hover{transform:none}
+/* appel final */
+.final{margin:56px 0 0;text-align:center;padding:48px 28px;border-radius:28px;background:radial-gradient(700px circle at 50% 120%,rgba(245,180,0,.22),transparent 60%),linear-gradient(180deg,var(--card2),var(--card));border:1px solid var(--line)}
+.guide .tarifs .final h2{margin:0 0 10px;font-size:clamp(1.7rem,3.4vw,2.4rem)}
+.guide .tarifs .final p{margin:0 auto 24px;max-width:520px;color:#C9D3E6}
+.guide .tarifs .final .final-note{margin:14px auto 0;font-size:.86rem;color:var(--muted)}
+.guide .tarifs .tarifs-mentions{text-align:center;font-size:.8rem;color:var(--muted);margin:22px auto 0;max-width:640px}
+@media (max-width:960px){.pc-grille{grid-template-columns:1fr;max-width:460px;margin:0 auto}.avantages{grid-template-columns:1fr}.prix-clips{grid-template-columns:1fr}.prix-clips ul{justify-content:flex-start;flex-direction:column}.prix-clips li{justify-content:space-between}}
+@media (max-width:420px){.tg label{font-size:13px;padding:12px 6px}.pc-haut{height:450px}}
