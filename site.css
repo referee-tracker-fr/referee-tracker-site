@@ -523,36 +523,42 @@ footer a:hover{color:#fff}
 .pn-o:has(input:checked){border-style:solid;border-color:var(--gold);background:rgba(245,180,0,.08)}
 .pn-o:has(input:checked) .pn-o-case{background:var(--gold) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23111' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m5 12 5 5 9-10'/%3E%3C/svg%3E") center/15px no-repeat;border-color:var(--gold)}
 .guide .tarifs .pn-inclus{text-align:center;color:var(--green);margin:16px 0 0}
-/* étape 3 : panier */
-.pn-cart{display:grid;grid-template-columns:1.35fr 1fr;gap:24px;align-items:start}
-.pn-articles ul#pn-lignes{list-style:none;margin:0;padding:0}
-.pn-art{display:grid;grid-template-columns:76px 1fr auto;gap:16px;align-items:center;padding:14px;border-radius:20px;background:var(--card);border:1px solid var(--line);margin-bottom:12px;animation:flou-in .5s cubic-bezier(0,0,.2,1)}
-.pn-art img{width:76px;height:76px;object-fit:cover;object-position:top;border-radius:14px}
-.pn-art-t b{display:block;font-size:1.05rem}
-.pn-art-t span{display:block;font-size:.86rem;color:var(--muted)}
-.pn-art strong{font:800 1.1rem/1 var(--font);white-space:nowrap}
-.guide .tarifs .pn-modifier{font-size:.9rem;color:var(--muted);margin:4px 0 22px}
-.pn-lien{background:none;border:0;padding:0;font:inherit;color:var(--gold2);cursor:pointer;text-decoration:underline;text-underline-offset:3px}
-.pn-contenu{padding:20px 22px;border-radius:20px;background:var(--card);border:1px solid var(--line);margin:0 0 18px}
-.guide .tarifs .pn-contenu h2{font-size:1rem;margin:0 0 12px;color:#fff}
-.pn-contenu ul{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:8px 18px}
-.guide .tarifs .pn-contenu li{position:relative;padding-left:24px;font-size:.9rem;color:#C9D3E6;margin:0}
-.pn-contenu li::before{content:"✓";position:absolute;left:0;color:var(--gold2);font-weight:800}
-.pn-rassure{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:10px 22px}
-.guide .tarifs .pn-rassure li{position:relative;padding-left:30px;color:#C9D3E6;font-size:.95rem}
-.pn-rassure li::before{content:"✓";position:absolute;left:0;top:0;width:20px;height:20px;border-radius:50%;background:rgba(34,197,94,.18);color:var(--green);display:grid;place-items:center;font-size:12px;font-weight:800}
-.pn-recap{position:sticky;top:100px;padding:26px 24px;border-radius:24px;background:var(--bg2);border:1px solid rgba(245,180,0,.4);box-shadow:0 30px 70px rgba(0,0,0,.35)}
-.guide .tarifs .pn-ligne-t,.guide .tarifs .pn-total{display:flex;justify-content:space-between;align-items:baseline;margin:0 0 10px}
-.guide .tarifs .pn-ligne-t{color:var(--muted);font-size:.95rem;padding-bottom:12px;border-bottom:1px solid var(--line)}
-.guide .tarifs .pn-total{font-weight:700;margin-top:6px}
-.pn-total b{font:900 1.6rem/1 var(--font);color:var(--gold2);animation:flou-in .45s cubic-bezier(0,0,.2,1)}
-.guide .tarifs .pn-detail{font-size:.85rem;color:var(--muted);margin:0 0 18px}
-.pn-btn{width:100%;justify-content:center}
-.guide .tarifs .pn-essai{font-size:.84rem;color:var(--muted);margin:8px 0 18px;text-align:center}
-.pn-payer:disabled{opacity:.5;cursor:not-allowed}
-.pn-payer:disabled:hover{transform:none}
-.guide .tarifs .pn-bientot{text-align:center;font-size:.84rem;color:var(--muted);margin:8px 0 0}
-.guide .tarifs .pn-recap .mentions{font-size:.76rem;color:var(--muted);margin:16px 0 0}
+/* étape 3 : panier (commande + total, sobre) */
+.pn-cart{display:grid;grid-template-columns:1.3fr 1fr;gap:22px;align-items:start;max-width:920px;margin:0 auto}
+.pn-commande{padding:22px;border-radius:24px;background:var(--card);border:1px solid var(--line)}
+.pn-cmd-tete{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.guide .tarifs .pn-cmd-tete h2{font-size:1.05rem;margin:0}
+.pn-modif{background:none;border:1px solid var(--line);border-radius:999px;padding:7px 14px;font:700 .82rem/1 var(--font);color:var(--gold2);cursor:pointer;transition:border-color .2s,background .2s}
+.pn-modif:hover{border-color:var(--gold);background:rgba(245,180,0,.08)}
+.pn-commande #pn-lignes{list-style:none;margin:0;padding:0}
+.pn-art{display:grid;grid-template-columns:44px 1fr auto;gap:14px;align-items:center;padding:14px 0;border-bottom:1px solid var(--line);animation:flou-in .45s cubic-bezier(0,0,.2,1)}
+.pn-tuile{display:grid;place-items:center;width:44px;height:44px;border-radius:12px;font:900 .95rem/1 var(--font);color:#fff}
+.pn-art.pc-ess .pn-tuile{background:linear-gradient(140deg,#5B6B8F,#1B2747)}
+.pn-art.pc-pro .pn-tuile{background:linear-gradient(140deg,#3B82F6,#14306A)}
+.pn-art.pc-elite .pn-tuile{background:linear-gradient(140deg,var(--gold2),#8A6200);color:#111}
+.pn-art.pc-clips .pn-tuile{background:linear-gradient(140deg,#22C55E,#123A2C)}
+.pn-art-t b{display:block;font-size:.98rem}
+.pn-art-t span{display:block;font-size:.82rem;color:var(--muted)}
+.pn-art strong{font:800 1rem/1 var(--font);white-space:nowrap}
+.pn-contenu{margin-top:14px}
+.pn-contenu summary{cursor:pointer;font-weight:700;font-size:.88rem;color:var(--gold2);list-style:none}
+.pn-contenu summary::-webkit-details-marker{display:none}
+.pn-contenu summary::after{content:" ▾"}
+.pn-contenu[open] summary::after{content:" ▴"}
+.pn-contenu ul{list-style:none;margin:12px 0 0;padding:0;display:grid;gap:6px}
+.guide .tarifs .pn-contenu li{position:relative;padding-left:22px;font-size:.86rem;color:#C9D3E6;margin:0}
+.pn-contenu li::before{content:"✓";position:absolute;left:0;color:var(--green);font-weight:800}
+.pn-recap{position:sticky;top:100px;padding:24px 22px;border-radius:24px;background:var(--bg2);border:1px solid rgba(245,180,0,.35);box-shadow:0 30px 70px rgba(0,0,0,.35)}
+.guide .tarifs .pn-total{display:flex;justify-content:space-between;align-items:baseline;margin:0 0 4px;font-weight:700}
+.pn-total b{font:900 1.5rem/1 var(--font);color:var(--gold2);animation:flou-in .45s cubic-bezier(0,0,.2,1)}
+.guide .tarifs .pn-detail{font-size:.82rem;color:var(--muted);margin:0 0 18px}
+.pn-btn{width:100%;justify-content:center;text-align:center}
+.guide .tarifs .pn-essai{font-size:.8rem;color:var(--muted);margin:8px 0 14px;text-align:center}
+.pn-payer{width:100%;background:none;border:1px dashed var(--line);border-radius:999px;padding:11px 14px;font:600 .82rem/1.2 var(--font);color:var(--muted);cursor:not-allowed}
+.pn-rassure{list-style:none;margin:18px 0 0;padding:16px 0 0;border-top:1px solid var(--line);display:grid;gap:8px}
+.guide .tarifs .pn-rassure li{position:relative;padding-left:24px;color:#C9D3E6;font-size:.84rem;margin:0}
+.pn-rassure li::before{content:"✓";position:absolute;left:0;top:0;color:var(--green);font-weight:800}
+.guide .tarifs .pn-recap .mentions{font-size:.72rem;color:var(--muted);margin:14px 0 0;line-height:1.5}
 @media (max-width:960px){.pn-formules{grid-template-columns:1fr 1fr}.pn-cart{grid-template-columns:1fr}.pn-recap{position:static}}
 @media (max-width:560px){.pn-contenu ul{grid-template-columns:1fr}.pn-formules{grid-template-columns:1fr 1fr;gap:10px}.pn-f-haut{height:200px;padding:16px 8px 0}.pn-f-nom{font-size:.92rem;letter-spacing:.1em}.pn-f-prix{font-size:.98rem}.pn-f-haut img{width:92px;bottom:-105px}.pn-f-d{font-size:.8rem;padding:12px}.pn-periodes{grid-template-columns:1fr}.pn-o{grid-template-columns:1fr auto 26px}.pn-o img{display:none}.guide .pn-etapes li{font-size:0;gap:0}.pn-etapes li+li::before{width:34px;margin:0 8px}.pn-nav .btn{min-width:0;flex:1}}
 /* avantages en cartes */

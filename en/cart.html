@@ -73,20 +73,18 @@
 <section class="pn-etape" data-etape="3">
 <h1>Your cart</h1>
 <div class="pn-cart">
-<div class="pn-articles">
+<div class="pn-commande">
+<div class="pn-cmd-tete"><h2>Your order</h2><button type="button" class="pn-modif" data-aller="1">Edit</button></div>
 <ul id="pn-lignes"></ul>
-<p class="pn-modifier"><button type="button" class="pn-lien" data-aller="1">Change plan</button> · <button type="button" class="pn-lien" data-aller="2">Change payment</button></p>
-<div class="pn-contenu"><h2 id="pn-inc-t">What's included</h2><ul id="pn-inc"></ul></div>
-<ul class="pn-rassure"><li>1 month free, no card needed</li><li>Nothing is charged when the trial ends</li><li>No commitment, cancel online</li></ul>
+<details class="pn-contenu"><summary>See what's included</summary><ul id="pn-inc"></ul></details>
 </div>
 <aside class="pn-recap" aria-live="polite">
-<p class="pn-ligne-t"><span>Subtotal</span><b id="pn-sous"></b></p>
 <p class="pn-total"><span>Total</span><b id="pn-total"></b></p>
 <p class="pn-detail" id="pn-detail"></p>
 <a class="btn btn-gold pn-btn" id="pn-essai" href="../signup.html">Start my free month</a>
-<p class="pn-essai">You start with a 30-day trial, no card needed. Then you choose whether to pay.</p>
-<button type="button" class="btn btn-ghost pn-btn pn-payer" disabled>Pay <span id="pn-payer-m"></span></button>
-<p class="pn-bientot">Online payment opens soon.</p>
+<p class="pn-essai">30-day trial, no card needed.</p>
+<button type="button" class="pn-payer" disabled>Pay <span id="pn-payer-m"></span> · coming soon</button>
+<ul class="pn-rassure"><li>Nothing is charged when the trial ends</li><li>No commitment</li><li>Cancel online</li></ul>
 <p class="mentions">Prices in euros, all charges included. VAT not applicable, art. 293 B of the French tax code (CGI). Terms of sale and online cancellation will be available when payment opens.</p>
 </aside>
 </div>

@@ -73,20 +73,18 @@
 <section class="pn-etape" data-etape="3">
 <h1>Ton panier</h1>
 <div class="pn-cart">
-<div class="pn-articles">
+<div class="pn-commande">
+<div class="pn-cmd-tete"><h2>Ta commande</h2><button type="button" class="pn-modif" data-aller="1">Modifier</button></div>
 <ul id="pn-lignes"></ul>
-<p class="pn-modifier"><button type="button" class="pn-lien" data-aller="1">Changer de formule</button> · <button type="button" class="pn-lien" data-aller="2">Changer le paiement</button></p>
-<div class="pn-contenu"><h2 id="pn-inc-t">Ce qui est inclus</h2><ul id="pn-inc"></ul></div>
-<ul class="pn-rassure"><li>1 mois offert, sans carte bancaire</li><li>Rien n'est prélevé à la fin de l'essai</li><li>Sans engagement, résiliation en ligne</li></ul>
+<details class="pn-contenu"><summary>Voir ce qui est inclus</summary><ul id="pn-inc"></ul></details>
 </div>
 <aside class="pn-recap" aria-live="polite">
-<p class="pn-ligne-t"><span>Sous-total</span><b id="pn-sous"></b></p>
 <p class="pn-total"><span>Total</span><b id="pn-total"></b></p>
 <p class="pn-detail" id="pn-detail"></p>
 <a class="btn btn-gold pn-btn" id="pn-essai" href="inscription.html">Commencer mon mois gratuit</a>
-<p class="pn-essai">Tu commences par 30 jours d'essai, sans carte bancaire. Tu choisis ensuite de payer, ou pas.</p>
-<button type="button" class="btn btn-ghost pn-btn pn-payer" disabled>Payer <span id="pn-payer-m"></span></button>
-<p class="pn-bientot">Le paiement en ligne ouvre bientôt.</p>
+<p class="pn-essai">30 jours d'essai, sans carte bancaire.</p>
+<button type="button" class="pn-payer" disabled>Payer <span id="pn-payer-m"></span> · bientôt disponible</button>
+<ul class="pn-rassure"><li>Rien n'est prélevé à la fin de l'essai</li><li>Sans engagement</li><li>Résiliation en ligne</li></ul>
 <p class="mentions">Prix en euros, toutes charges comprises. TVA non applicable, art. 293 B du CGI. Les conditions générales de vente et la résiliation en ligne seront disponibles à l'ouverture du paiement.</p>
 </aside>
 </div>

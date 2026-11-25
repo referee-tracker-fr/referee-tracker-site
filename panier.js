@@ -38,8 +38,6 @@
     elite: ["Everything in Pro", "REF CLIPS included, on Mac and Windows", "Cut your games into clips", "Draw on the image and tag your calls", "Video report ready to share"],
     clips: ["REF CLIPS, on Mac and Windows", "Cut your games into clips", "Draw on the image and tag your calls", "Video report ready to share"],
     opt: "REF CLIPS: clips, drawing on the image, video report" };
-  var IMG = { ess: "app/paiements.webp", pro: "app/qcm.webp", elite: "app/accueil.webp", clips: "refclips/codes.webp" };
-  var racine = fr ? "" : "../";
   function euros(c) {
     var n = (c / 100).toFixed(2);
     return fr ? n.replace(".", ",") + " €" : "€" + n;
@@ -75,20 +73,20 @@
     // étape 3 : articles du panier
     var ul = $("#pn-lignes");
     ul.textContent = "";
-    var lignes = [[T[e.fo], e.i ? T.lSaison : T.lMois, PRIX[e.fo][e.i], IMG[e.fo], e.fo]];
-    if (e.opt) lignes.push([T.opt, e.i ? T.lSaison : T.lMois, OPTION[e.i], "refclips/dessin.webp", "clips"]);
+    var lignes = [[T[e.fo], e.i ? T.lSaison : T.lMois, PRIX[e.fo][e.i], "", e.fo]];
+    if (e.opt) lignes.push([T.opt, e.i ? T.lSaison : T.lMois, OPTION[e.i], "", "clips"]);
+    var SIGLE = { ess: "E", pro: "P", elite: "É", clips: "RC" };
     lignes.forEach(function (l) {
       var li = document.createElement("li"); li.className = "pn-art pc-" + l[4];
-      var im = document.createElement("img"); im.src = racine + "img/" + l[3]; im.alt = ""; im.loading = "lazy";
+      var tu = document.createElement("span"); tu.className = "pn-tuile"; tu.textContent = SIGLE[l[4]]; tu.setAttribute("aria-hidden", "true");
       var tx = document.createElement("span"); tx.className = "pn-art-t";
       var b = document.createElement("b"); b.textContent = l[0];
       var sp = document.createElement("span"); sp.textContent = l[1];
       tx.append(b, sp);
       var px = document.createElement("strong"); px.textContent = euros(l[2]);
-      li.append(im, tx, px); ul.append(li);
+      li.append(tu, tx, px); ul.append(li);
     });
     var suffixe = " " + (e.i ? T.saison : T.mois);
-    $("#pn-sous").textContent = euros(e.total) + suffixe;
     var tot = $("#pn-total"); tot.textContent = euros(e.total) + suffixe; rejouer(tot);
     $("#pn-payer-m").textContent = euros(e.total) + suffixe;
     var inc = $("#pn-inc"); inc.textContent = "";
