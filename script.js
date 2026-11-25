@@ -379,7 +379,7 @@
         method: "POST",
         headers: { "Content-Type": "application/json", apikey: SUPABASE_KEY },
         body: JSON.stringify({ action: "creer", formule: FORMULE.formule, periode: FORMULE.periode, clips: FORMULE.clips,
-          inscription_id: dernierEnvoi.inscription_id, jeton: dernierEnvoi.jeton, retour: "site" }),
+          inscription_id: dernierEnvoi.inscription_id, jeton: dernierEnvoi.jeton, retour: EN ? "site_en" : "site" }),
       });
       const d = await r.json().catch(() => null);
       if (r.ok && d && d.ok && typeof d.url === "string" && d.url.startsWith("https://checkout.stripe.com/")) { location.href = d.url; return; }
