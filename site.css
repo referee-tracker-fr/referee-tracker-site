@@ -444,12 +444,63 @@ footer a:hover{color:#fff}
   .pc-scene{animation:monte linear both;animation-timeline:view();animation-range:entry 10% cover 45%}
   @keyframes monte{from{transform:translateY(70px)}}
 }
-.prix-clips{margin:20px 0 0;background:var(--card);border:1px solid var(--line);border-radius:22px;padding:22px 26px;display:grid;grid-template-columns:auto 1fr;gap:10px 28px;align-items:center}
-.prix-clips h3{margin:0;font-size:1.1rem}
-.prix-clips ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:10px 34px;justify-content:flex-end}
-.prix-clips li{display:flex;gap:12px;align-items:baseline;color:#C9D3E6}
-.prix-clips b{font-size:1.15rem;white-space:nowrap}
-.prix-clips small{font-size:.8rem;font-weight:600;color:var(--muted)}
+/* bloc REF CLIPS */
+.rc{margin:22px 0 0;display:grid;grid-template-columns:1.05fr 1fr;gap:0;border-radius:28px;overflow:hidden;border:1px solid rgba(59,130,246,.35);background:radial-gradient(700px circle at 0% 50%,rgba(59,130,246,.22),transparent 60%),var(--card)}
+.rc.rv{filter:blur(8px);transition:opacity .9s cubic-bezier(0,0,.2,1),transform .9s cubic-bezier(0,0,.2,1),filter .9s}
+.rc.rv.vu{filter:none}
+.rc-visu{position:relative;padding:34px 0 34px 34px;display:flex;align-items:center}
+.rc-visu img{width:100%;height:auto;border-radius:14px 0 0 14px;border:1px solid rgba(255,255,255,.12);border-right:0;box-shadow:0 30px 60px rgba(0,0,0,.5);transition:transform .8s cubic-bezier(.2,.8,.2,1)}
+.rc:hover .rc-visu img{transform:scale(1.03) translateX(-6px)}
+.rc-txt{padding:38px 34px}
+.guide .tarifs .rc-txt h2{margin:0 0 10px;font-size:clamp(1.5rem,2.6vw,2rem)}
+.guide .tarifs .rc-txt p{margin:0 0 22px;color:#C9D3E6}
+.rc-offres{display:grid;gap:12px}
+.rc-offre{display:grid;grid-template-columns:1fr auto;grid-template-areas:"t p" "a p";gap:4px 16px;align-items:center;padding:16px 18px;border-radius:18px;background:rgba(255,255,255,.04);border:1px solid var(--line);text-decoration:none;color:var(--text);transition:transform .3s,border-color .3s,background .3s}
+.guide .tarifs a.rc-offre{color:var(--text)}
+.rc-offre:hover{transform:translateX(4px);border-color:rgba(245,180,0,.5);background:rgba(245,180,0,.06)}
+.rc-o-t{grid-area:t;font-weight:700}
+.rc-o-p{grid-area:p;font:800 1.2rem/1 var(--font);white-space:nowrap;text-align:right}
+.rc-o-p small{font-size:.8rem;font-weight:600;color:var(--muted)}
+.rc-o-a{grid-area:a;font-size:.85rem;font-weight:700;color:var(--gold2)}
+@media (max-width:860px){.rc{grid-template-columns:1fr}.rc-visu{padding:24px 0 0 24px}.rc-txt{padding:26px 22px}}
+@media (max-width:420px){.rc-offre{grid-template-columns:1fr;grid-template-areas:"t" "p" "a"}.rc-o-p{text-align:left}}
+/* panier */
+.panier-page h1{margin-bottom:26px}
+.panier{display:grid;grid-template-columns:1.4fr 1fr;gap:26px;align-items:start}
+.panier fieldset{border:0;margin:0 0 26px;padding:0}
+.panier legend{font:800 1.05rem/1 var(--font);margin-bottom:14px;color:#fff}
+.pn-grille{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.pn-choix,.pn-opt,.pn-periode label{position:relative;display:block;cursor:pointer;padding:16px 18px;border-radius:18px;background:var(--card);border:1px solid var(--line);transition:border-color .25s,background .25s,transform .25s}
+.pn-choix:hover,.pn-opt:hover,.pn-periode label:hover{transform:translateY(-2px)}
+.panier input{position:absolute;opacity:0;pointer-events:none}
+.pn-choix:has(input:checked),.pn-periode label:has(input:checked),.pn-opt:has(input:checked){border-color:var(--gold);background:linear-gradient(180deg,rgba(245,180,0,.12),var(--card))}
+.pn-choix:has(input:focus-visible),.pn-periode label:has(input:focus-visible),.pn-opt:has(input:focus-visible){outline:2px solid var(--gold2);outline-offset:2px}
+.pn-c-nom{display:block;font-weight:800;font-size:1.05rem}
+.pn-c-d{display:block;font-size:.86rem;color:var(--muted);margin-top:4px}
+.pn-periode{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.pn-periode label{text-align:center;font-weight:700}
+.pn-opt{display:flex;align-items:center;gap:12px;justify-content:space-between}
+.pn-opt::before{content:"";flex:none;width:22px;height:22px;border-radius:7px;border:2px solid rgba(255,255,255,.3);transition:background .2s,border-color .2s}
+.pn-opt:has(input:checked)::before{background:var(--gold) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23111' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m5 12 5 5 9-10'/%3E%3C/svg%3E") center/14px no-repeat;border-color:var(--gold)}
+.pn-opt>span:nth-of-type(1){flex:1}
+.pn-opt-d{color:var(--muted);font-size:.9rem}
+.pn-opt-p{font-weight:800;white-space:nowrap}
+#pn-opt.off .pn-opt{opacity:.45;cursor:not-allowed;transform:none}
+.guide .tarifs .pn-inclus{margin:10px 0 0;color:var(--green);font-size:.92rem}
+.pn-recap{position:sticky;top:100px;padding:26px 24px;border-radius:24px;background:var(--bg2);border:1px solid rgba(245,180,0,.4)}
+.guide .tarifs .pn-recap h2{font-size:1.2rem;margin:0 0 16px}
+.pn-recap ul{list-style:none;margin:0 0 14px;padding:0}
+.pn-recap li{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid var(--line);color:#D5DDEC}
+.guide .tarifs .pn-total{display:flex;justify-content:space-between;align-items:baseline;margin:6px 0 4px;font-weight:700}
+.pn-total b{font:900 1.7rem/1 var(--font);color:var(--gold2);animation:flou-in .45s cubic-bezier(0,0,.2,1)}
+.guide .tarifs .pn-detail{font-size:.86rem;color:var(--muted);margin:0 0 16px}
+.guide .tarifs .pn-essai{font-size:.92rem;margin:0 0 14px}
+.pn-btn{width:100%;justify-content:center;margin-bottom:10px}
+.pn-recap span.pn-btn{cursor:default;opacity:.65}
+.pn-recap span.pn-btn:hover{transform:none}
+.guide .tarifs .pn-recap .mentions{font-size:.78rem;color:var(--muted);margin:8px 0 0}
+@media (max-width:860px){.panier{grid-template-columns:1fr}.pn-recap{position:static}}
+@media (max-width:420px){.pn-grille{grid-template-columns:1fr}}
 .prix-plus{list-style:none;padding:0;margin:34px 0 0;display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
 .prix-plus li{padding-left:28px;position:relative;font-size:.98rem!important}
 .prix-plus li::before{content:"✓";position:absolute;left:0;top:0;color:var(--green);font-weight:800}
