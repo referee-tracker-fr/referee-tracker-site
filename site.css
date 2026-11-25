@@ -728,3 +728,7 @@ footer a:hover{color:#fff}
 
 /* les parties des guides et des tarifs n'héritent pas du grand espacement des sections de l'accueil */
 .g2-sec,.gx-groupe,.rc,.pn-etape{padding:0}
+
+/* fond : les lignes d'un terrain de basket, très discrètes, fixes derrière la page */
+body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background:url("/img/terrain.svg") center/min(1400px,94vw) auto no-repeat;opacity:.13}
+@media (orientation:portrait){body::before{background-image:url("/img/terrain-v.svg");background-size:auto min(1400px,88vh)}}
