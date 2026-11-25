@@ -532,11 +532,10 @@ footer a:hover{color:#fff}
 .pn-modif:hover{border-color:var(--gold);background:rgba(245,180,0,.08)}
 .pn-commande #pn-lignes{list-style:none;margin:0;padding:0}
 .pn-art{display:grid;grid-template-columns:44px 1fr auto;gap:14px;align-items:center;padding:14px 0;border-bottom:1px solid var(--line);animation:flou-in .45s cubic-bezier(0,0,.2,1)}
-.pn-tuile{display:grid;place-items:center;width:44px;height:44px;border-radius:12px;font:900 .95rem/1 var(--font);color:#fff}
-.pn-art.pc-ess .pn-tuile{background:linear-gradient(140deg,#5B6B8F,#1B2747)}
-.pn-art.pc-pro .pn-tuile{background:linear-gradient(140deg,#3B82F6,#14306A)}
-.pn-art.pc-elite .pn-tuile{background:linear-gradient(140deg,var(--gold2),#8A6200);color:#111}
-.pn-art.pc-clips .pn-tuile{background:linear-gradient(140deg,#22C55E,#123A2C)}
+/* pastilles aux couleurs de la marque : fond bleu nuit, liseré et icône dorés */
+.pn-tuile{display:grid;place-items:center;width:44px;height:44px;border-radius:12px;background:var(--bg2);border:1px solid rgba(245,180,0,.45);color:var(--gold2)}
+.pn-tuile img{width:28px;height:auto}
+.pn-tuile svg{width:22px;height:22px}
 .pn-art-t b{display:block;font-size:.98rem}
 .pn-art-t span{display:block;font-size:.82rem;color:var(--muted)}
 .pn-art strong{font:800 1rem/1 var(--font);white-space:nowrap}
