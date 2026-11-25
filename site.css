@@ -378,3 +378,4 @@ footer a:hover{color:#fff}
 }
 .menu-mob-p .menu-lang{margin-top:6px;border-top:1px solid rgba(255,255,255,.1);border-radius:0 0 12px 12px;color:var(--muted)}
 .pied-lang{color:var(--muted);text-decoration:none;font-weight:600;white-space:nowrap}.pied-lang:hover{color:var(--gold2)}
+@media (max-width:560px){.tab{font-size:14px}.tab th,.tab td{padding:10px 6px}.tab th{font-size:11px;letter-spacing:.03em}}
