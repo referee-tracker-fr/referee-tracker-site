@@ -7,6 +7,9 @@
   const FN_INSCRIPTION = SUPABASE_URL + "/functions/v1/inscription";
   const MAX_FICHIER = 20 * 1024 * 1024;
   const MAX_FICHIERS = 300;
+  // Anti-robot Cloudflare Turnstile : clé de site PUBLIQUE (pas un secret). Vide = rien n'est chargé, comme avant.
+  // Tests locaux : "1x00000000000000000000AA" (toujours valide), "2x00000000000000000000AB" (toujours refusée).
+  const TURNSTILE_SITEKEY = "";
 
   // Page anglaise (signup.html) : messages en anglais ; rien ne change dans ce qui est envoyé au serveur.
   const EN = document.documentElement.lang === "en";
@@ -282,6 +285,25 @@
 
   function montrerAlerte(msg) { alerte.textContent = msg; alerte.hidden = !msg; }
 
+  // Turnstile : widget « managed » au-dessus du bouton d'envoi ; le jeton part avec la demande (un jeton ne sert qu'une fois).
+  const TS = { id: null, echec: false };
+  if (TURNSTILE_SITEKEY) {
+    const zone = document.createElement("div");
+    zone.className = "turnstile";
+    btnEnvoyer.closest(".actions").before(zone);
+    const sc = document.createElement("script");
+    sc.src = "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit";
+    sc.async = true;
+    sc.onload = () => {
+      try { TS.id = window.turnstile.render(zone, { sitekey: TURNSTILE_SITEKEY, language: EN ? "en" : "fr", appearance: "interaction-only", "error-callback": () => { TS.echec = true; } }); }
+      catch (_) { TS.echec = true; }
+    };
+    sc.onerror = () => { TS.echec = true; };   // Cloudflare injoignable : on envoie sans jeton, les autres protections restent
+    document.head.appendChild(sc);
+  }
+  function jetonTurnstile() { return TS.id !== null && window.turnstile ? window.turnstile.getResponse(TS.id) || "" : ""; }
+  function nouveauJeton() { if (TS.id !== null && window.turnstile) { try { window.turnstile.reset(TS.id); } catch (_) {} } }
+
   function payload() {
     return {
       prenom: val("prenom"),
@@ -303,6 +325,7 @@
       origine: location.hostname,
       site_web: ($("#site_web") || {}).value || "",   // champ piège : vide chez un humain
       duree: Date.now() - T0,                          // temps passé sur le formulaire, en ms
+      turnstile: jetonTurnstile(),                     // vide si Turnstile n'est pas branché
       formule_souhaitee: FORMULE ? { formule: FORMULE.formule, periode: FORMULE.periode, clips: FORMULE.clips } : null, // pas encore enregistrée côté serveur
     };
   }
@@ -373,6 +396,10 @@
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
     if (!valider(4)) return;
+    if (TURNSTILE_SITEKEY && TS.id !== null && !TS.echec && !jetonTurnstile()) {
+      montrerAlerte(t("Vérification anti-robot en cours : patiente une seconde puis renvoie.", "Anti-robot check in progress: wait a second, then send again."));
+      return;
+    }
     montrerAlerte("");
     btnEnvoyer.disabled = true;
     const texteBouton = btnEnvoyer.textContent;
@@ -404,6 +431,7 @@
       };
       montrerAlerte(msgs[code] || t("L'envoi a échoué. Vérifie ta connexion et réessaie ; si le problème persiste, écris à contact@referee-tracker.fr.", "Sending failed. Check your connection and try again; if the problem persists, write to contact@referee-tracker.fr."));
       upWrap.hidden = true;
+      nouveauJeton();
     } finally {
       btnEnvoyer.disabled = false; btnEnvoyer.textContent = texteBouton;
     }
