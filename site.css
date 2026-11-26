@@ -795,3 +795,6 @@ mark.ph{background:rgba(245,180,0,.22);color:var(--gold2);padding:1px 6px;border
 .cp-total{font-weight:700;margin:14px 0!important}
 .cp-renonce{font-size:.9rem}
 @media (max-width:420px){.cp-carte,section.cp-carte{padding:22px 16px}.cp-actions .btn{width:100%;justify-content:center}}
+
+/* téléphone : repères de la page Guides sur une ligne */
+.gx-chiffres b{white-space:nowrap}
