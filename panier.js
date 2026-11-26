@@ -75,8 +75,7 @@
       a.addEventListener("click", function (e) { if (a.classList.contains("off")) e.preventDefault(); });
       bouton.replaceWith(a);
       var rec = document.createElement("p"); rec.className = "pn-cgv";
-      rec.textContent = EN ? "€34.99 once, Elite until 31 August 2028. 14 days to withdraw: you only pay for the part already used."
-                           : "34,99 € en une fois, Élite jusqu'au 31 août 2028. 14 jours pour te rétracter : tu paies seulement la part déjà utilisée.";
+      rec.textContent = EN ? "14 days to withdraw: you only pay for the part already used." : "14 jours pour te rétracter : tu paies seulement la part déjà utilisée.";
       a.before(rec, casesPaiement(function (ok) { a.classList.toggle("off", !ok); a.setAttribute("aria-disabled", String(!ok)); }), lienCGV());
     }
   });
@@ -233,7 +232,7 @@
     essai.before(payer); payer.style.marginBottom = "10px"; // « Payer » devient le bouton principal
     payer.disabled = true;
     // Récapitulatif juste avant le bouton : formule, prix, prélèvements, reprise, rétractation, CGV.
-    var recap = document.createElement("ul"); recap.className = "pn-recap"; recap.id = "pn-recap";
+    var recap = document.createElement("ul"); recap.className = "pn-resume"; recap.id = "pn-recap";
     payer.before(recap, casesPaiement(function (ok) { payer.disabled = !ok; }), lienCGV());
     recapitulatif = function (e) {
       var nom = T[e.fo] + (e.opt ? " + REF CLIPS" : ""), lignes;
