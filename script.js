@@ -7,6 +7,9 @@
   const FN_INSCRIPTION = SUPABASE_URL + "/functions/v1/inscription";
   const MAX_FICHIER = 20 * 1024 * 1024;
   const MAX_FICHIERS = 300;
+  // Anti-robot Cloudflare Turnstile : clé de site PUBLIQUE (pas un secret). Vide = rien n'est chargé, comme avant.
+  // Tests locaux : "1x00000000000000000000AA" (toujours valide), "2x00000000000000000000AB" (toujours refusée).
+  const TURNSTILE_SITEKEY = "";
 
   // Page anglaise (signup.html) : messages en anglais ; rien ne change dans ce qui est envoyé au serveur.
   const EN = document.documentElement.lang === "en";
@@ -15,18 +18,32 @@
   // Formule choisie dans le panier (?formule=pro&periode=saison&clips=1) : affichée en haut et jointe à la demande.
   const FORMULE = (() => {
     const q = new URLSearchParams(location.search);
-    const NOMS = { ess: "Essentiel", pro: "Pro", elite: "Élite", clips: EN ? "REF CLIPS only" : "REF CLIPS seul" };
+    const NOMS = { ess: "Essentiel", pro: "Pro", elite: "Élite", clips: EN ? "REF CLIPS only" : "REF CLIPS seul", fondateur: EN ? "Founder offer" : "Offre Fondateur" };
     if (!NOMS[q.get("formule")]) return null;
+    const fondateur = q.get("formule") === "fondateur";
     const periode = q.get("periode") === "saison" ? "saison" : "mois";
     const clips = q.get("clips") === "1" && (q.get("formule") === "ess" || q.get("formule") === "pro");
-    return { formule: q.get("formule"), periode, clips,
-      libelle: NOMS[q.get("formule")] + (clips ? " + REF CLIPS" : "") + (periode === "saison" ? (EN ? ", per season" : ", à la saison") : (EN ? ", monthly" : ", au mois")) };
+    return { formule: q.get("formule"), periode, clips, payer: q.get("payer") === "1", renonciation: q.get("renonciation") === "1", majeur: q.get("majeur") === "1",
+      libelle: NOMS[q.get("formule")] + (fondateur ? "" : (clips ? " + REF CLIPS" : "") + (periode === "saison" ? (EN ? ", per season" : ", à la saison") : (EN ? ", monthly" : ", au mois"))) };
   })();
   const t = (fr, en) => (EN ? en : fr);
   const $ = (s, r) => (r || document).querySelector(s);
   const $$ = (s, r) => Array.from((r || document).querySelectorAll(s));
   const form = $("#form");
   if (!form) return;
+  // Retour de Stripe après un paiement réussi (nouvel inscrit) : on remplace le formulaire par un message.
+  if (new URLSearchParams(location.search).get("paiement") === "merci") {
+    const box = document.createElement("div"); box.className = "panel paiement-merci"; box.setAttribute("role", "status");
+    const h = document.createElement("h2"); h.textContent = t("Paiement reçu", "Payment received");
+    const p = document.createElement("p");
+    p.textContent = t("Tu vas recevoir par mail ton code de première connexion ; ta formule est active dès ta première connexion.",
+                      "You will receive your first sign-in code by email; your plan is active from your first sign-in.");
+    box.append(h, p);
+    form.replaceWith(box);
+    const prog = $("#progress"); if (prog) prog.hidden = true;
+    const fc = $("#formule-choisie"); if (fc) fc.hidden = true;
+    return;
+  }
   if (FORMULE && $("#formule-choisie")) {
     $("#formule-nom").textContent = FORMULE.libelle;
     const l = $("#formule-choisie a"); l.href += "?formule=" + FORMULE.formule + "&periode=" + FORMULE.periode + (FORMULE.clips ? "&clips=1" : "");
@@ -282,6 +299,25 @@
 
   function montrerAlerte(msg) { alerte.textContent = msg; alerte.hidden = !msg; }
 
+  // Turnstile : widget « managed » au-dessus du bouton d'envoi ; le jeton part avec la demande (un jeton ne sert qu'une fois).
+  const TS = { id: null, echec: false };
+  if (TURNSTILE_SITEKEY) {
+    const zone = document.createElement("div");
+    zone.className = "turnstile";
+    btnEnvoyer.closest(".actions").before(zone);
+    const sc = document.createElement("script");
+    sc.src = "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit";
+    sc.async = true;
+    sc.onload = () => {
+      try { TS.id = window.turnstile.render(zone, { sitekey: TURNSTILE_SITEKEY, language: EN ? "en" : "fr", appearance: "interaction-only", "error-callback": () => { TS.echec = true; } }); }
+      catch (_) { TS.echec = true; }
+    };
+    sc.onerror = () => { TS.echec = true; };   // Cloudflare injoignable : on envoie sans jeton, les autres protections restent
+    document.head.appendChild(sc);
+  }
+  function jetonTurnstile() { return TS.id !== null && window.turnstile ? window.turnstile.getResponse(TS.id) || "" : ""; }
+  function nouveauJeton() { if (TS.id !== null && window.turnstile) { try { window.turnstile.reset(TS.id); } catch (_) {} } }
+
   function payload() {
     return {
       prenom: val("prenom"),
@@ -303,6 +339,7 @@
       origine: location.hostname,
       site_web: ($("#site_web") || {}).value || "",   // champ piège : vide chez un humain
       duree: Date.now() - T0,                          // temps passé sur le formulaire, en ms
+      turnstile: jetonTurnstile(),                     // vide si Turnstile n'est pas branché
       formule_souhaitee: FORMULE ? { formule: FORMULE.formule, periode: FORMULE.periode, clips: FORMULE.clips } : null, // pas encore enregistrée côté serveur
     };
   }
@@ -370,9 +407,35 @@
 
   let echecsCourants = [];
 
+  // Paiement juste après l'inscription (bouton « Payer » du panier). La fonction refuse si la vente est fermée :
+  // dans ce cas, ou en cas d'erreur, l'inscription reste valable et l'essai gratuit commence normalement.
+  async function ouvrirPaiement() {
+    try {
+      const r = await fetch(SUPABASE_URL + "/functions/v1/paiement", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", apikey: SUPABASE_KEY },
+        body: JSON.stringify({ action: "creer", formule: FORMULE.formule, periode: FORMULE.periode, clips: FORMULE.clips,
+          inscription_id: dernierEnvoi.inscription_id, jeton: dernierEnvoi.jeton, retour: EN ? "site_en" : "site", renonciation: FORMULE.renonciation, acces_immediat: FORMULE.renonciation, majeur: FORMULE.majeur }),
+      });
+      const d = await r.json().catch(() => null);
+      if (r.ok && d && d.ok && typeof d.url === "string" && d.url.startsWith("https://checkout.stripe.com/")) { location.href = d.url; return; }
+      if (d && d.error === "MAJEUR") {
+        $("#done-mail").textContent += " " + t("Le paiement n'a pas démarré : il faut avoir 18 ans ou l'accord de ton représentant légal. Ton essai gratuit commence ; tu pourras payer plus tard depuis Mon compte.",
+          "Payment did not start: you must be 18 or have your legal guardian's consent. Your free trial begins; you can pay later from My account.");
+        return;
+      }
+    } catch (_) { /* on garde l'écran de confirmation */ }
+    $("#done-mail").textContent += " " + t("Le paiement n'a pas pu démarrer : ton essai gratuit commence, tu pourras payer plus tard depuis l'app.",
+      "Payment could not start: your free trial begins, you can pay later from the app.");
+  }
+
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
     if (!valider(4)) return;
+    if (TURNSTILE_SITEKEY && TS.id !== null && !TS.echec && !jetonTurnstile()) {
+      montrerAlerte(t("Vérification anti-robot en cours : patiente une seconde puis renvoie.", "Anti-robot check in progress: wait a second, then send again."));
+      return;
+    }
     montrerAlerte("");
     btnEnvoyer.disabled = true;
     const texteBouton = btnEnvoyer.textContent;
@@ -395,15 +458,18 @@
       } else { echecsCourants = []; }
       afficher(5);
       afficherEchecs(echecsCourants);
+      if (FORMULE && FORMULE.payer) await ouvrirPaiement();
     } catch (err) {
       const code = String(err && err.message || "");
       const msgs = {
         TROP_TOT: t("Une demande a déjà été envoyée récemment (même e-mail ou même connexion). Si tu n'as rien reçu, écris-nous à contact@referee-tracker.fr.", "A request was already sent recently (same e-mail or same connection). If you haven't received anything, write to us at contact@referee-tracker.fr."),
         VALIDATION: t("Certaines informations sont invalides. Vérifie les étapes précédentes (prénom et nom : lettres, espaces, apostrophes et tirets uniquement).", "Some information is invalid. Check the previous steps (first and last name: letters, spaces, apostrophes and hyphens only)."),
+        VERIFICATION: t("La vérification anti-robot n'a pas abouti : recharge la page et réessaie. Si ça continue, écris à contact@referee-tracker.fr.", "The anti-bot check did not go through: reload the page and try again. If it keeps happening, write to contact@referee-tracker.fr."),
         TROP_DE_FICHIERS: t("Trop de fichiers : 300 maximum.", "Too many files: 300 maximum."),
       };
       montrerAlerte(msgs[code] || t("L'envoi a échoué. Vérifie ta connexion et réessaie ; si le problème persiste, écris à contact@referee-tracker.fr.", "Sending failed. Check your connection and try again; if the problem persists, write to contact@referee-tracker.fr."));
       upWrap.hidden = true;
+      nouveauJeton();
     } finally {
       btnEnvoyer.disabled = false; btnEnvoyer.textContent = texteBouton;
     }

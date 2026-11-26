@@ -26,12 +26,15 @@
     resilier: "Cancel my contract", portail: "My invoices and card",
     avant: "Before you confirm the cancellation:", c1: "no new payment will be taken;", c2: "you keep your plan until {d}, the end of the period already paid;",
     c3: "then your account becomes read-only: your games, payments and exports stay visible;", c4: "you get a confirmation email.",
-    confirmer: "Confirm the cancellation", annuler: "Back",
+    confirmer: "Notify cancellation", annuler: "Back",
     changerT: "Change plan", choisirT: "Choose a plan", formule: "Plan", auMoisL: "Monthly", saisonL: "Per season",
     aide: "Monthly: September to June, no commitment, restarts each September (we remind you in August). Per season: one payment, until 31 August, no renewal.",
     fond: "Founder: {p} once, all features until 31 August 2028. {n} places left.", ajout: "Add REF CLIPS",
-    renonce: "I ask for immediate access and give up my 14-day right of withdrawal",
-    payer: "Pay", valider: "Confirm the change",
+    renonce: "I request immediate access. If I withdraw within 14 days, I only pay for the part already used.", majeur: "I am 18 or have my legal guardian's consent",
+    cgv: "By paying, you accept the <a href=\"terms-of-sale.html\" target=\"_blank\" rel=\"noopener\">terms of sale</a>. 14 days to withdraw: you only pay for the part already used.",
+    retracter: "Withdraw", retrT: "Withdraw before {d}:", r1: "your access stops straight away;", r2: "you are refunded for the part not used, on your card;", r3: "your account becomes read-only: your games, payments and exports stay visible.",
+    retrOui: "Confirm the withdrawal", retrEnCours: "Recording your withdrawal…", retrFait: "Done: your withdrawal is recorded. Refund: {p}, on your card within 5 to 10 days.", retrRien: "Done: your withdrawal is recorded. The whole period paid has been used: nothing to refund.",
+    payer: "Pay", abonner: "Subscribe", valider: "Confirm the change",
     total: "Total: {p}", uneFois: " once", pourSaison: " for the season", parMois: " a month",
     actuelle: "This is your current plan.", diff: "You only pay the difference: {p}, right away.",
     nouveau: "New price: {p} a month. The difference for the current month is charged now, pro rata of the days left.",
@@ -40,9 +43,9 @@
     noteSaison: "Noted: your new plan starts next season.", fait: "Done: your new plan is active.",
     resil: "Cancelling…", resilFait: "Done: your contract is cancelled, no more payments. A confirmation email has been sent.",
     E: { PAIEMENT_FERME: "Payment is not open yet.", FONDATEUR_FERME: "The Founder offer isn't available (full or closed).", DEJA_FONDATEUR: "You already have the Founder offer.",
-      AUCUN_ABONNEMENT: "No monthly subscription in progress.", RENONCIATION: "Tick the « immediate access » box to continue.",
+      AUCUN_ABONNEMENT: "No monthly subscription in progress.", RENONCIATION: "Tick the « immediate access » box to continue.", ACCES_IMMEDIAT: "Tick the « immediate access » box to continue.",
       PAIEMENT_REFUSE: "Your card was declined: nothing changed. Update it in « My invoices and card ».", MEME_FORMULE: "This is already your plan.",
-      PAS_DE_FORMULE: "No paid plan in progress: choose a plan.", AUCUN_PAIEMENT: "No payment found for this account.", FORMULE: "This plan isn't available.",
+      PAS_DE_FORMULE: "No paid plan in progress: choose a plan.", AUCUN_PAIEMENT: "No payment found for this account.", MAJEUR: "Tick the box « I am 18 or have my legal guardian's consent » to continue.", DELAI_DEPASSE: "The 14-day withdrawal period is over. You can still cancel your contract.", FORMULE: "This plan isn't available.",
       AUTH: "Your session has expired: log in again.", DEJA_ABONNE: "You already have an active plan: use “Change plan”." }
   } : {
     ferme: "Les abonnements ouvriront bientôt. Ton accès à l'app reste complet.",
@@ -60,12 +63,15 @@
     resilier: "Résilier votre contrat", portail: "Mes factures et ma carte",
     avant: "Avant de confirmer la résiliation :", c1: "aucun nouveau prélèvement ne sera fait ;", c2: "tu gardes ta formule jusqu'au {d}, la fin de la période déjà payée ;",
     c3: "ensuite ton compte passe en lecture seule : tes matchs, tes paiements et tes exports restent visibles ;", c4: "tu reçois un mail de confirmation.",
-    confirmer: "Confirmer la résiliation", annuler: "Annuler",
+    confirmer: "Notifier la résiliation", annuler: "Annuler",
     changerT: "Changer de formule", choisirT: "Choisir une formule", formule: "Formule", auMoisL: "Au mois", saisonL: "À la saison",
     aide: "Au mois : de septembre à juin, sans engagement, reprise chaque septembre (tu es prévenu en août). À la saison : en une fois, jusqu'au 31 août, sans renouvellement.",
     fond: "Fondateur : {p} en une fois, toutes les fonctions jusqu'au 31 août 2028. Encore {n} places.", ajout: "Ajouter REF CLIPS",
-    renonce: "Je demande l'accès immédiat et je renonce à mon droit de rétractation de 14 jours",
-    payer: "Payer", valider: "Valider le changement",
+    renonce: "Je demande l'accès immédiat. Si je me rétracte dans les 14 jours, je paie seulement la part déjà utilisée.", majeur: "J'ai 18 ans ou l'accord de mon représentant légal",
+    cgv: "En payant, tu acceptes les <a href=\"cgv.html\" target=\"_blank\" rel=\"noopener\">conditions générales de vente</a>. 14 jours pour te rétracter : tu paies seulement la part déjà utilisée.",
+    retracter: "Se rétracter", retrT: "Te rétracter avant le {d} :", r1: "ton accès s'arrête tout de suite ;", r2: "tu es remboursé de la part non utilisée, sur ta carte ;", r3: "ton compte passe en lecture seule : tes matchs, tes paiements et tes exports restent visibles.",
+    retrOui: "Confirmer la rétractation", retrEnCours: "Enregistrement de ta rétractation…", retrFait: "C'est fait : ta rétractation est enregistrée. Remboursement : {p}, sur ta carte sous 5 à 10 jours.", retrRien: "C'est fait : ta rétractation est enregistrée. Toute la période payée a été utilisée : rien à rembourser.",
+    payer: "Payer", abonner: "S'abonner", valider: "Valider le changement",
     total: "Total : {p}", uneFois: " en une fois", pourSaison: " pour la saison", parMois: " par mois",
     actuelle: "C'est ta formule actuelle.", diff: "Tu paies seulement la différence : {p}, tout de suite.",
     nouveau: "Nouveau prix : {p} par mois. La différence pour le mois en cours est prélevée tout de suite, au prorata des jours restants.",
@@ -74,9 +80,9 @@
     noteSaison: "C'est noté : ta nouvelle formule commencera à la saison prochaine.", fait: "C'est fait : ta nouvelle formule est active.",
     resil: "Résiliation…", resilFait: "C'est fait : ton contrat est résilié, plus aucun prélèvement. Un mail de confirmation t'a été envoyé.",
     E: { PAIEMENT_FERME: "Le paiement n'est pas encore ouvert.", FONDATEUR_FERME: "L'offre Fondateur n'est pas disponible (complète ou fermée).", DEJA_FONDATEUR: "Tu as déjà l'offre Fondateur.",
-      AUCUN_ABONNEMENT: "Aucun abonnement au mois en cours.", RENONCIATION: "Coche la case « accès immédiat » pour continuer.",
+      AUCUN_ABONNEMENT: "Aucun abonnement au mois en cours.", RENONCIATION: "Coche la case « accès immédiat » pour continuer.", ACCES_IMMEDIAT: "Coche la case « accès immédiat » pour continuer.",
       PAIEMENT_REFUSE: "Ta carte a été refusée : rien n'a changé. Mets-la à jour dans « Mes factures et ma carte ».", MEME_FORMULE: "C'est déjà ta formule.",
-      PAS_DE_FORMULE: "Aucune formule payée en cours : choisis une formule.", AUCUN_PAIEMENT: "Aucun paiement trouvé pour ce compte.", FORMULE: "Cette formule n'est pas disponible.",
+      PAS_DE_FORMULE: "Aucune formule payée en cours : choisis une formule.", AUCUN_PAIEMENT: "Aucun paiement trouvé pour ce compte.", MAJEUR: "Coche la case « J'ai 18 ans ou l'accord de mon représentant légal » pour continuer.", DELAI_DEPASSE: "Le délai de 14 jours pour te rétracter est dépassé. Tu peux toujours résilier ton contrat.", FORMULE: "Cette formule n'est pas disponible.",
       AUTH: "Ta session a expiré : reconnecte-toi.", DEJA_ABONNE: "Tu as déjà une formule en cours : utilise « Changer de formule »." }
   };
 
@@ -204,6 +210,14 @@
   }
   function abonneEnCours() { return A.etat === "actif" && A.pack !== "lecture_seule" && !A.resilie_le && ["essentiel", "pro", "elite"].indexOf(A.formule) >= 0; }
   function avecOption(f) { return f === "essentiel" || f === "pro"; }
+  // Prélèvements au mois (même règle que le serveur) : 1er au plus tard d'aujourd'hui, fin d'essai, fin de période payée ;
+  // reporté au 1er septembre s'il tombe en juillet-août ; puis un par mois jusqu'en juin inclus.
+  function prelevements() {
+    var t = Math.max(Date.now(), A.essai_fin ? Date.parse(A.essai_fin) || 0 : 0, A.payee_jusqu_au ? Date.parse(A.payee_jusqu_au) || 0 : 0);
+    var m = new Date(t).getMonth(); if (m === 6 || m === 7) m = 8;
+    var n = m >= 8 ? 18 - m : 6 - m, mois = new Date(2026, m, 1).toLocaleDateString(EN ? "en-GB" : "fr-FR", { month: "long" });
+    return n === 1 ? (EN ? " 1 payment, in June." : " 1 prélèvement, en juin.") : (EN ? " " + n + " payments, " + mois + " to June." : " " + n + " prélèvements, de " + mois + " à juin.");
+  }
   function prixMois(f, clips) { return PRIX[f][0] + (clips && avecOption(f) ? PRIX.option[0] : 0); }
 
   // Appel à la fonction de paiement. Redirection seulement vers Stripe.
@@ -241,14 +255,19 @@
       (fondateur ? '<p class="cp-aide" id="cp-fond" hidden>' + esc(T.fond.replace("{p}", eur(PRIX.fondateur)).replace("{n}", pub.fondateur_restantes)) + "</p>" : "") +
       '<label class="cp-radio" id="cp-clips-l"><input type="checkbox" id="cp-clips"' + ((A.formule_suivante ? A.clips_suivant : A.option_clips || s.clips) ? " checked" : "") + "> " + T.ajout + "</label>" +
       '<p class="cp-total" id="cp-total"></p>' +
-      '<label class="cp-radio cp-renonce" id="cp-renon-l"><input type="checkbox" id="cp-renon"> ' + T.renonce + "</label>" +
+      '<div id="cp-renon-l"><label class="cp-radio cp-renonce"><input type="checkbox" id="cp-renon"> ' + T.renonce + "</label>" +
+      '<label class="cp-radio cp-renonce"><input type="checkbox" id="cp-majeur"> ' + T.majeur + "</label>" +
+      '<p class="cp-aide">' + T.cgv + "</p></div>" +
       '<button type="button" class="btn btn-gold cp-plein" id="cp-payer">' + (changer ? T.valider : T.payer) + "</button>";
     zone.innerHTML = '<p class="cp-etat">' + esc(resume()) + "</p>" +
-      (A.au_mois_en_cours || A.client_stripe ? '<div class="cp-actions">' +
+      (A.au_mois_en_cours || A.client_stripe || A.retractation_jusqu_au ? '<div class="cp-actions">' +
+        (A.retractation_jusqu_au ? '<button type="button" class="btn btn-ghost" id="cp-retr">' + T.retracter + "</button>" : "") +
         (A.au_mois_en_cours ? '<button type="button" class="btn btn-ghost" id="cp-resil">' + T.resilier + "</button>" : "") +
         (A.client_stripe ? '<button type="button" class="btn btn-ghost" id="cp-portail">' + T.portail + "</button>" : "") + "</div>" : "") +
       (A.au_mois_en_cours ? '<div class="cp-conf" id="cp-conf" hidden><p><b>' + T.avant + "</b></p><ul><li>" + T.c1 + "</li><li>" + esc(T.c2.replace("{d}", date(A.payee_jusqu_au))) + "</li><li>" + T.c3 + "</li><li>" + T.c4 + "</li></ul>" +
         '<div class="cp-actions"><button type="button" class="btn cp-danger" id="cp-oui">' + T.confirmer + '</button><button type="button" class="btn btn-ghost" id="cp-non">' + T.annuler + "</button></div></div>" : "") +
+      (A.retractation_jusqu_au ? '<div class="cp-conf" id="cp-retr-conf" hidden><p><b>' + esc(T.retrT.replace("{d}", date(A.retractation_jusqu_au))) + "</b></p><ul><li>" + T.r1 + "</li><li>" + T.r2 + "</li><li>" + T.r3 + "</li></ul>" +
+        '<div class="cp-actions"><button type="button" class="btn cp-danger" id="cp-retr-oui">' + T.retrOui + '</button><button type="button" class="btn btn-ghost" id="cp-retr-non">' + T.annuler + "</button></div></div>" : "") +
       (A.formule === "fondateur" && A.pack !== "lecture_seule" ? ""
         : changer ? '<details class="cp-changer"><summary>' + T.changerT + "</summary>" + formulaire + "</details>"
         : "<h3>" + T.choisirT + "</h3>" + formulaire);
@@ -261,7 +280,7 @@
       if ($("cp-fond")) $("cp-fond").hidden = f !== "fondateur";
       if (f !== "fondateur") { $("cp-pm").textContent = "· " + eur(PRIX[f][0] + (clips ? PRIX.option[0] : 0)); $("cp-ps").textContent = "· " + eur(PRIX[f][1] + (clips ? PRIX.option[1] : 0)); }
       var t = f === "fondateur" ? PRIX.fondateur : PRIX[f][i] + (clips ? PRIX.option[i] : 0);
-      var texte = T.total.replace("{p}", eur(t)) + (f === "fondateur" ? T.uneFois : saison ? T.pourSaison : T.parMois), montee = true;
+      var texte = T.total.replace("{p}", eur(t)) + (f === "fondateur" ? T.uneFois : saison ? T.pourSaison : T.parMois + "." + prelevements()), montee = true;
       var meme = changer && f === A.formule && clips === !!A.option_clips;
       if (changer) {
         var avant = PRIX[A.formule][i] + (A.option_clips && avecOption(A.formule) ? PRIX.option[i] : 0);
@@ -269,8 +288,9 @@
         texte = meme ? T.actuelle : montee ? (saison ? T.diff.replace("{p}", eur(t - avant)) : T.nouveau.replace("{p}", eur(t))) : T.moins;
       }
       $("cp-total").textContent = texte;
+      if (!changer) $("cp-payer").textContent = f === "fondateur" || saison ? T.payer : T.abonner;
       $("cp-renon-l").hidden = changer && !montee;
-      $("cp-payer").disabled = meme || (!$("cp-renon-l").hidden && !$("cp-renon").checked);
+      $("cp-payer").disabled = meme || (!$("cp-renon-l").hidden && !($("cp-renon").checked && $("cp-majeur").checked));
       return { formule: f, periode: saison ? "saison" : "mois", clips: clips, montee: montee };
     }
     if ($("cp-f")) {
@@ -279,7 +299,7 @@
       $("cp-payer").addEventListener("click", function () {
         var b = $("cp-payer"), c = total(); b.disabled = true;
         msg($("cp-msg"), changer && !c.montee ? T.enreg : T.ouverture);
-        appel({ action: changer ? "changer" : "creer", retour: EN ? "compte_en" : "compte", formule: c.formule, periode: c.periode, clips: c.clips, renonciation: $("cp-renon").checked })
+        appel({ action: changer ? "changer" : "creer", retour: EN ? "compte_en" : "compte", formule: c.formule, periode: c.periode, clips: c.clips, renonciation: $("cp-renon").checked, acces_immediat: $("cp-renon").checked, majeur: $("cp-majeur").checked })
           .then(function (j) {
             if (j.url) { if (!allerStripe(j.url)) throw new Error(T.erreur); return; }
             if (j.effet === "saison_suivante") { A.formule_suivante = c.formule; A.clips_suivant = c.clips; dessiner(); msg($("cp-msg"), T.noteSaison); }
@@ -288,6 +308,7 @@
           .catch(function (e) { msg($("cp-msg"), e.message); b.disabled = false; });
       });
     }
+    if ($("cp-resil") && location.hash === "#resilier") setTimeout(function () { $("cp-resil").click(); $("cp-conf").scrollIntoView({ block: "center" }); }, 0);
     if ($("cp-resil")) {
       $("cp-resil").addEventListener("click", function () { $("cp-conf").hidden = false; $("cp-resil").hidden = true; $("cp-oui").focus(); });
       $("cp-non").addEventListener("click", function () { $("cp-conf").hidden = true; $("cp-resil").hidden = false; $("cp-resil").focus(); });
@@ -297,6 +318,17 @@
           A.resilie_le = new Date().toISOString(); A.au_mois_en_cours = false; if (j.jusqu_au) A.payee_jusqu_au = j.jusqu_au;
           dessiner(); msg($("cp-msg"), T.resilFait);
         }).catch(function (e) { msg($("cp-msg"), e.message); $("cp-oui").disabled = false; });
+      });
+    }
+    if ($("cp-retr")) {
+      $("cp-retr").addEventListener("click", function () { $("cp-retr-conf").hidden = false; $("cp-retr").hidden = true; $("cp-retr-oui").focus(); });
+      $("cp-retr-non").addEventListener("click", function () { $("cp-retr-conf").hidden = true; $("cp-retr").hidden = false; $("cp-retr").focus(); });
+      $("cp-retr-oui").addEventListener("click", function () {
+        $("cp-retr-oui").disabled = true; msg($("cp-msg"), T.retrEnCours);
+        appel({ action: "retracter" }).then(function (j) {
+          var rembourse = Number(j.rembourse) || 0;
+          return charger().then(function () { msg($("cp-msg"), rembourse > 0 ? T.retrFait.replace("{p}", eur(rembourse)) : T.retrRien); });
+        }).catch(function (e) { msg($("cp-msg"), e.message); $("cp-retr-oui").disabled = false; });
       });
     }
     if ($("cp-portail")) $("cp-portail").addEventListener("click", function () {

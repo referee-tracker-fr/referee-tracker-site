@@ -798,3 +798,20 @@ mark.ph{background:rgba(245,180,0,.22);color:var(--gold2);padding:1px 6px;border
 
 /* téléphone : repères de la page Guides sur une ligne */
 .gx-chiffres b{white-space:nowrap}
+/* paiement : compteur Fondateur et retour « paiement annulé » */
+.guide .tarifs .fondateur-compteur{font-weight:800;color:var(--gold2);margin:10px auto 0}
+.guide .tarifs .paiement-annule{display:inline-block;margin:18px auto 0;padding:10px 16px;border-radius:12px;background:rgba(245,180,0,.1);border:1px solid rgba(245,180,0,.4);font-size:.92rem}
+/* paiement : case de renonciation au droit de rétractation */
+.renonce{display:flex;gap:10px;align-items:flex-start;text-align:left;font-size:.84rem;line-height:1.4;color:#D5DDEC;margin:0 0 10px;cursor:pointer}
+.renonce input{position:static!important;opacity:1!important;pointer-events:auto!important;width:18px;height:18px;flex:none;margin-top:1px;accent-color:#F5B400}
+.fondateur .renonce{max-width:420px;margin:14px auto 10px}
+.btn.off,.pn-btn:disabled{opacity:.45;cursor:not-allowed;transform:none!important;box-shadow:none}
+.legal-formulaire{margin:16px 0 0;padding:16px 18px;border:1px dashed rgba(255,255,255,.25);border-radius:14px;background:rgba(255,255,255,.03)}
+/* paiement : récapitulatif et lien CGV avant de payer */
+.pn-resume{list-style:none;margin:0 0 14px;padding:14px 16px;border-radius:14px;background:rgba(255,255,255,.04);border:1px solid var(--line);text-align:left;font-size:.88rem;line-height:1.5;color:#D5DDEC}
+.pn-resume li{padding-left:18px;position:relative;margin:0 0 6px}.pn-resume li:last-child{margin:0}
+.pn-resume li::before{content:"";position:absolute;left:2px;top:.55em;width:6px;height:6px;border-radius:50%;background:var(--gold)}
+.pn-recap .pn-cgv,.pn-cgv{font-size:.84rem;color:var(--muted);margin:0 0 12px;text-align:left}.pn-cgv a{color:var(--gold2)}
+.guide .tarifs .fondateur .pn-cgv{max-width:420px;margin:10px auto;font-size:.84rem;line-height:1.45;text-align:center}
+.cp-aide a{color:var(--gold2)}
+.cp [hidden]{display:none!important}
