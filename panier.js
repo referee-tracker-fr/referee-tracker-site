@@ -37,17 +37,18 @@
     p.append(EN ? "By paying, you accept the " : "En payant, tu acceptes les ", a, ".");
     return p;
   }
-  // Prélèvements au mois de la saison en cours : du mois d'arrivée jusqu'à juin (en juillet-août : la saison suivante, 10 mois).
+  // Prélèvements au mois (même règle que le serveur) : le 1er tombe à la fin de l'essai (30 jours après la 1re connexion),
+  // reporté au 1er septembre s'il tombe en juillet-août, puis un par mois jusqu'en juin inclus. « Jusqu'à » : l'essai démarre à la 1re connexion.
   var MOIS = EN ? ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
                 : ["janvier", "février", "mars", "avril", "mai", "juin", "juillet", "août", "septembre", "octobre", "novembre", "décembre"];
   var SAISON = (function () {
-    var m = new Date().getMonth();
+    var m = new Date(Date.now() + 30 * 86400000).getMonth();
     if (m === 6 || m === 7) m = 8;
     return { n: m >= 8 ? 18 - m : 6 - m, debut: MOIS[m] };
   })();
   function texteMois(n) {
     if (n === 1) return EN ? "1 payment, in June" : "1 prélèvement, en juin";
-    return EN ? n + " payments, " + SAISON.debut + " to June" : n + " prélèvements, de " + SAISON.debut + " à juin";
+    return EN ? "Up to " + n + " payments, " + SAISON.debut + " to June" : "Jusqu'à " + n + " prélèvements, de " + SAISON.debut + " à juin";
   }
   // Page tarifs : sous les prix des cartes, le compte des mois restants.
   document.querySelectorAll(".pc-sous").forEach(function (p) {
@@ -105,11 +106,11 @@
   var fr = f.dataset.lang === "fr";
   var T = fr
     ? { ess: "Essentiel", pro: "Pro", elite: "Élite", clips: "REF CLIPS seul", opt: "Option REF CLIPS", mois: "par mois", saison: "la saison",
-        lMois: "Au mois, {n} prélèvements", lSaison: "À la saison, en une fois",
-        dMois: "{n} prélèvements de {p}, de {d} à juin.", dSaison: "Au mois, ça ferait {p}.", sMois: "Au mois, ça ferait {p} : tu gardes {e}.", sMoins: "Au mois, ça ferait {p} : moins cher que la saison à ce moment de l'année." }
+        lMois: "Au mois, jusqu'à {n} prélèvements", lSaison: "À la saison, en une fois",
+        dMois: "Jusqu'à {n} prélèvements de {p}, de {d} à juin.", dSaison: "Au mois, ça ferait {p}.", sMois: "Au mois, ça ferait {p} : tu gardes {e}.", sMoins: "Au mois, ça ferait {p} : moins cher que la saison à ce moment de l'année." }
     : { ess: "Essentiel", pro: "Pro", elite: "Élite", clips: "REF CLIPS only", opt: "REF CLIPS add-on", mois: "a month", saison: "a season",
-        lMois: "Monthly, {n} payments", lSaison: "Per season, one payment",
-        dMois: "{n} payments of {p}, {d} to June.", dSaison: "Monthly would be {p}.", sMois: "Monthly would be {p}: you keep {e}.", sMoins: "Monthly would be {p}: cheaper than the season at this time of year." };
+        lMois: "Monthly, up to {n} payments", lSaison: "Per season, one payment",
+        dMois: "Up to {n} payments of {p}, {d} to June.", dSaison: "Monthly would be {p}.", sMois: "Monthly would be {p}: you keep {e}.", sMoins: "Monthly would be {p}: cheaper than the season at this time of year." };
   if (SAISON.n === 1) {   // en juin : un seul prélèvement
     T.lMois = fr ? "Au mois, 1 prélèvement" : "Monthly, 1 payment";
     T.dMois = fr ? "1 prélèvement de {p}, en juin." : "1 payment of {p}, in June.";

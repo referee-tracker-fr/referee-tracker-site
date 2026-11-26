@@ -45,7 +45,7 @@
     E: { PAIEMENT_FERME: "Payment is not open yet.", FONDATEUR_FERME: "The Founder offer isn't available (full or closed).", DEJA_FONDATEUR: "You already have the Founder offer.",
       AUCUN_ABONNEMENT: "No monthly subscription in progress.", RENONCIATION: "Tick the « immediate access » box to continue.", ACCES_IMMEDIAT: "Tick the « immediate access » box to continue.",
       PAIEMENT_REFUSE: "Your card was declined: nothing changed. Update it in « My invoices and card ».", MEME_FORMULE: "This is already your plan.",
-      PAS_DE_FORMULE: "No paid plan in progress: choose a plan.", AUCUN_PAIEMENT: "No payment found for this account.", DELAI_DEPASSE: "The 14-day withdrawal period is over. You can still cancel your contract.", FORMULE: "This plan isn't available.",
+      PAS_DE_FORMULE: "No paid plan in progress: choose a plan.", AUCUN_PAIEMENT: "No payment found for this account.", MAJEUR: "Tick the box « I am 18 or have my legal guardian's consent » to continue.", DELAI_DEPASSE: "The 14-day withdrawal period is over. You can still cancel your contract.", FORMULE: "This plan isn't available.",
       AUTH: "Your session has expired: log in again.", DEJA_ABONNE: "You already have an active plan: use “Change plan”." }
   } : {
     ferme: "Les abonnements ouvriront bientôt. Ton accès à l'app reste complet.",
@@ -82,7 +82,7 @@
     E: { PAIEMENT_FERME: "Le paiement n'est pas encore ouvert.", FONDATEUR_FERME: "L'offre Fondateur n'est pas disponible (complète ou fermée).", DEJA_FONDATEUR: "Tu as déjà l'offre Fondateur.",
       AUCUN_ABONNEMENT: "Aucun abonnement au mois en cours.", RENONCIATION: "Coche la case « accès immédiat » pour continuer.", ACCES_IMMEDIAT: "Coche la case « accès immédiat » pour continuer.",
       PAIEMENT_REFUSE: "Ta carte a été refusée : rien n'a changé. Mets-la à jour dans « Mes factures et ma carte ».", MEME_FORMULE: "C'est déjà ta formule.",
-      PAS_DE_FORMULE: "Aucune formule payée en cours : choisis une formule.", AUCUN_PAIEMENT: "Aucun paiement trouvé pour ce compte.", DELAI_DEPASSE: "Le délai de 14 jours pour te rétracter est dépassé. Tu peux toujours résilier ton contrat.", FORMULE: "Cette formule n'est pas disponible.",
+      PAS_DE_FORMULE: "Aucune formule payée en cours : choisis une formule.", AUCUN_PAIEMENT: "Aucun paiement trouvé pour ce compte.", MAJEUR: "Coche la case « J'ai 18 ans ou l'accord de mon représentant légal » pour continuer.", DELAI_DEPASSE: "Le délai de 14 jours pour te rétracter est dépassé. Tu peux toujours résilier ton contrat.", FORMULE: "Cette formule n'est pas disponible.",
       AUTH: "Ta session a expiré : reconnecte-toi.", DEJA_ABONNE: "Tu as déjà une formule en cours : utilise « Changer de formule »." }
   };
 
@@ -210,6 +210,14 @@
   }
   function abonneEnCours() { return A.etat === "actif" && A.pack !== "lecture_seule" && !A.resilie_le && ["essentiel", "pro", "elite"].indexOf(A.formule) >= 0; }
   function avecOption(f) { return f === "essentiel" || f === "pro"; }
+  // Prélèvements au mois (même règle que le serveur) : 1er au plus tard d'aujourd'hui, fin d'essai, fin de période payée ;
+  // reporté au 1er septembre s'il tombe en juillet-août ; puis un par mois jusqu'en juin inclus.
+  function prelevements() {
+    var t = Math.max(Date.now(), A.essai_fin ? Date.parse(A.essai_fin) || 0 : 0, A.payee_jusqu_au ? Date.parse(A.payee_jusqu_au) || 0 : 0);
+    var m = new Date(t).getMonth(); if (m === 6 || m === 7) m = 8;
+    var n = m >= 8 ? 18 - m : 6 - m, mois = new Date(2026, m, 1).toLocaleDateString(EN ? "en-GB" : "fr-FR", { month: "long" });
+    return n === 1 ? (EN ? " 1 payment, in June." : " 1 prélèvement, en juin.") : (EN ? " " + n + " payments, " + mois + " to June." : " " + n + " prélèvements, de " + mois + " à juin.");
+  }
   function prixMois(f, clips) { return PRIX[f][0] + (clips && avecOption(f) ? PRIX.option[0] : 0); }
 
   // Appel à la fonction de paiement. Redirection seulement vers Stripe.
@@ -272,7 +280,7 @@
       if ($("cp-fond")) $("cp-fond").hidden = f !== "fondateur";
       if (f !== "fondateur") { $("cp-pm").textContent = "· " + eur(PRIX[f][0] + (clips ? PRIX.option[0] : 0)); $("cp-ps").textContent = "· " + eur(PRIX[f][1] + (clips ? PRIX.option[1] : 0)); }
       var t = f === "fondateur" ? PRIX.fondateur : PRIX[f][i] + (clips ? PRIX.option[i] : 0);
-      var texte = T.total.replace("{p}", eur(t)) + (f === "fondateur" ? T.uneFois : saison ? T.pourSaison : T.parMois), montee = true;
+      var texte = T.total.replace("{p}", eur(t)) + (f === "fondateur" ? T.uneFois : saison ? T.pourSaison : T.parMois + "." + prelevements()), montee = true;
       var meme = changer && f === A.formule && clips === !!A.option_clips;
       if (changer) {
         var avant = PRIX[A.formule][i] + (A.option_clips && avecOption(A.formule) ? PRIX.option[i] : 0);

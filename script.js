@@ -419,6 +419,11 @@
       });
       const d = await r.json().catch(() => null);
       if (r.ok && d && d.ok && typeof d.url === "string" && d.url.startsWith("https://checkout.stripe.com/")) { location.href = d.url; return; }
+      if (d && d.error === "MAJEUR") {
+        $("#done-mail").textContent += " " + t("Le paiement n'a pas démarré : il faut avoir 18 ans ou l'accord de ton représentant légal. Ton essai gratuit commence ; tu pourras payer plus tard depuis Mon compte.",
+          "Payment did not start: you must be 18 or have your legal guardian's consent. Your free trial begins; you can pay later from My account.");
+        return;
+      }
     } catch (_) { /* on garde l'écran de confirmation */ }
     $("#done-mail").textContent += " " + t("Le paiement n'a pas pu démarrer : ton essai gratuit commence, tu pourras payer plus tard depuis l'app.",
       "Payment could not start: your free trial begins, you can pay later from the app.");
