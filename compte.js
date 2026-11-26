@@ -43,7 +43,7 @@
       AUCUN_ABONNEMENT: "No monthly subscription in progress.", RENONCIATION: "Tick the « immediate access » box to continue.",
       PAIEMENT_REFUSE: "Your card was declined: nothing changed. Update it in « My invoices and card ».", MEME_FORMULE: "This is already your plan.",
       PAS_DE_FORMULE: "No paid plan in progress: choose a plan.", AUCUN_PAIEMENT: "No payment found for this account.", FORMULE: "This plan isn't available.",
-      AUTH: "Your session has expired: log in again." }
+      AUTH: "Your session has expired: log in again.", DEJA_ABONNE: "You already have an active plan: use “Change plan”." }
   } : {
     ferme: "Les abonnements ouvriront bientôt. Ton accès à l'app reste complet.",
     reseau: "Connexion impossible pour le moment, réessaie dans un instant.", erreur: "Une erreur est survenue, réessaie dans un instant.",
@@ -77,7 +77,7 @@
       AUCUN_ABONNEMENT: "Aucun abonnement au mois en cours.", RENONCIATION: "Coche la case « accès immédiat » pour continuer.",
       PAIEMENT_REFUSE: "Ta carte a été refusée : rien n'a changé. Mets-la à jour dans « Mes factures et ma carte ».", MEME_FORMULE: "C'est déjà ta formule.",
       PAS_DE_FORMULE: "Aucune formule payée en cours : choisis une formule.", AUCUN_PAIEMENT: "Aucun paiement trouvé pour ce compte.", FORMULE: "Cette formule n'est pas disponible.",
-      AUTH: "Ta session a expiré : reconnecte-toi." }
+      AUTH: "Ta session a expiré : reconnecte-toi.", DEJA_ABONNE: "Tu as déjà une formule en cours : utilise « Changer de formule »." }
   };
 
   var $ = function (id) { return document.getElementById(id); };
