@@ -16,6 +16,16 @@
     .then(function (d) { return d && d.actif === true ? d : null; })
     .catch(function () { return null; });
 
+  var RENONCE = EN ? "I request immediate access and waive my 14-day right of withdrawal"
+                   : "Je demande l’accès immédiat et je renonce à mon droit de rétractation de 14 jours";
+  // Case obligatoire avant de payer (non cochée par défaut) : sans elle, le paiement est refusé par le serveur.
+  function caseRenonciation(onChange) {
+    var l = document.createElement("label"); l.className = "renonce";
+    var c = document.createElement("input"); c.type = "checkbox";
+    var t = document.createElement("span"); t.textContent = RENONCE;
+    l.append(c, t); c.addEventListener("change", function () { onChange(c.checked); });
+    return l;
+  }
   // Page tarifs : compteur de places et bouton de l'offre Fondateur (seulement si la vente est ouverte).
   var fondateur = document.querySelector(".fondateur");
   if (fondateur) vente.then(function (d) {
@@ -27,9 +37,12 @@
     fondateur.insertBefore(c, bouton);
     if (d.fondateur_ouvert && n > 0) {
       var a = document.createElement("a"); a.className = "btn btn-gold";
-      a.href = (EN ? "../signup.html" : "inscription.html") + "?formule=fondateur&payer=1";
+      a.href = (EN ? "../signup.html" : "inscription.html") + "?formule=fondateur&payer=1&renonciation=1";
       a.textContent = EN ? "Become a Founder" : "Devenir Fondateur";
+      a.setAttribute("aria-disabled", "true"); a.classList.add("off");
+      a.addEventListener("click", function (e) { if (a.classList.contains("off")) e.preventDefault(); });
       bouton.replaceWith(a);
+      a.before(caseRenonciation(function (ok) { a.classList.toggle("off", !ok); a.setAttribute("aria-disabled", String(!ok)); }));
     }
   });
 
@@ -175,9 +188,11 @@
     if (note) note.hidden = true;
     var essai = $("#pn-essai"); essai.classList.remove("btn-gold"); essai.classList.add("btn-ghost");
     essai.before(payer); payer.style.marginBottom = "10px"; // « Payer » devient le bouton principal
+    payer.disabled = true;
+    payer.before(caseRenonciation(function (ok) { payer.disabled = !ok; }));
     payer.addEventListener("click", function () {
       // on passe par l'inscription (création du compte), puis le paiement Stripe s'ouvre tout seul
-      var u = new URL($("#pn-essai").href); u.searchParams.set("payer", "1"); location.href = u.toString();
+      var u = new URL($("#pn-essai").href); u.searchParams.set("payer", "1"); u.searchParams.set("renonciation", "1"); location.href = u.toString();
     });
   });
   f.addEventListener("change", maj);
