@@ -28,6 +28,19 @@
   const $$ = (s, r) => Array.from((r || document).querySelectorAll(s));
   const form = $("#form");
   if (!form) return;
+  // Retour de Stripe après un paiement réussi (nouvel inscrit) : on remplace le formulaire par un message.
+  if (new URLSearchParams(location.search).get("paiement") === "merci") {
+    const box = document.createElement("div"); box.className = "panel paiement-merci"; box.setAttribute("role", "status");
+    const h = document.createElement("h2"); h.textContent = t("Paiement reçu", "Payment received");
+    const p = document.createElement("p");
+    p.textContent = t("Tu vas recevoir par mail ton code de première connexion ; ta formule est active dès ta première connexion.",
+                      "You will receive your first sign-in code by email; your plan is active from your first sign-in.");
+    box.append(h, p);
+    form.replaceWith(box);
+    const prog = $("#progress"); if (prog) prog.hidden = true;
+    const fc = $("#formule-choisie"); if (fc) fc.hidden = true;
+    return;
+  }
   if (FORMULE && $("#formule-choisie")) {
     $("#formule-nom").textContent = FORMULE.libelle;
     const l = $("#formule-choisie a"); l.href += "?formule=" + FORMULE.formule + "&periode=" + FORMULE.periode + (FORMULE.clips ? "&clips=1" : "");
