@@ -427,6 +427,7 @@
       const msgs = {
         TROP_TOT: t("Une demande a déjà été envoyée récemment (même e-mail ou même connexion). Si tu n'as rien reçu, écris-nous à contact@referee-tracker.fr.", "A request was already sent recently (same e-mail or same connection). If you haven't received anything, write to us at contact@referee-tracker.fr."),
         VALIDATION: t("Certaines informations sont invalides. Vérifie les étapes précédentes (prénom et nom : lettres, espaces, apostrophes et tirets uniquement).", "Some information is invalid. Check the previous steps (first and last name: letters, spaces, apostrophes and hyphens only)."),
+        VERIFICATION: t("La vérification anti-robot n'a pas abouti : recharge la page et réessaie. Si ça continue, écris à contact@referee-tracker.fr.", "The anti-bot check did not go through: reload the page and try again. If it keeps happening, write to contact@referee-tracker.fr."),
         TROP_DE_FICHIERS: t("Trop de fichiers : 300 maximum.", "Too many files: 300 maximum."),
       };
       montrerAlerte(msgs[code] || t("L'envoi a échoué. Vérifie ta connexion et réessaie ; si le problème persiste, écris à contact@referee-tracker.fr.", "Sending failed. Check your connection and try again; if the problem persists, write to contact@referee-tracker.fr."));
