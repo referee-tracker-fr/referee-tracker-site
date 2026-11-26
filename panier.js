@@ -16,16 +16,48 @@
     .then(function (d) { return d && d.actif === true ? d : null; })
     .catch(function () { return null; });
 
-  var RENONCE = EN ? "I request immediate access and waive my 14-day right of withdrawal"
-                   : "Je demande l’accès immédiat et je renonce à mon droit de rétractation de 14 jours";
-  // Case obligatoire avant de payer (non cochée par défaut) : sans elle, le paiement est refusé par le serveur.
-  function caseRenonciation(onChange) {
-    var l = document.createElement("label"); l.className = "renonce";
-    var c = document.createElement("input"); c.type = "checkbox";
-    var t = document.createElement("span"); t.textContent = RENONCE;
-    l.append(c, t); c.addEventListener("change", function () { onChange(c.checked); });
-    return l;
+  // Cases obligatoires avant de payer (non cochées par défaut) : accès immédiat (le droit de rétractation reste, au prorata) et majorité.
+  var CASES = EN ? ["I ask for immediate access; if I withdraw, I pay for the part already used", "I am 18 or have my legal guardian's consent"]
+                 : ["Je demande l’accès immédiat ; si je me rétracte, je paie la part déjà utilisée", "J’ai 18 ans ou l’accord de mon représentant légal"];
+  function casesPaiement(onChange) {
+    var bloc = document.createDocumentFragment(), boites = [];
+    CASES.forEach(function (texte) {
+      var l = document.createElement("label"); l.className = "renonce";
+      var c = document.createElement("input"); c.type = "checkbox";
+      var t = document.createElement("span"); t.textContent = texte;
+      l.append(c, t); bloc.append(l); boites.push(c);
+      c.addEventListener("change", function () { onChange(boites.every(function (b) { return b.checked; })); });
+    });
+    return bloc;
   }
+  function lienCGV() {
+    var p = document.createElement("p"); p.className = "pn-cgv";
+    var a = document.createElement("a"); a.href = EN ? "terms-of-sale.html" : "cgv.html"; a.target = "_blank"; a.rel = "noopener";
+    a.textContent = EN ? "terms of sale" : "conditions générales de vente";
+    p.append(EN ? "By paying, you accept the " : "En payant, tu acceptes les ", a, ".");
+    return p;
+  }
+  // Prélèvements au mois de la saison en cours : du mois d'arrivée jusqu'à juin (en juillet-août : la saison suivante, 10 mois).
+  var MOIS = EN ? ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+                : ["janvier", "février", "mars", "avril", "mai", "juin", "juillet", "août", "septembre", "octobre", "novembre", "décembre"];
+  var SAISON = (function () {
+    var m = new Date().getMonth();
+    if (m === 6 || m === 7) m = 8;
+    return { n: m >= 8 ? 18 - m : 6 - m, debut: MOIS[m] };
+  })();
+  function texteMois(n) {
+    if (n === 1) return EN ? "1 payment, in June" : "1 prélèvement, en juin";
+    return EN ? n + " payments, " + SAISON.debut + " to June" : n + " prélèvements, de " + SAISON.debut + " à juin";
+  }
+  // Page tarifs : sous les prix des cartes, le compte des mois restants.
+  document.querySelectorAll(".pc-sous").forEach(function (p) {
+    var carte = p.closest(".pc"), k = carte && (carte.classList.contains("pc-ess") ? "ess" : carte.classList.contains("pc-pro") ? "pro" : carte.classList.contains("pc-elite") ? "elite" : "");
+    if (!k) return;
+    var m = p.querySelector(".m"), s = p.querySelector(".s");
+    if (m) m.textContent = texteMois(SAISON.n);
+    if (s) s.textContent = (EN ? "Monthly would be " : "Au mois, ça ferait ") + eurosTarifs(PRIX[k][0] * SAISON.n);
+  });
+  function eurosTarifs(c) { var n = (c / 100).toFixed(2); return EN ? "€" + n : n.replace(".", ",") + " €"; }
   // Page tarifs : compteur de places et bouton de l'offre Fondateur (seulement si la vente est ouverte).
   var fondateur = document.querySelector(".fondateur");
   if (fondateur) vente.then(function (d) {
@@ -37,12 +69,15 @@
     fondateur.insertBefore(c, bouton);
     if (d.fondateur_ouvert && n > 0) {
       var a = document.createElement("a"); a.className = "btn btn-gold";
-      a.href = (EN ? "../signup.html" : "inscription.html") + "?formule=fondateur&payer=1&renonciation=1";
+      a.href = (EN ? "../signup.html" : "inscription.html") + "?formule=fondateur&payer=1&renonciation=1&majeur=1";
       a.textContent = EN ? "Become a Founder" : "Devenir Fondateur";
       a.setAttribute("aria-disabled", "true"); a.classList.add("off");
       a.addEventListener("click", function (e) { if (a.classList.contains("off")) e.preventDefault(); });
       bouton.replaceWith(a);
-      a.before(caseRenonciation(function (ok) { a.classList.toggle("off", !ok); a.setAttribute("aria-disabled", String(!ok)); }));
+      var rec = document.createElement("p"); rec.className = "pn-cgv";
+      rec.textContent = EN ? "€34.99 once, Elite until 31 August 2028. 14 days to withdraw: you only pay for the part already used."
+                           : "34,99 € en une fois, Élite jusqu'au 31 août 2028. 14 jours pour te rétracter : tu paies seulement la part déjà utilisée.";
+      a.before(rec, casesPaiement(function (ok) { a.classList.toggle("off", !ok); a.setAttribute("aria-disabled", String(!ok)); }), lienCGV());
     }
   });
 
@@ -71,11 +106,15 @@
   var fr = f.dataset.lang === "fr";
   var T = fr
     ? { ess: "Essentiel", pro: "Pro", elite: "Élite", clips: "REF CLIPS seul", opt: "Option REF CLIPS", mois: "par mois", saison: "la saison",
-        lMois: "Au mois, 10 prélèvements", lSaison: "À la saison, en une fois",
-        dMois: "10 prélèvements de {p}, de septembre à juin.", dSaison: "Au mois, ça ferait {p}.", sMois: "Au mois, ça ferait {p} : tu gardes {e}." }
+        lMois: "Au mois, {n} prélèvements", lSaison: "À la saison, en une fois",
+        dMois: "{n} prélèvements de {p}, de {d} à juin.", dSaison: "Au mois, ça ferait {p}.", sMois: "Au mois, ça ferait {p} : tu gardes {e}.", sMoins: "Au mois, ça ferait {p} : moins cher que la saison à ce moment de l'année." }
     : { ess: "Essentiel", pro: "Pro", elite: "Élite", clips: "REF CLIPS only", opt: "REF CLIPS add-on", mois: "a month", saison: "a season",
-        lMois: "Monthly, 10 payments", lSaison: "Per season, one payment",
-        dMois: "10 payments of {p}, September to June.", dSaison: "Monthly would be {p}.", sMois: "Monthly would be {p}: you keep {e}." };
+        lMois: "Monthly, {n} payments", lSaison: "Per season, one payment",
+        dMois: "{n} payments of {p}, {d} to June.", dSaison: "Monthly would be {p}.", sMois: "Monthly would be {p}: you keep {e}.", sMoins: "Monthly would be {p}: cheaper than the season at this time of year." };
+  if (SAISON.n === 1) {   // en juin : un seul prélèvement
+    T.lMois = fr ? "Au mois, 1 prélèvement" : "Monthly, 1 payment";
+    T.dMois = fr ? "1 prélèvement de {p}, en juin." : "1 payment of {p}, in June.";
+  }
   // Contenu de chaque formule (mêmes listes que la page tarifs)
   var INC = fr ? {
     ess: ["Convocations 5x5 et 3x3 lues automatiquement", "Indemnités au centime, kilomètres compris", "Qui te doit quoi : paiements et retards", "Agenda synchronisé", "Notifications : nouveau match, annulation, retard"],
@@ -109,13 +148,17 @@
 
   function rejouer(el) { el.style.animation = "none"; void el.offsetWidth; el.style.animation = ""; }
 
+  var recapitulatif = null;   // rempli seulement si la vente est ouverte
   function maj() {
     var e = etat();
+    if (recapitulatif) recapitulatif(e);
     // étape 2 : prix des deux façons de payer et option
     var saison = PRIX[e.fo][1] + (e.opt ? OPTION[1] : 0);
     $('[data-prix="mois"]').textContent = euros(e.totalMois) + " " + T.mois;
     $('[data-prix="saison"]').textContent = euros(saison) + " " + T.saison;
-    $("[data-saison-d]").textContent = T.sMois.replace("{p}", euros(e.totalMois * 10)).replace("{e}", euros(e.totalMois * 10 - saison));
+    var auMois = e.totalMois * SAISON.n;
+    $("[data-saison-d]").textContent = (auMois > saison ? T.sMois : T.sMoins).replace("{p}", euros(auMois)).replace("{e}", euros(auMois - saison));
+    $('[data-prix="mois"]').nextElementSibling.textContent = texteMois(SAISON.n) + (EN ? ". No commitment." : ". Sans engagement.");
     $("#pn-opt").hidden = !e.optPossible;
     f.clips.disabled = !e.optPossible;
     $("#pn-inclus").hidden = e.fo !== "elite";
@@ -123,8 +166,8 @@
     // étape 3 : articles du panier
     var ul = $("#pn-lignes");
     ul.textContent = "";
-    var lignes = [[T[e.fo], e.i ? T.lSaison : T.lMois, PRIX[e.fo][e.i], "", e.fo]];
-    if (e.opt) lignes.push([T.opt, e.i ? T.lSaison : T.lMois, OPTION[e.i], "", "clips"]);
+    var lignes = [[T[e.fo],  e.i ? T.lSaison : T.lMois.replace("{n}", SAISON.n), PRIX[e.fo][e.i], "", e.fo]];
+    if (e.opt) lignes.push([T.opt,  e.i ? T.lSaison : T.lMois.replace("{n}", SAISON.n), OPTION[e.i], "", "clips"]);
     lignes.forEach(function (l) {
       var li = document.createElement("li"); li.className = "pn-art pc-" + l[4];
       var tu = document.createElement("span"); tu.className = "pn-tuile"; tu.setAttribute("aria-hidden", "true");
@@ -143,7 +186,7 @@
     $("#pn-payer-m").textContent = euros(e.total) + suffixe;
     var inc = $("#pn-inc"); inc.textContent = "";
     INC[e.fo].concat(e.opt ? [INC.opt] : []).forEach(function (t) { var li = document.createElement("li"); li.textContent = t; inc.append(li); });
-    $("#pn-detail").textContent = e.i ? T.dSaison.replace("{p}", euros(e.totalMois * 10)) : T.dMois.replace("{p}", euros(e.total));
+    $("#pn-detail").textContent = e.i ? T.dSaison.replace("{p}", euros(e.totalMois * SAISON.n)) : T.dMois.replace("{n}", SAISON.n).replace("{p}", euros(e.total)).replace("{d}", SAISON.debut);
     // l'essai gratuit emporte le choix vers l'inscription
     var a = $("#pn-essai"), u = new URL(a.getAttribute("href"), location.href);
     u.search = "";
@@ -189,10 +232,25 @@
     var essai = $("#pn-essai"); essai.classList.remove("btn-gold"); essai.classList.add("btn-ghost");
     essai.before(payer); payer.style.marginBottom = "10px"; // « Payer » devient le bouton principal
     payer.disabled = true;
-    payer.before(caseRenonciation(function (ok) { payer.disabled = !ok; }));
+    // Récapitulatif juste avant le bouton : formule, prix, prélèvements, reprise, rétractation, CGV.
+    var recap = document.createElement("ul"); recap.className = "pn-recap"; recap.id = "pn-recap";
+    payer.before(recap, casesPaiement(function (ok) { payer.disabled = !ok; }), lienCGV());
+    recapitulatif = function (e) {
+      var nom = T[e.fo] + (e.opt ? " + REF CLIPS" : ""), lignes;
+      if (e.i) lignes = fr
+        ? [nom + " à la saison : " + euros(e.total) + ", toutes charges comprises (TVA non applicable).", "Un seul paiement, aujourd'hui. Accès jusqu'au 31 août, sans renouvellement automatique."]
+        : [nom + " per season: " + euros(e.total) + ", all charges included (VAT not applicable).", "One payment, today. Access until 31 August, no automatic renewal."];
+      else lignes = fr
+        ? [nom + " au mois : " + euros(e.total) + " par mois, toutes charges comprises (TVA non applicable).", texteMois(SAISON.n) + ", rien en juillet et août.", "Reprise en septembre pour la nouvelle saison : tu es prévenu en août et tu peux résilier à tout moment."]
+        : [nom + " monthly: " + euros(e.total) + " a month, all charges included (VAT not applicable).", texteMois(SAISON.n) + ", nothing in July and August.", "Restarts in September for the new season: you are reminded in August and can cancel at any time."];
+      lignes.push(fr ? "14 jours pour te rétracter : tu paies seulement la part déjà utilisée." : "14 days to withdraw: you only pay for the part already used.");
+      recap.textContent = "";
+      lignes.forEach(function (t) { var li = document.createElement("li"); li.textContent = t; recap.append(li); });
+    };
+    maj();
     payer.addEventListener("click", function () {
       // on passe par l'inscription (création du compte), puis le paiement Stripe s'ouvre tout seul
-      var u = new URL($("#pn-essai").href); u.searchParams.set("payer", "1"); u.searchParams.set("renonciation", "1"); location.href = u.toString();
+      var u = new URL($("#pn-essai").href); u.searchParams.set("payer", "1"); u.searchParams.set("renonciation", "1"); u.searchParams.set("majeur", "1"); location.href = u.toString();
     });
   });
   f.addEventListener("change", maj);

@@ -23,7 +23,7 @@
     const fondateur = q.get("formule") === "fondateur";
     const periode = q.get("periode") === "saison" ? "saison" : "mois";
     const clips = q.get("clips") === "1" && (q.get("formule") === "ess" || q.get("formule") === "pro");
-    return { formule: q.get("formule"), periode, clips, payer: q.get("payer") === "1", renonciation: q.get("renonciation") === "1",
+    return { formule: q.get("formule"), periode, clips, payer: q.get("payer") === "1", renonciation: q.get("renonciation") === "1", majeur: q.get("majeur") === "1",
       libelle: NOMS[q.get("formule")] + (fondateur ? "" : (clips ? " + REF CLIPS" : "") + (periode === "saison" ? (EN ? ", per season" : ", à la saison") : (EN ? ", monthly" : ", au mois"))) };
   })();
   const t = (fr, en) => (EN ? en : fr);
@@ -415,7 +415,7 @@
         method: "POST",
         headers: { "Content-Type": "application/json", apikey: SUPABASE_KEY },
         body: JSON.stringify({ action: "creer", formule: FORMULE.formule, periode: FORMULE.periode, clips: FORMULE.clips,
-          inscription_id: dernierEnvoi.inscription_id, jeton: dernierEnvoi.jeton, retour: EN ? "site_en" : "site", renonciation: FORMULE.renonciation }),
+          inscription_id: dernierEnvoi.inscription_id, jeton: dernierEnvoi.jeton, retour: EN ? "site_en" : "site", renonciation: FORMULE.renonciation, majeur: FORMULE.majeur }),
       });
       const d = await r.json().catch(() => null);
       if (r.ok && d && d.ok && typeof d.url === "string" && d.url.startsWith("https://checkout.stripe.com/")) { location.href = d.url; return; }

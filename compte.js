@@ -26,11 +26,12 @@
     resilier: "Cancel my contract", portail: "My invoices and card",
     avant: "Before you confirm the cancellation:", c1: "no new payment will be taken;", c2: "you keep your plan until {d}, the end of the period already paid;",
     c3: "then your account becomes read-only: your games, payments and exports stay visible;", c4: "you get a confirmation email.",
-    confirmer: "Confirm the cancellation", annuler: "Back",
+    confirmer: "Notify cancellation", annuler: "Back",
     changerT: "Change plan", choisirT: "Choose a plan", formule: "Plan", auMoisL: "Monthly", saisonL: "Per season",
     aide: "Monthly: September to June, no commitment, restarts each September (we remind you in August). Per season: one payment, until 31 August, no renewal.",
     fond: "Founder: {p} once, all features until 31 August 2028. {n} places left.", ajout: "Add REF CLIPS",
-    renonce: "I ask for immediate access and give up my 14-day right of withdrawal",
+    renonce: "I ask for immediate access; if I withdraw, I pay for the part already used", majeur: "I am 18 or have my legal guardian's consent",
+    cgv: "By paying, you accept the <a href=\"terms-of-sale.html\" target=\"_blank\" rel=\"noopener\">terms of sale</a>. 14 days to withdraw: you only pay for the part already used.",
     payer: "Pay", valider: "Confirm the change",
     total: "Total: {p}", uneFois: " once", pourSaison: " for the season", parMois: " a month",
     actuelle: "This is your current plan.", diff: "You only pay the difference: {p}, right away.",
@@ -60,11 +61,12 @@
     resilier: "Résilier votre contrat", portail: "Mes factures et ma carte",
     avant: "Avant de confirmer la résiliation :", c1: "aucun nouveau prélèvement ne sera fait ;", c2: "tu gardes ta formule jusqu'au {d}, la fin de la période déjà payée ;",
     c3: "ensuite ton compte passe en lecture seule : tes matchs, tes paiements et tes exports restent visibles ;", c4: "tu reçois un mail de confirmation.",
-    confirmer: "Confirmer la résiliation", annuler: "Annuler",
+    confirmer: "Notifier la résiliation", annuler: "Annuler",
     changerT: "Changer de formule", choisirT: "Choisir une formule", formule: "Formule", auMoisL: "Au mois", saisonL: "À la saison",
     aide: "Au mois : de septembre à juin, sans engagement, reprise chaque septembre (tu es prévenu en août). À la saison : en une fois, jusqu'au 31 août, sans renouvellement.",
     fond: "Fondateur : {p} en une fois, toutes les fonctions jusqu'au 31 août 2028. Encore {n} places.", ajout: "Ajouter REF CLIPS",
-    renonce: "Je demande l'accès immédiat et je renonce à mon droit de rétractation de 14 jours",
+    renonce: "Je demande l'accès immédiat ; si je me rétracte, je paie la part déjà utilisée", majeur: "J'ai 18 ans ou l'accord de mon représentant légal",
+    cgv: "En payant, tu acceptes les <a href=\"cgv.html\" target=\"_blank\" rel=\"noopener\">conditions générales de vente</a>. 14 jours pour te rétracter : tu paies seulement la part déjà utilisée.",
     payer: "Payer", valider: "Valider le changement",
     total: "Total : {p}", uneFois: " en une fois", pourSaison: " pour la saison", parMois: " par mois",
     actuelle: "C'est ta formule actuelle.", diff: "Tu paies seulement la différence : {p}, tout de suite.",
@@ -241,7 +243,9 @@
       (fondateur ? '<p class="cp-aide" id="cp-fond" hidden>' + esc(T.fond.replace("{p}", eur(PRIX.fondateur)).replace("{n}", pub.fondateur_restantes)) + "</p>" : "") +
       '<label class="cp-radio" id="cp-clips-l"><input type="checkbox" id="cp-clips"' + ((A.formule_suivante ? A.clips_suivant : A.option_clips || s.clips) ? " checked" : "") + "> " + T.ajout + "</label>" +
       '<p class="cp-total" id="cp-total"></p>' +
-      '<label class="cp-radio cp-renonce" id="cp-renon-l"><input type="checkbox" id="cp-renon"> ' + T.renonce + "</label>" +
+      '<div id="cp-renon-l"><label class="cp-radio cp-renonce"><input type="checkbox" id="cp-renon"> ' + T.renonce + "</label>" +
+      '<label class="cp-radio cp-renonce"><input type="checkbox" id="cp-majeur"> ' + T.majeur + "</label>" +
+      '<p class="cp-aide">' + T.cgv + "</p></div>" +
       '<button type="button" class="btn btn-gold cp-plein" id="cp-payer">' + (changer ? T.valider : T.payer) + "</button>";
     zone.innerHTML = '<p class="cp-etat">' + esc(resume()) + "</p>" +
       (A.au_mois_en_cours || A.client_stripe ? '<div class="cp-actions">' +
@@ -270,7 +274,7 @@
       }
       $("cp-total").textContent = texte;
       $("cp-renon-l").hidden = changer && !montee;
-      $("cp-payer").disabled = meme || (!$("cp-renon-l").hidden && !$("cp-renon").checked);
+      $("cp-payer").disabled = meme || (!$("cp-renon-l").hidden && !($("cp-renon").checked && $("cp-majeur").checked));
       return { formule: f, periode: saison ? "saison" : "mois", clips: clips, montee: montee };
     }
     if ($("cp-f")) {
@@ -279,7 +283,7 @@
       $("cp-payer").addEventListener("click", function () {
         var b = $("cp-payer"), c = total(); b.disabled = true;
         msg($("cp-msg"), changer && !c.montee ? T.enreg : T.ouverture);
-        appel({ action: changer ? "changer" : "creer", retour: EN ? "compte_en" : "compte", formule: c.formule, periode: c.periode, clips: c.clips, renonciation: $("cp-renon").checked })
+        appel({ action: changer ? "changer" : "creer", retour: EN ? "compte_en" : "compte", formule: c.formule, periode: c.periode, clips: c.clips, renonciation: $("cp-renon").checked, majeur: $("cp-majeur").checked })
           .then(function (j) {
             if (j.url) { if (!allerStripe(j.url)) throw new Error(T.erreur); return; }
             if (j.effet === "saison_suivante") { A.formule_suivante = c.formule; A.clips_suivant = c.clips; dessiner(); msg($("cp-msg"), T.noteSaison); }
@@ -288,6 +292,7 @@
           .catch(function (e) { msg($("cp-msg"), e.message); b.disabled = false; });
       });
     }
+    if ($("cp-resil") && location.hash === "#resilier") setTimeout(function () { $("cp-resil").click(); $("cp-conf").scrollIntoView({ block: "center" }); }, 0);
     if ($("cp-resil")) {
       $("cp-resil").addEventListener("click", function () { $("cp-conf").hidden = false; $("cp-resil").hidden = true; $("cp-oui").focus(); });
       $("cp-non").addEventListener("click", function () { $("cp-conf").hidden = true; $("cp-resil").hidden = false; $("cp-resil").focus(); });
