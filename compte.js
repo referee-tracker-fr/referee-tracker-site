@@ -300,7 +300,7 @@
       });
     }
     if ($("cp-portail")) $("cp-portail").addEventListener("click", function () {
-      appel({ action: "portail" }).then(function (j) { if (!allerStripe(j.url)) throw new Error(T.erreur); }).catch(function (e) { msg($("cp-msg"), e.message); });
+      appel({ action: "portail", retour: EN ? "compte_en" : "compte" }).then(function (j) { if (!allerStripe(j.url)) throw new Error(T.erreur); }).catch(function (e) { msg($("cp-msg"), e.message); });
     });
   }
 
