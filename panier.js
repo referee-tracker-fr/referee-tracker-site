@@ -17,8 +17,8 @@
     .catch(function () { return null; });
 
   // Cases obligatoires avant de payer (non cochées par défaut) : accès immédiat (le droit de rétractation reste, au prorata) et majorité.
-  var CASES = EN ? ["I ask for immediate access; if I withdraw, I pay for the part already used", "I am 18 or have my legal guardian's consent"]
-                 : ["Je demande l’accès immédiat ; si je me rétracte, je paie la part déjà utilisée", "J’ai 18 ans ou l’accord de mon représentant légal"];
+  var CASES = EN ? ["I request immediate access. If I withdraw within 14 days, I only pay for the part already used.", "I am 18 or have my legal guardian's consent"]
+                 : ["Je demande l’accès immédiat. Si je me rétracte dans les 14 jours, je paie seulement la part déjà utilisée.", "J’ai 18 ans ou l’accord de mon représentant légal"];
   function casesPaiement(onChange) {
     var bloc = document.createDocumentFragment(), boites = [];
     CASES.forEach(function (texte) {
@@ -70,7 +70,7 @@
     if (d.fondateur_ouvert && n > 0) {
       var a = document.createElement("a"); a.className = "btn btn-gold";
       a.href = (EN ? "../signup.html" : "inscription.html") + "?formule=fondateur&payer=1&renonciation=1&majeur=1";
-      a.textContent = EN ? "Become a Founder" : "Devenir Fondateur";
+      a.textContent = EN ? "Become a Founder · Pay €34.99" : "Devenir Fondateur · Payer 34,99 €";
       a.setAttribute("aria-disabled", "true"); a.classList.add("off");
       a.addEventListener("click", function (e) { if (a.classList.contains("off")) e.preventDefault(); });
       bouton.replaceWith(a);
@@ -243,6 +243,7 @@
         ? [nom + " au mois : " + euros(e.total) + " par mois, toutes charges comprises (TVA non applicable).", texteMois(SAISON.n) + ", rien en juillet et août.", "Reprise en septembre pour la nouvelle saison : tu es prévenu en août et tu peux résilier à tout moment."]
         : [nom + " monthly: " + euros(e.total) + " a month, all charges included (VAT not applicable).", texteMois(SAISON.n) + ", nothing in July and August.", "Restarts in September for the new season: you are reminded in August and can cancel at any time."];
       lignes.push(fr ? "14 jours pour te rétracter : tu paies seulement la part déjà utilisée." : "14 days to withdraw: you only pay for the part already used.");
+      payer.firstChild.nodeValue = e.i ? (fr ? "Payer " : "Pay ") : (fr ? "S'abonner · " : "Subscribe · ");   // bouton final
       recap.textContent = "";
       lignes.forEach(function (t) { var li = document.createElement("li"); li.textContent = t; recap.append(li); });
     };
