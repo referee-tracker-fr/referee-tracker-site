@@ -732,3 +732,38 @@ footer a:hover{color:#fff}
 /* fond : les lignes d'un terrain de basket, très discrètes, fixes derrière la page */
 body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background:url("/img/terrain.svg") center/min(1400px,94vw) auto no-repeat;opacity:.14;filter:blur(1.5px)}
 @media (orientation:portrait){body::before{background-image:url("/img/terrain-v.svg");background-size:auto min(1400px,88vh)}}
+
+/* ---- pages CGV et résiliation ---- */
+mark.ph{background:rgba(245,180,0,.22);color:var(--gold2);padding:1px 6px;border-radius:6px;font-weight:700}
+.guide article .legal-projet{max-width:720px;margin:0 auto 30px;padding:12px 16px;border-radius:14px;border:1px dashed rgba(245,180,0,.5);background:rgba(245,180,0,.06);color:#E6EAF3;font-size:.9rem;text-align:center}
+.legal-liste{margin:10px 0 0;padding-left:20px}
+.guide article .legal-liste li{margin:0 0 8px}
+.guide article.legal a:not(.btn){color:var(--gold2)}
+
+/* ---- tarifs : tableau comparatif et FAQ ---- */
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.cmp{margin:34px 0 0;padding:26px 24px;border-radius:28px;background:var(--card);border:1px solid var(--line)}
+.guide .tarifs .cmp h2,.guide .tarifs .faq-t h2{text-align:center;margin:0 0 18px;font-size:clamp(1.4rem,3vw,1.9rem)}
+.cmp-tab{width:100%;border-collapse:collapse;table-layout:fixed}
+.cmp-tab thead th{position:sticky;top:72px;z-index:1;background:var(--card);font:800 .95rem/1.2 var(--font);padding:12px 6px;color:#fff;text-align:center;border-bottom:1px solid var(--line)}
+.cmp-tab thead th:first-child{width:52%}
+.cmp-tab thead th.cmp-el{color:var(--gold2)}
+.cmp-tab tbody th{text-align:left;font-weight:500;color:#D5DDEC;font-size:.92rem;padding:11px 8px 11px 0;line-height:1.35}
+.cmp-tab td{text-align:center;padding:11px 4px;border-bottom:1px solid rgba(255,255,255,.05)}
+.cmp-tab tbody tr:not(.cmp-g) th{border-bottom:1px solid rgba(255,255,255,.05)}
+.cmp-tab td:last-child{background:rgba(245,180,0,.05)}
+.cmp-g th{padding:18px 0 8px!important;font:800 .75rem/1 var(--font)!important;text-transform:uppercase;letter-spacing:.14em;color:var(--gold)!important;text-align:left}
+.cmp-oui{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:50%;background:rgba(34,197,94,.16);color:var(--green)}
+.cmp-oui svg{width:14px;height:14px}
+.cmp-tab td:last-child .cmp-oui{background:rgba(245,180,0,.18);color:var(--gold2)}
+.cmp-non{color:rgba(255,255,255,.25);font-weight:700}
+.faq-t{margin:34px 0 0}
+.faq-t details{border-radius:16px;background:var(--card);border:1px solid var(--line);margin:0 0 10px;padding:0 18px;transition:border-color .25s}
+.faq-t details[open]{border-color:rgba(245,180,0,.45)}
+.faq-t summary{cursor:pointer;list-style:none;padding:16px 28px 16px 0;font-weight:700;position:relative}
+.faq-t summary::-webkit-details-marker{display:none}
+.faq-t summary::after{content:"+";position:absolute;right:0;top:12px;font:400 1.5rem/1 var(--font);color:var(--gold2);transition:transform .25s}
+.faq-t details[open] summary::after{transform:rotate(45deg)}
+.guide .tarifs .faq-t details p{margin:0 0 16px;color:#C9D3E6}
+.faq-t a{color:var(--gold2)}
+@media (max-width:560px){.cmp{padding:18px 12px}.cmp-tab thead th{font-size:.74rem;padding:10px 1px;top:64px;letter-spacing:-.01em}.cmp-tab thead th:first-child{width:40%}.cmp-tab tbody th{font-size:.82rem}.cmp-oui{width:22px;height:22px}}
